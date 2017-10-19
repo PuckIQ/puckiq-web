@@ -1,0 +1,19 @@
+{
+  "name": "puckiq-again",
+  "version": "1.0.0",
+  "description": "Trying Stuff with Express",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js"
+  },
+  "author": "Zsolt Munoz <zmunoz@gmail.com>",
+  "license": "GPL-2.0",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "request": "^2.83.0"
+  }
+}

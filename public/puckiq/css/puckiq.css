@@ -1,0 +1,11 @@
+.logo-mini img {
+  margin-top: -5px;
+  max-width: 60px;
+  max-height: 30px;
+}
+
+.logo-lg img {
+  margin-top: -5px;
+  max-width: 100px;
+  max-height: 50px;
+}

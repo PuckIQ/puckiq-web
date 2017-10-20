@@ -130,6 +130,26 @@ $('form').submit(function () {
     }
   }).done(function (data) {
     $('#pq-wowydata').html(data);
+    $('#pq-1w2 > table').DataTable({
+      orderClasses: false,
+      'stripeClasses': ['stripe1', 'stripe2'],
+      order: [3, 'desc']
+    });
+    $('#pq-1wo2 > table').DataTable({
+      orderClasses: false,
+      'stripeClasses': ['stripe1', 'stripe2'],
+      order: [3, 'desc']
+    });
+    $('#pq-2wo1 > table').DataTable({
+      orderClasses: false,
+      'stripeClasses': ['stripe1', 'stripe2'],
+      order: [3, 'desc']
+    });
+    $('#pq-all > table').DataTable({
+      orderClasses: false,
+      'stripeClasses': ['stripe1', 'stripe2'],
+      order: [3, 'desc']
+    });
   });
 
   return false;

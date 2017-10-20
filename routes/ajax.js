@@ -1,4 +1,5 @@
 var config = require('../config');
+var rq = require('request');
 var baseUrl = 'http://' + config.api.host + '/' + config.api.base;
 
 function AjaxHelper(app, request) {
@@ -8,7 +9,20 @@ function AjaxHelper(app, request) {
     var pqreq = req.params.pqreq;
     var serialize = serializeQuery(req.query);
     res.render('__' + pqreq + '/index');
-  }
+  };
+
+  this.getPlayerRangeWowy = function(req, res) {
+    var query = req.query;
+    var serialize = serializeQuery(query);
+    console.log(serialize);
+    rq.get({ url: baseUrl + '/m2/schedule/getRangeWowy?' + serialize, json: true }, (err, response, data) => {
+      var datacheck = (!err && response.statusCode != 200) ? false : true;
+      var wowy = (!err && response.statusCode != 200) ? [] : data;
+      rq.get({ url: baseUrl + '/m2/players/getPlayer?playerid=' + query.q2player1id, json: true }, (e, r, d) => {
+        res.render('__player-wowy-range/index', { check: datacheck, data: wowy, queryData: query, player1info: d[0] });
+      });
+    });
+  };
 }
 
 function serializeQuery(query) {

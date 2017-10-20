@@ -13,5 +13,6 @@ module.exports = exports = function (app, request) {
   app.get('/error404', puckIQHandler.get404);
 
   // Handle All AJAX Requests Here
-  app.get('/ajax/:pqreq?', ajaxHandler.getAjaxRequest);
+  //app.get('/ajax/:pqreq?', ajaxHandler.getAjaxRequest);
+  app.get('/ajax/player-wowy-range', ajaxHandler.getPlayerRangeWowy);
 }

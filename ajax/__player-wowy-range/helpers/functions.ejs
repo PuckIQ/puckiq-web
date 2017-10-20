@@ -37,8 +37,8 @@
         wowy[1] += '<td class="pq-col-200"><i class="fa fa-external-link" aria-hidden="true"></i> <a href="/player-data/' + wowyData.pinfo.p2id + '">' + wowyData.pinfo.p2fullname + '</a></td>';
         if(typeof wowyData.pinfo.season !== 'undefined')
           wowy[1] += '<td class="pq-col-50">' + wowyData.pinfo.season + '</td>';
-        wowy[1] += '<td class="pq-col-50">' + wowyData.pinfo.team + '</td>';
         wowy[1] += '<td class="pq-col-50">' + (wowyData.pinfo.p2possible).join(', ') + '</td>';
+        wowy[1] += '<td class="pq-col-50">' + wowyData.pinfo.team + '</td>';
       }
 
       switch(wowyData.pinfo.wowytype) {

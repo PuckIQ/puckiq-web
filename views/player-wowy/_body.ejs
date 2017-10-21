@@ -16,7 +16,7 @@
       <form>
         <div class="row">
           <div class="col-md-4 col-lg-3">
-            <label>Primary Player</label>
+            <label>Player</label>
             <div class="form-group">
               <select name="q2player1id" id="pq-player1name" class="form-control" style="width: 100%;">
               </select>
@@ -24,9 +24,38 @@
           </div>
           <!-- /.col -->
           <div class="col-md-4 col-lg-3">
-            <label>Secondary Player(s)</label>
+            <label>Teammate</label>
             <div class="form-group">
               <select name="q2player2id" id="pq-player2name" class="form-control" style="width: 100%;">
+              </select>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-md-4 col-lg-3">
+            <label>Minimum TOI</label>
+            <div class="form-group">
+              <input type="number" min="0" name="q3toi" id="pq-toi" class="form-control" value="50" style="width: 100%;">
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-md-4 col-lg-3">
+            <label>By Date Range</label>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-addon">
+                  <i class="fa fa-calendar"></i>
+                </div>
+                <input name="q3daterange" id="pq-daterange" type="text" class="form-control pull-right" value="">
+                <input name="q1datestart" type="hidden" value="">
+                <input name="q1dateend" type="hidden" value="">
+              </div>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-md-4 col-lg-3">
+            <label>By Season</label>
+            <div class="form-group">
+              <select name="q1season[]" id="pq-season" class="form-control" multiple="multiple" style="width: 100%;">
               </select>
             </div>
           </div>
@@ -44,35 +73,6 @@
             <div class="form-group">
               <select name="q3display[]" id="pq-display" class="form-control" multiple="multiple" style="width: 100%;">
               </select>
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-md-4 col-lg-3">
-            <label>Min TOI</label>
-            <div class="form-group">
-              <input type="number" min="0" name="q3toi" id="pq-toi" class="form-control" value="50" style="width: 100%;">
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-md-4 col-lg-3">
-            <label>By Season</label>
-            <div class="form-group">
-              <select name="q1season[]" id="pq-season" class="form-control" multiple="multiple" style="width: 100%;">
-              </select>
-            </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-md-4 col-lg-3">
-            <label>By Date Range</label>
-            <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-addon">
-                  <i class="fa fa-calendar"></i>
-                </div>
-                <input name="q3daterange" id="pq-daterange" type="text" class="form-control pull-right" value="">
-                <input name="q1datestart" type="hidden" value="">
-                <input name="q1dateend" type="hidden" value="">
-              </div>
             </div>
           </div>
           <!-- /.col -->

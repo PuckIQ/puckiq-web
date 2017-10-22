@@ -15,4 +15,5 @@ module.exports = exports = function (app, request) {
   // Handle All AJAX Requests Here
   //app.get('/ajax/:pqreq?', ajaxHandler.getAjaxRequest);
   app.get('/ajax/player-wowy-range', ajaxHandler.getPlayerRangeWowy);
+  app.get('/ajax/player-wowy-season', ajaxHandler.getPlayerSeasonWowy);
 }

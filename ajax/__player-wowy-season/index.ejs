@@ -27,6 +27,7 @@
                 <% if(x === 3) { %>
                   <th class="pq-col-100">WOWY</th>
                 <% } %>
+                <th class="pq-col-100">Season</th>
                 <th class="pq-col-50">Pos</th>
                 <th class="pq-col-50">Team</th>
                 <th class="pq-col-75">EVTOI</th>
@@ -105,7 +106,7 @@
           <table class="table table-hover table-bordered" cellspacing="0">
             <thead>
               <tr>
-                <th colspan="3">&nbsp;</th>
+                <th colspan="4">&nbsp;</th>
                 <% var zs = (typeof queryData.q3display !== 'undefined' && queryData.q3display.indexOf('Z') > -1) ? 4 : 0; %>
                 <th colspan="<%= (typeof queryData.q3display === 'undefined') ? 40 : (queryData.q3display.length * 5)+1+zs; %>"><%= player1info.lastName; %> w/Teammate</th>
                 <th colspan="<%= (typeof queryData.q3display === 'undefined') ? 40 : (queryData.q3display.length * 5)+1+zs; %>"><%= player1info.lastName; %> w/o Teammate</th>
@@ -113,6 +114,7 @@
               </tr>
               <tr>
                 <th class="pq-col-200">Teammate</th>
+                <th class="pq-col-100">Season</th>
                 <th class="pq-col-50">Pos</th>
                 <th class="pq-col-50">Team</th>
                 <% for(var g = 0; g < (withWithout.length)-1; g++) { %>

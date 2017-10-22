@@ -14,12 +14,23 @@ function AjaxHelper(app, request) {
   this.getPlayerRangeWowy = function(req, res) {
     var query = req.query;
     var serialize = serializeQuery(query);
-    console.log(serialize);
     rq.get({ url: baseUrl + '/m2/schedule/getRangeWowy?' + serialize, json: true }, (err, response, data) => {
       var datacheck = (!err && response.statusCode != 200) ? false : true;
       var wowy = (!err && response.statusCode != 200) ? [] : data;
       rq.get({ url: baseUrl + '/m2/players/getPlayer?playerid=' + query.q2player1id, json: true }, (e, r, d) => {
         res.render('__player-wowy-range/index', { check: datacheck, data: wowy, queryData: query, player1info: d[0] });
+      });
+    });
+  };
+
+  this.getPlayerSeasonWowy = function(req, res) {
+    var query = req.query;
+    var serialize = serializeQuery(query);
+    rq.get({ url: baseUrl + '/m2/seasonwowy/getSeasonWowy?' + serialize, json: true }, (err, response, data) => {
+      var datacheck = (!err && response.statusCode != 200) ? false : true;
+      var wowy = (!err && response.statusCode != 200) ? [] : data;
+      rq.get({ url: baseUrl + '/m2/players/getPlayer?playerid=' + query.q2player1id, json: true }, (e, r, d) => {
+        res.render('__player-wowy-season/index', { check: datacheck, data: wowy, queryData: query, player1info: d[0] });
       });
     });
   };

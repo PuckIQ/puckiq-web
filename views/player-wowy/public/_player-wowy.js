@@ -88,8 +88,8 @@ $('#pq-daterange').daterangepicker({
 }).on('apply.daterangepicker', function (ev, picker) {
   $(this).val(picker.startDate.format('YYYY-MM-DD') + ' to ' + picker.endDate.format('YYYY-MM-DD'));
   $('#pq-season').prop('disabled', true);
-  $('input[name="q1datestart"]').val(picker.startDate.format('YYYY-MM-DD'));
-  $('input[name="q1dateend"]').val(picker.endDate.format('YYYY-MM-DD'));
+  $('input[name="q1datestart"]').prop('disabled', false).val(picker.startDate.format('YYYY-MM-DD'));
+  $('input[name="q1dateend"]').prop('disabled', false).val(picker.endDate.format('YYYY-MM-DD'));
 }).on('cancel.daterangepicker', function (ev, picker) {
   $(this).val('');
   $('#pq-season').prop('disabled', false);
@@ -104,8 +104,8 @@ $('#pq-season').on('change', function (ev) {
     $('input[name="q1dateend"]').val('').prop('disabled', true);
   } else {
     $('#pq-daterange').prop('disabled', false);
-    $('input[name="q1datestart"]').val('').prop('disabled', false);
-    $('input[name="q1dateend"]').val('').prop('disabled', false);
+    $('input[name="q1datestart"]').val('').prop('disabled', true);
+    $('input[name="q1dateend"]').val('').prop('disabled', true);
   }
 });
 
@@ -114,11 +114,12 @@ $('form').submit(function () {
   var checkrange = false;
 
   for (var x = 0; x < dt.length; x++) {
-    if (dt[x].name == 'q3daterange')
+    if (dt[x].name == 'q1datestart')
       checkrange = true;
   }
 
   var qt = checkrange ? 'player-wowy-range' : 'player-wowy-season';
+  var indent = checkrange ? 3 : 4;
 
   $.ajax({
     url: '/ajax/' + qt + '?' + $(this).serialize(),
@@ -133,22 +134,22 @@ $('form').submit(function () {
     $('#pq-1w2 > table').DataTable({
       orderClasses: false,
       'stripeClasses': ['stripe1', 'stripe2'],
-      order: [3, 'desc']
+      order: [indent, 'desc']
     });
     $('#pq-1wo2 > table').DataTable({
       orderClasses: false,
       'stripeClasses': ['stripe1', 'stripe2'],
-      order: [3, 'desc']
+      order: [indent, 'desc']
     });
     $('#pq-2wo1 > table').DataTable({
       orderClasses: false,
       'stripeClasses': ['stripe1', 'stripe2'],
-      order: [3, 'desc']
+      order: [indent, 'desc']
     });
     $('#pq-all > table').DataTable({
       orderClasses: false,
       'stripeClasses': ['stripe1', 'stripe2'],
-      order: [3, 'desc']
+      order: [indent, 'desc']
     });
   });
 

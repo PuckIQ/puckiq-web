@@ -11,6 +11,7 @@ module.exports = exports = function (app, request) {
   app.get('/player-wowy', puckIQHandler.getPlayerWowy);
   app.get('/player-woodmoney', puckIQHandler.getPlayerWoodmoney);
   app.get('/player-search', puckIQHandler.getPlayerWowy);
+  app.get('/_template', puckIQHandler.getTemplate);
 
   app.get('/error404', puckIQHandler.get404);
 

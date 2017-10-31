@@ -5,17 +5,22 @@ function PuckIQHandler(app, request) {
 
   this.getHome = function (req, res) {
     app.use(express.static('views/home/public'));
-    res.render('home/index');
+    res.render('home/index', { pgname: 'home' });
   }
 
   this.getPlayerWowy = function (req, res) {
     app.use(express.static('views/player-wowy/public'));
-    res.render('player-wowy/index');
+    res.render('player-wowy/index', { pgname: 'player-wowy' });
   }
 
   this.getPlayerWoodmoney = function (req, res) {
     app.use(express.static('views/player-woodmoney/public'));
-    res.render('player-woodmoney/index');
+    res.render('player-woodmoney/index', { pgname: 'player-woodmoney' });
+  }
+
+  this.getTemplate = function (req, res) {
+    app.use(express.static('views/_template/public'));
+    res.render('_template/index', { pgname: 'template' });
   }
 
   this.get404 = function (req, res) {

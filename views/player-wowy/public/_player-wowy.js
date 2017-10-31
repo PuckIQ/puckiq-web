@@ -80,7 +80,7 @@ $.get('http://api.puckiq.org/puckiq/h1/seasonwowy/getSeasonList').done(function 
   })
 });
 
-$('#pq-daterange').daterangepicker({
+/*$('#pq-daterange').daterangepicker({
   autoUpdateInput: false,
   locale: {
     cancelLabel: 'Clear'
@@ -95,6 +95,13 @@ $('#pq-daterange').daterangepicker({
   $('#pq-season').prop('disabled', false);
   $('input[name="q1datestart"]').val('').prop('disabled', true);
   $('input[name="q1dateend"]').val('').prop('disabled', true);
+});*/
+
+$('#pq-daterange').datepicker({
+  format: "yyyy-mm-dd",
+  clearBtn: true
+}).on('changeDate', function(e) {
+ // console.log(e);
 });
 
 $('#pq-season').on('change', function (ev) {

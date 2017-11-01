@@ -97,22 +97,40 @@ $.get('http://api.puckiq.org/puckiq/h1/seasonwowy/getSeasonList').done(function 
   $('input[name="q1dateend"]').val('').prop('disabled', true);
 });*/
 
-$('#pq-daterange').datepicker({
-  format: "yyyy-mm-dd",
-  clearBtn: true
-}).on('changeDate', function(e) {
- // console.log(e);
+$('#pq-daterange > input[name="q1datestart"]').datetimepicker({
+  format: 'YYYY-MM-DD',
+  showClear: true
+});
+$('#pq-daterange > input[name="q1dateend"]').datetimepicker({
+  format: 'YYYY-MM-DD',
+  showClear: true,
+  showTodayButton: true,
+  useCurrent: false
+});
+
+$('#pq-daterange > input[name="q1datestart"]').on('dp.change', function (e) {
+  $('#pq-daterange > input[name="q1dateend"]').data('DateTimePicker').minDate(e.date);
+  if ($('#pq-daterange > input[name="q1dateend"]').val() === '')
+    $('#pq-season').val('').prop('disabled', false);
+  else
+    $('#pq-season').val('').prop('disabled', true);
+});
+
+$('#pq-daterange > input[name="q1dateend"]').on('dp.change', function (e) {
+  $('#pq-daterange > input[name="q1datestart"]').data('DateTimePicker').maxDate(e.date);
+  if ($('#pq-daterange > input[name="q1datestart"]').val() === '')
+    $('#pq-season').val('').prop('disabled', false);
+  else
+    $('#pq-season').val('').prop('disabled', true);
 });
 
 $('#pq-season').on('change', function (ev) {
   if ($(this).val() != "") {
-    $('#pq-daterange').prop('disabled', true);
     $('input[name="q1datestart"]').val('').prop('disabled', true);
     $('input[name="q1dateend"]').val('').prop('disabled', true);
   } else {
-    $('#pq-daterange').prop('disabled', false);
-    $('input[name="q1datestart"]').val('').prop('disabled', true);
-    $('input[name="q1dateend"]').val('').prop('disabled', true);
+    $('input[name="q1datestart"]').val('').prop('disabled', false);
+    $('input[name="q1dateend"]').val('').prop('disabled', false);
   }
 });
 

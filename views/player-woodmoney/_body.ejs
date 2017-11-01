@@ -30,13 +30,10 @@
           <div class="col-md-4 col-lg-3">
             <label>By Date Range</label>
             <div class="form-group">
-              <div class="input-group">
-                <div class="input-group-addon">
-                  <i class="fa fa-calendar"></i>
-                </div>
-                <input name="q3daterange" id="pq-daterange" type="text" class="form-control pull-right" value="">
-                <input name="q1datestart" type="hidden" value="" disabled="disabled">
-                <input name="q1dateend" type="hidden" value="" disabled="disabled">
+              <div class="input-daterange input-group" id="pq-daterange">
+                <input type="text" class="form-control" name="q1datestart">
+                <span class="input-group-addon" style="border-left: none; border-right: none;">-</span>
+                <input type="text" class="form-control" name="q1dateend">
               </div>
             </div>
           </div>

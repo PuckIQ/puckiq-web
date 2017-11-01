@@ -6,16 +6,16 @@
   <% include _partials/head %>
 
   <!-- Theme style -->
-  <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. Choose a skin from the css/skins
        folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="/dist/css/skins/<%= skin %>.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/css/skins/<%= skin %>.min.css">
 
   <!-- Site wide CSS -->
   <link rel="stylesheet" href="/puckiq/css/puckiq.css">
 
   <!-- Page specific CSS -->
-  <link rel="stylesheet" href="_player-woodmoney.css">
+  <link rel="stylesheet" href="_<%= pgname %>.css">
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -53,9 +53,11 @@
   <% include ../_partials/scripts %>
   <% include _partials/scripts %>
   <!-- AdminLTE App -->
-  <script src="/dist/js/adminlte.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.4.2/js/adminlte.min.js"></script>
+  <!-- PuckIQ Site JS -->
+  <script src="/puckiq/js/puckiq.js"></script>
   <!-- PuckIQ Module JS -->
-  <script src="_player-woodmoney.js"></script>
+  <script src="_<%= pgname %>.js"></script>
 </body>
 
 </html>

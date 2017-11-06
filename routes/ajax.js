@@ -4,14 +4,14 @@ var baseUrl = 'http://' + config.api.host + '/' + config.api.base;
 
 function AjaxHelper(app, request) {
 
-  this.getAjaxRequest = function(req, res) {
+  this.getAjaxRequest = function (req, res) {
     var query = req.query;
     var pqreq = req.params.pqreq;
     var serialize = serializeQuery(req.query);
     res.render('__' + pqreq + '/index');
   };
 
-  this.getPlayerRangeWowy = function(req, res) {
+  this.getPlayerRangeWowy = function (req, res) {
     var query = req.query;
     var serialize = serializeQuery(query);
     rq.get({ url: baseUrl + '/m2/schedule/getRangeWowy?' + serialize, json: true }, (err, response, data) => {
@@ -23,7 +23,7 @@ function AjaxHelper(app, request) {
     });
   };
 
-  this.getPlayerSeasonWowy = function(req, res) {
+  this.getPlayerSeasonWowy = function (req, res) {
     var query = req.query;
     var serialize = serializeQuery(query);
     rq.get({ url: baseUrl + '/m2/seasonwowy/getSeasonWowy?' + serialize, json: true }, (err, response, data) => {
@@ -34,6 +34,34 @@ function AjaxHelper(app, request) {
       });
     });
   };
+
+  this.getPlayerRangeWoodmoney = function (req, res) {
+    var query = req.query;
+    var serialize = serializeQuery(query);
+    console.log(serialize);
+    rq.get({ url: baseUrl + '/m2/schedule/getRangeWoodMoney?' + serialize, json: true }, (err, response, data) => {
+      var datacheck = (!err && response.statusCode != 200) ? false : true;
+      var wowy = (!err && response.statusCode != 200) ? [] : data;
+      console.log(data);
+      rq.get({ url: baseUrl + '/m2/players/getPlayer?playerid=' + query.q2playerid, json: true }, (e, r, d) => {
+        res.render('__player-woodmoney-range/index', { check: datacheck, data: wowy, queryData: query, player1info: d[0] });
+      });
+    });
+  }
+
+  this.getPlayerSeasonWoodmoney = function (req, res) {
+    var query = req.query;
+    var serialize = serializeQuery(query);
+    console.log(serialize);
+    rq.get({ url: baseUrl + '/m2/seasonwoodmoney/getSeasonWoodMoney?' + serialize, json: true }, (err, response, data) => {
+      var datacheck = (!err && response.statusCode != 200) ? false : true;
+      var wowy = (!err && response.statusCode != 200) ? [] : data;
+      console.log(data);
+      rq.get({ url: baseUrl + '/m2/players/getPlayer?playerid=' + query.q2playerid, json: true }, (e, r, d) => {
+        res.render('__player-woodmoney-season/index', { check: datacheck, data: wowy, queryData: query, player1info: d[0] });
+      });
+    });
+  }
 }
 
 function serializeQuery(query) {

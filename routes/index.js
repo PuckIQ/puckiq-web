@@ -19,6 +19,6 @@ module.exports = exports = function (app, request) {
   //app.get('/ajax/:pqreq?', ajaxHandler.getAjaxRequest);
   app.get('/ajax/player-wowy-range', ajaxHandler.getPlayerRangeWowy);
   app.get('/ajax/player-wowy-season', ajaxHandler.getPlayerSeasonWowy);
-  app.get('/ajax/player-woodmoney-range', ajaxHandler.getPlayerSeasonWowy);
-  app.get('/ajax/player-woodmoney-season', ajaxHandler.getPlayerSeasonWowy);
+  app.get('/ajax/player-woodmoney-range', ajaxHandler.getPlayerRangeWoodmoney);
+  app.get('/ajax/player-woodmoney-season', ajaxHandler.getPlayerSeasonWoodmoney);
 }

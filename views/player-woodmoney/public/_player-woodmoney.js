@@ -80,23 +80,6 @@ $.get('http://api.puckiq.org/puckiq/h1/seasonwoodmoney/getSeasonList').done(func
   })
 });
 
-/*$('#pq-daterange').daterangepicker({
-  autoUpdateInput: false,
-  locale: {
-    cancelLabel: 'Clear'
-  }
-}).on('apply.daterangepicker', function (ev, picker) {
-  $(this).val(picker.startDate.format('YYYY-MM-DD') + ' to ' + picker.endDate.format('YYYY-MM-DD'));
-  $('#pq-season').prop('disabled', true);
-  $('input[name="q1datestart"]').prop('disabled', false).val(picker.startDate.format('YYYY-MM-DD'));
-  $('input[name="q1dateend"]').prop('disabled', false).val(picker.endDate.format('YYYY-MM-DD'));
-}).on('cancel.daterangepicker', function (ev, picker) {
-  $(this).val('');
-  $('#pq-season').prop('disabled', false);
-  $('input[name="q1datestart"]').val('').prop('disabled', true);
-  $('input[name="q1dateend"]').val('').prop('disabled', true);
-});*/
-
 $('#pq-daterange > input[name="q1datestart"]').datetimepicker({
   format: 'YYYY-MM-DD',
   showClear: true
@@ -135,3 +118,58 @@ $('#pq-season').on('change', function (ev) {
     $('input[name="q1dateend"]').val('').prop('disabled', true);
   }
 });
+
+$('form').submit(function () {
+  var dt = $(this).serializeArray();
+  var checkrange = false;
+
+  for (var x = 0; x < dt.length; x++) {
+    if (dt[x].name == 'q1datestart')
+      checkrange = true;
+  }
+
+  var qt = checkrange ? 'player-woodmoney-range' : 'player-woodmoney-season';
+  var indent = checkrange ? 3 : 4;
+
+  $.ajax({
+    url: '/ajax/' + qt + '?' + $(this).serialize(),
+    complete: function () {
+      $('#pq-wowydata').css('display', 'block');
+    },
+    beforeSend: function () {
+      $('#pq-wowydata').css('display', 'none');
+    }
+  }).done(function (data) {
+    $('#pq-wowydata').html(data);
+    $('#pq-1w2 > table').DataTable({
+      orderClasses: false,
+      'stripeClasses': ['stripe1', 'stripe2'],
+      order: [indent, 'desc'],
+      scrollX: true,
+      scrollCollapse: true
+    });
+    $('#pq-1wo2 > table').DataTable({
+      orderClasses: false,
+      'stripeClasses': ['stripe1', 'stripe2'],
+      order: [indent, 'desc'],
+      scrollX: true,
+      scrollCollapse: true
+    });
+    $('#pq-2wo1 > table').DataTable({
+      orderClasses: false,
+      'stripeClasses': ['stripe1', 'stripe2'],
+      order: [indent, 'desc'],
+      scrollX: true,
+      scrollCollapse: true
+    });
+    $('#pq-all > table').DataTable({
+      orderClasses: false,
+      'stripeClasses': ['stripe1', 'stripe2'],
+      order: [indent, 'desc'],
+      scrollX: true,
+      scrollCollapse: true
+    });
+  });
+
+  return false;
+})

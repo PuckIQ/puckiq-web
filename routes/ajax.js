@@ -38,14 +38,10 @@ function AjaxHelper(app, request) {
   this.getPlayerRangeWoodmoney = function (req, res) {
     var query = req.query;
     var serialize = serializeQuery(query);
-    console.log(serialize);
     rq.get({ url: baseUrl + '/m2/schedule/getRangeWoodMoney?' + serialize, json: true }, (err, response, data) => {
       var datacheck = (!err && response.statusCode != 200) ? false : true;
-      var wowy = (!err && response.statusCode != 200) ? [] : data;
-      console.log(data);
-      rq.get({ url: baseUrl + '/m2/players/getPlayer?playerid=' + query.q2playerid, json: true }, (e, r, d) => {
-        res.render('__player-woodmoney-range/index', { check: datacheck, data: wowy, queryData: query, player1info: d[0] });
-      });
+      var woodmoney = (!err && response.statusCode != 200) ? [] : data;
+      res.render('__player-woodmoney-range/index', { check: datacheck, data: woodmoney, queryData: query });
     });
   }
 

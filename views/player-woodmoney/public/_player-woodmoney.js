@@ -21,8 +21,10 @@ var stattype = [
 $('#pq-playername').select2({
   placeholder: {
     id: -1,
-    text: 'Player Name...',
+    text: 'Select Player(s)...',
   },
+  minimumInputLength: 2,
+  maximumSelectionLength: 6,
   ajax: {
     url: 'http://api.puckiq.org/puckiq/0/players/getPlayerSearch',
     dataType: 'json',
@@ -134,13 +136,13 @@ $('form').submit(function () {
   $.ajax({
     url: '/ajax/' + qt + '?' + $(this).serialize(),
     complete: function () {
-      $('#pq-wowydata').css('display', 'block');
+      $('#pq-woodmoneydata').css('display', 'block');
     },
     beforeSend: function () {
-      $('#pq-wowydata').css('display', 'none');
+      $('#pq-woodmoneydata').css('display', 'none');
     }
   }).done(function (data) {
-    $('#pq-wowydata').html(data);
+    $('#pq-woodmoneydata').html(data);
     $('#pq-1w2 > table').DataTable({
       orderClasses: false,
       'stripeClasses': ['stripe1', 'stripe2'],

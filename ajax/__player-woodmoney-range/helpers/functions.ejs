@@ -1,4 +1,6 @@
 <%
+  var glossary = {};
+
   getDisplayType = function (rtdisplay, pqdisplay) {
     var show = false;
     if (typeof pqdisplay !== 'undefined') {
@@ -10,7 +12,64 @@
     return show;
   };
 
-  buildWoodMoney = function(queryData, data) {
-    console.log(data);
+  buildDataTable = function(id, filter, data) {
+    var fields = [
+      {
+        apiVar: 'pinfo.pfullname',
+        name: 'playername',
+        dispName: 'Player Name',
+        defn: 'Player Name',
+        width: '200',
+        group: 'required'
+      },
+      {
+        apiVar: 'pinfo.ppossible',
+        name: 'position',
+        dispName: 'Pos',
+        defn: 'Player Position',
+        width: '50',
+        group: 'required'
+      },
+      {
+        apiVar: 'pinfo.team',
+        name: 'team',
+        dispName: 'Team',
+        defn: 'Player Position',
+        width: '50',
+        group: 'required'
+      },
+      {
+        apiVar: 'evtoi',
+        name: 'evtoi',
+        dispName: 'EVTOI',
+        defn: 'Even Strngth Time on Ice',
+        width: '75',
+        group: 'required'
+      },
+    ];
+
+    var table = '',
+      thead = '',
+      tbody = '';
+    
+    table += '<table class="table table-hover table-bordered" cellspacing="0">';
+
+    thead += '<thead><tr>';
+    for(var x = 0; x < fields.length; x++) {
+      thead += '<th class="pq-col-' + fields[x].width + '">';
+      thead += fields[x].dispName;
+      thead += '</th>';
+    }
+    thead += '</tr></thead>';
+    table += thead;
+
+    tbody += '<tbody>';
+
+    tbody += '</tbody>';
+    table += tbody;
+
+    table += '</table>';
+
+    return table;
   };
 %>

@@ -143,7 +143,7 @@ $('form').submit(function () {
     }
   }).done(function (data) {
     $('#pq-woodmoneydata').html(data);
-    $('#pq-1w2 > table').DataTable({
+    /*$('#pq-1w2 > table').DataTable({
       orderClasses: false,
       'stripeClasses': ['stripe1', 'stripe2'],
       order: [indent, 'desc'],
@@ -170,7 +170,7 @@ $('form').submit(function () {
       order: [indent, 'desc'],
       scrollX: true,
       scrollCollapse: true
-    });
+    });*/
   });
 
   return false;

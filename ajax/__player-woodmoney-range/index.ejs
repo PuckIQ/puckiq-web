@@ -1,8 +1,5 @@
 <div class="nav-tabs-custom">
   <ul class="nav nav-tabs pull-right">
-    <li class="active">
-      <a href="#pq-elite" data-toggle="tab">Elite</a>
-    </li>
     <li>
       <a href="#pq-middle" data-toggle="tab">Middle</a>
     </li>
@@ -10,6 +7,9 @@
       <a href="#pq-grit" data-toggle="tab">Gritensity</a>
     </li>
     <li>
+      <a href="#pq-elite" data-toggle="tab">Elite</a>
+    </li>
+    <li class="active">
       <a href="#pq-all" data-toggle="tab">All</a>
     </li>
   </ul>
@@ -17,7 +17,7 @@
     <% include helpers/functions.ejs %>
     <% var woodMoney = [{id: 'pq-elite', type: 'Elite'},{id: 'pq-middle', type: 'Middle'},{id: 'pq-grit', type: 'Gritensity'},{id: 'pq-all', type: 'All'}]; %>
     <% for(var x = 0; x < woodMoney.length; x++) { %>
-      <div id="<%= woodMoney[x].id; %>" class="tab-pane fade in <%= (x > 0) ? null : 'active'; %> table-condensed table-responsive table-striped stripe">
+      <div id="<%= woodMoney[x].id; %>" class="tab-pane fade in <%= (woodMoney[x].type != 'All') ? null : 'active'; %> table-condensed table-responsive table-striped stripe">
         <%- buildDataTable(woodMoney[x].type, queryData, data); %>
       </div>
     <% } %>

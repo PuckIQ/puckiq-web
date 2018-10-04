@@ -30,6 +30,7 @@ app.locals.skin = config.site.skin;
 
 routes(app);
 
+console.log("running server on port", 5000);
 server.listen(5000, function () {
   server.close(function () {
     server.listen(5000);

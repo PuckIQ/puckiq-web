@@ -26,7 +26,7 @@ $('#pq-playername').select2({
   minimumInputLength: 2,
   maximumSelectionLength: 6,
   ajax: {
-    url: 'http://api.puckiq.org/puckiq/0/players/getPlayerSearch',
+    url: 'http://' + PUCKIQ.host + '/puckiq/0/players/getPlayerSearch',
     dataType: 'json',
     delay: 250,
     data: function (params) {
@@ -66,7 +66,7 @@ $('#pq-display').select2({
   allowClear: true
 });
 
-$.get('http://api.puckiq.org/puckiq/h1/seasonwoodmoney/getSeasonList').done(function (data) {
+$.get('http://' + PUCKIQ.host + '/puckiq/h1/seasonwoodmoney/getSeasonList').done(function (data) {
   var seasonlist = new Array();
   for (var i = 0; i < data.length; i++) {
     seasonlist.push({ id: data[i]._id, text: data[i]._id });

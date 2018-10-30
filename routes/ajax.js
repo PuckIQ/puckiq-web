@@ -1,6 +1,6 @@
 var config = require('../config');
 var rq = require('request');
-var baseUrl = 'http://' + config.api.host + '/' + config.api.base;
+var baseUrl = 'https://' + config.api.host; // + '/' + config.api.base;
 
 function AjaxHelper(app, request) {
 
@@ -15,8 +15,8 @@ function AjaxHelper(app, request) {
 
         var query = req.query;
         var serialize = serializeQuery(query);
-        var url = baseUrl + '/m2/schedule/getRangeWowy?' + serialize;
-        // var url = baseUrl + '/stats/wowy?' + serialize;
+        //var url = baseUrl + '/m2/schedule/getRangeWowy?' + serialize;
+        var url = baseUrl + '/wowy/player?' + serialize;
 
         rq.get({ url: url, json: true }, (err, response, data) => {
             var datacheck = (!err && response.statusCode !== 200) ? false : true;
@@ -93,7 +93,7 @@ function AjaxHelper(app, request) {
 function serializeQuery(query) {
     var serialized = "";
     Object.keys(query).forEach(function(key) {
-        if(query[key] !== '' && typeof key !== 'undefined' && key.substr(0, 2) != 'q3') {
+        if(query[key] !== '' && typeof key !== 'undefined' && key.substr(0, 2) !== 'q3') {
             if(isArray(query[key])) {
                 query[key].forEach(function(val) {
                     serialized += key.toString() + '[]=' + val.toString() + '&';

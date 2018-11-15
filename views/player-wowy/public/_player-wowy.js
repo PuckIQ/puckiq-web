@@ -18,13 +18,17 @@ var stattype = [
   { id: 'Z', text: 'ZS' }
 ];
 
+var PUCKIQ = {
+  host : 'localhost:5001'
+};
+
 $('#pq-player1name, #pq-player2name').select2({
   placeholder: {
     id: -1,
     text: 'Player Name...',
   },
   ajax: {
-    url: 'http://' + PUCKIQ.host + '/puckiq/0/players/getPlayerSearch',
+    url: 'http://' + PUCKIQ.host + '/player/search',
     dataType: 'json',
     delay: 250,
     data: function (params) {

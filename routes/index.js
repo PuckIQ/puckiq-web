@@ -2,9 +2,9 @@ var express = require('express');
 var PuckIQHandler = require('./puckiq');
 var AjaxHandler = require('./ajax');
 
-module.exports = exports = function (app, request) {
-  var puckIQHandler = new PuckIQHandler(app, request);
-  var ajaxHandler = new AjaxHandler(app, request);
+module.exports = exports = function (app, request, config) {
+  var puckIQHandler = new PuckIQHandler(app, request, config);
+  var ajaxHandler = new AjaxHandler(app, request, config);
 
   // Handle Primary Requests Here
   app.get('/', puckIQHandler.getHome);

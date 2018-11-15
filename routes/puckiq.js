@@ -1,11 +1,11 @@
 var express = require('express');
 var path = require('path');
 
-function PuckIQHandler(app, request) {
+function PuckIQHandler(app, request, config) {
 
   this.getHome = function (req, res) {
     app.use(express.static('views/home/public'));
-    res.render('home/index', { pgname: 'home' });
+    res.render('home/index', { pgname: 'home'  });
   }
 
   this.getPlayerWowy = function (req, res) {

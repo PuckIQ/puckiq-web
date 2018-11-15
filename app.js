@@ -1,8 +1,10 @@
-var config = require('./config');
-var express = require('express');
-var path = require('path');
-var bodyParser = require('body-parser');
-var cookieParser = require('cookie-parser');
+const env = process.env.NODE_ENV || 'local'; //TODO
+const config = require('./config.js')[env];
+
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 
 var app = express();
 
@@ -27,8 +29,9 @@ app.locals.title = config.site.title;
 app.locals.author = config.site.author;
 app.locals.description = config.site.description;
 app.locals.skin = config.site.skin;
+app.locals.api_host = config.api.host;
 
-routes(app);
+routes(app, null, config);
 
 console.log("running server on port", 5000);
 server.listen(5000, function () {

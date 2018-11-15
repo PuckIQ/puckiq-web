@@ -1,8 +1,10 @@
-var config = require('../config');
 var rq = require('request');
-var baseUrl = 'https://' + config.api.host; // + '/' + config.api.base;
 
-function AjaxHelper(app, request) {
+function AjaxHelper(app, request, config) {
+
+    var baseUrl = 'https://' + config.api.host;
+    console.log("baseUrl", baseUrl, config.api.host);
+
 
     this.getAjaxRequest = function(req, res) {
         var query = req.query;

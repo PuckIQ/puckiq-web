@@ -68,7 +68,7 @@ $('#pq-display').select2({
   allowClear: true
 });
 
-$.get('http://' + PUCKIQ.host + '/puckiq/h1/seasonwowy/getSeasonList').done(function (data) {
+$.get('http://' + PUCKIQ.host + '/wowy/seasons').done(function (data) {
   var seasonlist = new Array();
   for (var i = 0; i < data.length; i++) {
     seasonlist.push({ id: data[i]._id, text: data[i]._id });

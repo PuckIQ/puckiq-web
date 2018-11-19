@@ -1,24 +1,24 @@
-var express = require('express');
-var PuckIQHandler = require('./puckiq');
-var AjaxHandler = require('./ajax');
+const PuckIQHandler = require('./puckiq');
+const AjaxHandler = require('./ajax');
 
 module.exports = exports = function (app, request, config) {
-  var puckIQHandler = new PuckIQHandler(app, request, config);
-  var ajaxHandler = new AjaxHandler(app, request, config);
 
-  // Handle Primary Requests Here
-  app.get('/', puckIQHandler.getHome);
-  app.get('/player-wowy', puckIQHandler.getPlayerWowy);
-  app.get('/player-woodmoney', puckIQHandler.getPlayerWoodmoney);
-  app.get('/player-search', puckIQHandler.getPlayerWowy);
-  app.get('/_template', puckIQHandler.getTemplate);
+    let puckIQHandler = new PuckIQHandler(app, request, config);
+    let ajaxHandler = new AjaxHandler(app, request, config);
 
-  app.get('/error404', puckIQHandler.get404);
+    // Handle Primary Requests Here
+    app.get('/', puckIQHandler.getHome);
+    app.get('/player-wowy', puckIQHandler.getPlayerWowy);
+    app.get('/player-woodmoney', puckIQHandler.getPlayerWoodmoney);
+    app.get('/player-search', puckIQHandler.getPlayerWowy);
+    app.get('/_template', puckIQHandler.getTemplate);
 
-  // Handle All AJAX Requests Here
-  //app.get('/ajax/:pqreq?', ajaxHandler.getAjaxRequest);
-  app.get('/ajax/player-wowy-range', ajaxHandler.getPlayerRangeWowy);
-  app.get('/ajax/player-wowy-season', ajaxHandler.getPlayerSeasonWowy);
-  app.get('/ajax/player-woodmoney-range', ajaxHandler.getPlayerRangeWoodmoney);
-  app.get('/ajax/player-woodmoney-season', ajaxHandler.getPlayerSeasonWoodmoney);
-}
+    app.get('/error404', puckIQHandler.get404);
+
+    // Handle All AJAX Requests Here
+    //app.get('/ajax/:pqreq?', ajaxHandler.getAjaxRequest);
+    app.get('/ajax/player-wowy-range', ajaxHandler.getPlayerRangeWowy);
+    app.get('/ajax/player-wowy-season', ajaxHandler.getPlayerSeasonWowy);
+    app.get('/ajax/player-woodmoney-range', ajaxHandler.getPlayerRangeWoodmoney);
+    app.get('/ajax/player-woodmoney-season', ajaxHandler.getPlayerSeasonWoodmoney);
+};

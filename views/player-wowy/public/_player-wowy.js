@@ -18,10 +18,6 @@ var stattype = [
   { id: 'Z', text: 'ZS' }
 ];
 
-var PUCKIQ = {
-  host : 'localhost:5001'
-};
-
 $('#pq-player1name, #pq-player2name').select2({
   placeholder: {
     id: -1,

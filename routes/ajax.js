@@ -5,7 +5,6 @@ function AjaxHelper(app, request, config) {
     var baseUrl = 'https://' + config.api.host;
     console.log("baseUrl", baseUrl, config.api.host);
 
-
     this.getAjaxRequest = function(req, res) {
         var query = req.query;
         var pqreq = req.params.pqreq;

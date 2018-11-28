@@ -6,7 +6,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 
-var app = express();
+const app = express();
 
 app.set('views', [
   path.join(__dirname, 'views'),
@@ -20,11 +20,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 //var request = require('request');
-var routes = require('./routes'),
-  request = require('request'),
-  http = require('http'),
-  server = http.createServer(app);
+const routes = require('./routes');
+const request = require('request');
+const http = require('http');
+const server = http.createServer(app);
 
+console.log("host", config.api.host);
 app.locals.title = config.site.title;
 app.locals.author = config.site.author;
 app.locals.description = config.site.description;

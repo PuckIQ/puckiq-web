@@ -13,6 +13,8 @@ app.set('views', [
   path.join(__dirname, 'ajax')
 ]);
 app.set('view engine', 'ejs');
+app.use(require('express-ejs-layouts'));
+app.set('layout', false); //default to no layout
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

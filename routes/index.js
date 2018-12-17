@@ -13,6 +13,8 @@ module.exports = exports = function (app, request) {
   app.get('/player-search', puckIQHandler.getPlayerWowy);
   app.get('/_template', puckIQHandler.getTemplate);
 
+  app.get('/teams/:team', puckIQHandler.getStatsForTeam);
+
   app.get('/error404', puckIQHandler.get404);
 
   // Handle All AJAX Requests Here

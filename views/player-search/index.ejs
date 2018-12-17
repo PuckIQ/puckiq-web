@@ -1,61 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <% include ../_partials/head %>
-  <% include _partials/head %>
+<% title = "PuckIQ | " + team + " | " + season %>
+<% include ../_partials/head %>
+<% include ../_partials/body-start %>
+<% include ../_partials/body-end %>
+      <div class="container-fluid" role="main">
+        <div class="page-header">
+<% renderMenu(team, season) %>
+              <div class="row">
+                <div class="col-md-12">
+                </div>
+              </div>
+          </div>
+        </div>
+<% renderTable(players) %>
+        <!-- /container -->
+    <!-- Core JavaScript
+    ================================================== -->
+    <script src="http://puckiq.com/js/app.js"></script>
+    <script src="http://puckiq.com/js/fixes/ie10-viewport-bug-workaround.js"></script>
+    <script type="text/javascript">
+// var playerURL = "http://puckiq.com/players";
+</script>
+<script src="http://puckiq.com/js/tablesort.js"></script>
+<script src="http://puckiq.com/js/widgets.js"></script>
+<!-- <script src="http://puckiq.com/js/teams.js"></script> -->
+<script>
+function refreshTableFiltering() {
+    var tier = $('#competition').val();
+    var positions = $('[name=positions]:checkbox:checked').map(function() { return $(this).val(); }).get()
 
-  <!-- Theme style -->
-  <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="/dist/css/skins/<%= skin %>.min.css">
+    $('#puckiq tbody tr').addClass('hidden');
+    for (var i = 0; i < positions.length; i++) {
+        $('.woodmoney-' + tier + '.pos-' + positions[i]).removeClass('hidden');
+    }
 
-  <!-- Site wide CSS -->
-  <link rel="stylesheet" href="/puckiq/css/puckiq.css">
+    $('#puckiq tbody tr:visible td').css('background', '#efefef');
+    $('#puckiq tbody tr:visible:even td').css('background', '#d8f0ff');
+}
 
-  <!-- Page specific CSS -->
-  <link rel="stylesheet" href="_puckiq.css">
+function onPositionsChange() {
+    var forwardPosSelected = $('#pos-c:checked, #pos-l:checked, #pos-r:checked').length;
+    $('#pos-f').prop('checked', forwardPosSelected == 3);
+}
 
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+function onForwardChange() {
+    var fSelected = $('#pos-f').is(':checked');
+    $('#pos-c,#pos-l,#pos-r').prop('checked', fSelected);
+}
 
-  <!-- Google Font -->
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
+$(function() {
+    $("#puckiq").tablesorter({
+        sortInitialOrder  : 'desc',
+        widgets           : ['columns'],
+    });
 
-<body class="hold-transition <%= skin %> sidebar-mini sidebar-collapse">
-  <div class="wrapper">
-    <header class="main-header">
-      <% include ../_partials/header %>
-    </header>
+    $("[name=positions]").change(onPositionsChange);
+    $("#pos-f").change(onForwardChange);
 
-    <aside class="main-sidebar">
-      <% include ../_partials/left-aside %>
-    </aside>
+    $("#competition").change(refreshTableFiltering);
+    $("[name=positions]").change(refreshTableFiltering);
+    $("#pos-f").change(refreshTableFiltering);
+    refreshTableFiltering();
+})
+</script>
+<style>
+body table {
+    font-size: 12px;
+    color: black;
+}
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-      <% include _body %>
-    </div>
-    <!-- /.content-wrapper -->
+table {
+    margin: 0 0 0 16px;
+}
 
-    <footer class="main-footer">
-      <% include ../_partials/footer %>
-    </footer>
-  </div>
+tr.hidden {
+    display:none;
+}
 
-  <% include ../_partials/scripts %>
-  <% include _partials/scripts %>
-  <!-- AdminLTE App -->
-  <script src="/dist/js/adminlte.min.js"></script>
-  <!-- PuckIQ Module JS -->
-  <script src="_puckiq.js"></script>
-</body>
+.page-header {
+    margin: 0px;
+    border-bottom: none;
+}
 
-</html>
+.page-header h2 {
+    margin: 0px;
+}
+
+.page-header h4 {
+    margin: 0 0 16px 0;
+}
+<%
+function renderMenu(team, season) {
+  %>
+            <h2><%= team %></h2>
+            <h4><%= season %></h4>
+            <div class="row">
+                <div class="col-md-4">
+                Competition :
+                <select name="competition" id="competition">
+                  <option value="all" selected>All</option>
+                  <option value="elite">Elite</option>
+                  <option value="middle">Middle</option>
+                  <option value="gritensity">Gritensity</option>
+                </select>
+                Game Type :
+                <select name="gameType" id="gameType">
+                  <option value="All">All</option>
+                </select>
+                <button type="button" class="btn btn-xs btn-success" id="CompSelectSubmit"><strong>Go</strong></button>
+                </div>
+                <div class="col-md-4 selector">
+                  <input type="hidden" id="compSelect" value="All">
+                  <input type="hidden" id="confSelect" value="All">
+                  Forwards <input type="checkbox" id="pos-f" value="clr" checked="checked" style="margin-right:5px;" />
+                  Centres <input type="checkbox" id="pos-c" name="positions" value="c" checked="checked" style="margin-right:5px;" />
+                  LW <input type="checkbox" id="pos-l" name="positions" value="l" checked="checked" style="margin-right:5px;" />
+                  RW <input type="checkbox" id="pos-r" name="positions" value="r" checked="checked" style="margin-right:5px;" />
+                  Defencemen <input type="checkbox" id="pos-d" name="positions" value="d" checked="checked" />
+                </div>
+            </div>
+   <%
+}
+
+function renderTable(allPlayersData) {
+    %>
+                  <table class="table table-bordered table-condensed table-hover" id="puckiq">
+                    <thead>
+                      <tr>
+                        <th>Player</th>
+                        <th>Pos</th>
+                        <th data-sorter="false">Comp</th>
+                        <th data-sorter="false">GT</th>
+                        <th>TOI</th>
+                        <th>CTOI%</th>
+                        <th>CF</th>
+                        <th>CA</th>
+                        <th>CF%</th>
+                        <th>CF/60</th>
+                        <th>CA/60</th>
+                        <th>CF60RC</th>
+                        <th>CA60RC</th>
+                        <th>CF%RC</th>
+                        <th>CF%RA</th>
+                        <th>DFF</th>
+                        <th>DFA</th>
+                        <th>DFF%</th>
+                        <th>DFF/60</th>
+                        <th>DFA/60</th>
+                        <th>DFF60RC</th>
+                        <th>DFA60RC</th>
+                        <th>DFF%RC</th>
+                        <th>DFF%RA</th>
+                        <th>GF</th>
+                        <th>GA</th>
+                        <th>GF%</th>
+                        <th>GF/60</th>
+                        <th>GA/60</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dataTable">
+     <%
+            for (var i = 0; i < allPlayersData.length; i++) {
+                renderTableRow(allPlayersData[i])
+            }
+    %>
+                    </tbody>
+              </table>
+<%
+}
+
+function renderTableRow(playerData) {
+    var pd = playerData;
+    var classname = 'pos-' + pd['ppossible'].toLowerCase() + ' woodmoney-' + pd['woodmoneytier'].toLowerCase() + ' hidden';
+    %>
+                    <tr class="<%= classname %>">
+                        <td style="white-space: nowrap;"><a href="http://puckiq.com/players/<%=pd['pid']%>"><%= pd['pfullname']%></a></td>
+                        <td><%= pd['ppossible']%></td>
+                        <td><%= pd['woodmoneytier']%></td>
+                        <td>All</td>
+                        <td><%= pd['evtoi']%></td>
+                        <td>CTOI%</td>
+                        <td><%= formatDecimal( pd['cf'] )%></td>
+                        <td><%= formatDecimal( pd['ca'] )%></td>
+                        <td><%= formatDecimal( pd['cfpct'] )%></td>
+                        <td><%= formatDecimal( pd['cf60'] )%></td>
+                        <td><%= formatDecimal( pd['ca60'] )%></td>
+                        <td>CF60RC</td>
+                        <td>CA60RC</td>
+                        <td>CF%RC</td>
+                        <td>CF%RA</td>
+                        <td><%= formatDecimal( pd['dff'] )%></td>
+                        <td><%= formatDecimal( pd['dfa'] )%></td>
+                        <td><%= formatDecimal( pd['dffpct'] )%></td>
+                        <td><%= formatDecimal( pd['dff60'] )%></td>
+                        <td><%= formatDecimal( pd['dfa60'] )%></td>
+                        <td>DFF60RC</td>
+                        <td>DFA60RC</td>
+                        <td>DFF%RC</td>
+                        <td>DFF%RA</td>
+                        <td><%= pd['gf']%></td>
+                        <td><%= pd['ga']%></td>
+                        <td><%= formatDecimal( pd['gfpct'] )%></td>
+                        <td><%= formatDecimal( pd['gf60'] )%></td>
+                        <td><%= formatDecimal( pd['ga60'] )%></td>
+                      </tr>
+
+    <%
+}
+
+function formatDecimal(val) {
+    return parseFloat("" + Math.round(val * 100) / 100).toFixed(2);
+}
+%>

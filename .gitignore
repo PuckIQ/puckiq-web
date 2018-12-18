@@ -59,3 +59,7 @@ typings/
 .env
 
 config.js
+
+#Webstorm
+.idea
+.gitsecret/keys/random_seed

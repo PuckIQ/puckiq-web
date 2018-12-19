@@ -1,7 +1,17 @@
-var Request = require('request');
+const _ = require('lodash');
 const express = require('express');
+const Request = require('request');
+
+//could use lodash to improve this...
+const encode_query = (query) => {
+    return _.chain(_.keys(query))
+        .map(key => key !== "" && key + "=" + encodeURIComponent(query[key]))
+        .compact().value().join("&");
+};
 
 function PuckIQHandler(app, request, config) {
+
+    let baseUrl = config.api.host;
 
     this.getHome = function(req, res) {
         app.use(express.static('views/home/public'));
@@ -29,12 +39,12 @@ function PuckIQHandler(app, request, config) {
 
         console.log('Querying woodmoney/team for ' + team + ' (' + season + ')')
         app.use(express.static('views/player-search/public'));
-        url = 'http://localhost:5001/woodmoney/team/' + team // TODO: + '?season=' + season;
 
+        let url = `${baseUrl}/woodmoney/team/${team}?${encode_query(req.query)}`;
         Request.get({ url: url, json: true }, (err, response, data) => {
           res.render('player-search/index', massageResponse(team, season, data));
         });
-    }
+    };
 
     this.getTemplate = function(req, res) {
         app.use(express.static('views/_template/public'));

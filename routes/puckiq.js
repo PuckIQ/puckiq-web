@@ -37,10 +37,10 @@ function PuckIQHandler(app, request, config) {
         let team = req.params.team;
         let season = req.query.season ? req.query.season : '201617';
 
-        console.log('Querying woodmoney/team for ' + team + ' (' + season + ')')
+        console.log('Querying woodmoney/team for ' + team + ' (' + season + ')');
         app.use(express.static('views/player-search/public'));
 
-        let url = `${baseUrl}/woodmoney/team/${team}?${encode_query(req.query)}`;
+        let url = `${baseUrl}/woodmoney/teams/${team}?${encode_query(req.query)}`;
         Request.get({ url: url, json: true }, (err, response, data) => {
           res.render('player-search/index', massageResponse(team, season, data));
         });

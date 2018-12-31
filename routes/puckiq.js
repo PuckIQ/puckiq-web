@@ -2,20 +2,24 @@ const _ = require('lodash');
 const express = require('express');
 const Request = require('request');
 
-//could use lodash to improve this...
 const encode_query = (query) => {
     return _.chain(_.keys(query))
         .map(key => key !== "" && key + "=" + encodeURIComponent(query[key]))
         .compact().value().join("&");
 };
 
-function PuckIQHandler(app, request, config) {
+function PuckIQHandler(app, request, config, cache) {
 
     let baseUrl = config.api.host;
 
     this.getHome = function(req, res) {
         app.use(express.static('views/home/public'));
-        res.render('home/index', { pgname: 'home', layout : '__layouts/main'  });
+        cache.currentWoodmoneySeason().then((season) => {
+            res.render('home/index', { pgname: 'home', layout : '__layouts/main', season : season  });
+        }, (err) => {
+            console.log("Error: " + err); //TODO better
+            res.render('500');
+        });
     };
 
     this.getAbout = function(req, res) {
@@ -34,16 +38,22 @@ function PuckIQHandler(app, request, config) {
     };
 
     this.getTeamWoodmoney = function(req, res) {
-        let team = req.params.team;
-        let season = req.query.season ? req.query.season : '201617';
+        app.use(express.static('views/player-search/public')); // seems wrong...
 
-        console.log('Querying woodmoney/team for ' + team + ' (' + season + ')');
-        app.use(express.static('views/player-search/public'));
-
-        let url = `${baseUrl}/woodmoney/teams/${team}?${encode_query(req.query)}`;
-        Request.get({ url: url, json: true }, (err, response, data) => {
-          res.render('player-search/index', massageResponse(team, season, data));
+        let team_id = req.params.team;
+        cache.init().then((iq) => {
+            let current_season = iq.current_woodmoney_season;
+            let season_id = req.query.season ? req.query.season : current_season && current_season._id;
+            console.log('Querying woodmoney/team for ' + team_id + ' (' + season_id + ')');
+            let url = `${baseUrl}/woodmoney/teams/${team_id}?${encode_query(req.query)}`;
+            Request.get({ url: url, json: true }, (err, response, data) => {
+                res.render('player-search/index', massageResponse(iq.teams[team_id], season_id, data));
+            });
+        }, (err) => {
+            console.log("Error: " + err); //TODO better
+            res.render('500');
         });
+
     };
 
     this.getTemplate = function(req, res) {
@@ -59,11 +69,16 @@ function PuckIQHandler(app, request, config) {
 
 function massageResponse(team, season, responseJSON) {
     var players = [];
-    for (var i = 0; i < responseJSON.length; i++) {
-        players.push( massagePlayerData(responseJSON[i]) );
+    for(var i = 0; i < responseJSON.length; i++) {
+        players.push(massagePlayerData(responseJSON[i]));
     }
 
-    season = season.substr(0,4) + '-' + season.substr(4);
+    if(_.isNumber(season)) {
+        season = season.toString();
+        season = season.substr(0, 4) + '-' + season.substr(6);
+    } else {
+        season = season.substr(0, 4) + '-' + season.substr(4);
+    }
 
     return {
         team: team,
@@ -75,7 +90,7 @@ function massageResponse(team, season, responseJSON) {
 // Make copy; this is the spot to perform any alterations to the data
 function massagePlayerData(playerData) {
     var player = Object.assign({}, playerData);
-    player['ppossible'] = player['ppossible'][0];
+    player.ppossible = player.ppossible && player.ppossible.length ? player.ppossible[0] : {};
     return player;
 }
 

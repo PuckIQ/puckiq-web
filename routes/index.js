@@ -1,10 +1,12 @@
 const PuckIQHandler = require('./puckiq');
 const AjaxHandler = require('./ajax');
+const LocalCache = require('../common/local_cache');
 
 module.exports = exports = function (app, request, config) {
 
-    let puckIQHandler = new PuckIQHandler(app, request, config);
-    let ajaxHandler = new AjaxHandler(app, request, config);
+    let cache = new LocalCache(config);
+    let puckIQHandler = new PuckIQHandler(app, request, config, cache);
+    let ajaxHandler = new AjaxHandler(app, request, config, cache);
 
     // Handle Primary Requests Here
     app.get('/', puckIQHandler.getHome);

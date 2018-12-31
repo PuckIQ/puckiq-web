@@ -23,7 +23,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //var request = require('request');
 const routes = require('./routes');
-const request = require('request');
 const http = require('http');
 const server = http.createServer(app);
 
@@ -38,7 +37,7 @@ routes(app, null, config);
 
 console.log("running server on port", 5000);
 server.listen(5000, function () {
-  server.close(function () {
-    server.listen(5000);
-  });
+    server.close(function() {
+        server.listen(5000);
+    });
 });

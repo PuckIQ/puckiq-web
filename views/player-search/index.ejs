@@ -94,7 +94,7 @@ tr.hidden {
 <%
 function renderMenu(team, season) {
   %>
-            <h2><%= team %></h2>
+            <h2><%= team.name %></h2>
             <h4><%= season %></h4>
             <div class="row">
                 <div class="col-md-4">
@@ -187,19 +187,19 @@ function renderTableRow(playerData) {
                         <td><%= formatDecimal( pd['cfpct'] )%></td>
                         <td><%= formatDecimal( pd['cf60'] )%></td>
                         <td><%= formatDecimal( pd['ca60'] )%></td>
-                        <td>CF60RC</td>
-                        <td>CA60RC</td>
-                        <td>CF%RC</td>
-                        <td>CF%RA</td>
+                        <td><%= formatDecimal( pd['cf60rc'] )%></td>
+                        <td><%= formatDecimal( pd['ca60rc'] )%></td>
+                        <td><%= formatDecimal( pd['cfpctrc'] )%></td>
+                        <td><%= formatDecimal( pd['cfpctra'] )%></td>
                         <td><%= formatDecimal( pd['dff'] )%></td>
                         <td><%= formatDecimal( pd['dfa'] )%></td>
                         <td><%= formatDecimal( pd['dffpct'] )%></td>
                         <td><%= formatDecimal( pd['dff60'] )%></td>
                         <td><%= formatDecimal( pd['dfa60'] )%></td>
-                        <td>DFF60RC</td>
-                        <td>DFA60RC</td>
-                        <td>DFF%RC</td>
-                        <td>DFF%RA</td>
+                        <td><%= formatDecimal( pd['dff60rc'] )%></td>
+                        <td><%= formatDecimal( pd['dfa60rc'] )%></td>
+                        <td><%= formatDecimal( pd['dffpctrc'] )%></td>
+                        <td><%= formatDecimal( pd['dffpctra'] )%></td>
                         <td><%= pd['gf']%></td>
                         <td><%= pd['ga']%></td>
                         <td><%= formatDecimal( pd['gfpct'] )%></td>

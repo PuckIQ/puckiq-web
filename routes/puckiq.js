@@ -47,7 +47,7 @@ function PuckIQHandler(app, request, config, cache) {
             console.log('Querying woodmoney/team for ' + team_id + ' (' + season_id + ')');
             let url = `${baseUrl}/woodmoney/teams/${team_id}?${encode_query(req.query)}`;
             Request.get({ url: url, json: true }, (err, response, data) => {
-                res.render('player-search/index', massageResponse(iq.teams[team_id], season_id, data));
+                res.render('player-search/index', massageResponse(team_id, season_id, data));
             });
         }, (err) => {
             console.log("Error: " + err); //TODO better
@@ -73,6 +73,7 @@ function massageResponse(team, season, responseJSON) {
         players.push(massagePlayerData(responseJSON[i]));
     }
 
+    var seasonId = season
     if(_.isNumber(season)) {
         season = season.toString();
         season = season.substr(0, 4) + '-' + season.substr(6);
@@ -82,6 +83,7 @@ function massageResponse(team, season, responseJSON) {
 
     return {
         team: team,
+        seasonId: seasonId,
         season: season,
         players: players
     }

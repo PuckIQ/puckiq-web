@@ -40,6 +40,37 @@ function refreshTableFiltering() {
     $('#puckiq tbody tr:visible:even td').css('background', '#d8f0ff');
 }
 
+function updateSeasonOnPageRender() {
+    $('#season-input').val('<%= seasonId %>')
+    $('#season-input').hide()
+
+    $('#season-title').mouseover(function() {
+        $('#season-input').show()
+        $('#season-title').hide()
+    })
+
+    $('#season-input').mouseout(function() {
+        $('#season-input').hide()
+        $('#season-title').show()
+    })
+
+    $('#season-input').change(function () {
+        var newSeason = $('#season-input').val()
+        window.location = redirectToSeason(newSeason)
+    })
+}
+
+function redirectToSeason(seasonId) {
+    var url = window.location.href;
+    if (url.indexOf('season=') > -1) {
+        url = url.replace(/season=\d+/, 'season=' + seasonId)
+    } else {
+        url += (url.indexOf('season=') = -1) ? '?' : '&'
+        url += 'season=' + seasonId
+    }
+    return url
+}
+
 function onPositionsChange() {
     var forwardPosSelected = $('#pos-c:checked, #pos-l:checked, #pos-r:checked').length;
     $('#pos-f').prop('checked', forwardPosSelected == 3);
@@ -62,6 +93,8 @@ $(function() {
     $("#competition").change(refreshTableFiltering);
     $("[name=positions]").change(refreshTableFiltering);
     $("#pos-f").change(refreshTableFiltering);
+
+    updateSeasonOnPageRender();
     refreshTableFiltering();
 })
 </script>
@@ -94,8 +127,15 @@ tr.hidden {
 <%
 function renderMenu(team, season) {
   %>
-            <h2><%= team.name %></h2>
-            <h4><%= season %></h4>
+            <h2><%= team %></h2>
+            <h4><div id="season-title"><%= season %></div>
+                <select id="season-input" name="season" id="competition" style="display:none">
+                  <option value="20172018" selected>2017-18</option>
+                  <option value="20162017" selected>2016-17</option>
+                  <option value="20152016" selected>2015-16</option>
+                  <option value="20142015" selected>2014-15</option>
+                </select>
+            </h4>
             <div class="row">
                 <div class="col-md-4">
                 Competition :

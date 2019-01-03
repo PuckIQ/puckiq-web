@@ -14,8 +14,23 @@ function PuckIQHandler(app, request, config, cache) {
 
     this.getHome = function(req, res) {
         app.use(express.static('views/home/public'));
-        cache.currentWoodmoneySeason().then((season) => {
-            res.render('home/index', { pgname: 'home', layout : '__layouts/main', season : season  });
+        cache.init().then((iq) => {
+
+            let division_teams = _.chain(_.values(iq.teams))
+                .filter(x => x.active !== false)
+                .groupBy(x => x.division)
+                .value();
+
+            let divisions = _.map(_.keys(division_teams), x => {
+                return {name : x, teams : division_teams[x]};
+            });
+
+            res.render('home/index', {
+                pgname: 'home',
+                layout : '__layouts/main2',
+                divisions : divisions,
+                season : iq.current_woodmoney_season
+            });
         }, (err) => {
             console.log("Error: " + err); //TODO better
             res.render('500');
@@ -41,19 +56,28 @@ function PuckIQHandler(app, request, config, cache) {
         app.use(express.static('views/player-search/public')); // seems wrong...
 
         let team_id = req.params.team;
+
+        if(!team_id) return res.jsonp([]); //todo better
+
         cache.init().then((iq) => {
             let current_season = iq.current_woodmoney_season;
             let season_id = req.query.season ? req.query.season : current_season && current_season._id;
-            console.log('Querying woodmoney/team for ' + team_id + ' (' + season_id + ')');
+            // console.log('Querying woodmoney/team for ' + team_id + ' (' + season_id + ')');
             let url = `${baseUrl}/woodmoney/teams/${team_id}?${encode_query(req.query)}`;
+            let team = iq.teams[team_id.toLowerCase()];
             Request.get({ url: url, json: true }, (err, response, data) => {
-                res.render('player-search/index', massageResponse(team_id, season_id, data));
+                let content = massageResponse(team, season_id, data);
+                let page = _.extend({
+                    title: `PuckIQ | ${team.name} | ${content.season}`,
+                    layout: '__layouts/main2'
+                }, content);
+                res.render('player-search/index', page);
+            }, (err) => {
+                console.log("Error: " + err); //TODO better
+                res.render('500');
             });
-        }, (err) => {
-            console.log("Error: " + err); //TODO better
-            res.render('500');
-        });
 
+        });
     };
 
     this.getTemplate = function(req, res) {
@@ -73,7 +97,7 @@ function massageResponse(team, season, responseJSON) {
         players.push(massagePlayerData(responseJSON[i]));
     }
 
-    var seasonId = season
+    var seasonId = season;
     if(_.isNumber(season)) {
         season = season.toString();
         season = season.substr(0, 4) + '-' + season.substr(6);

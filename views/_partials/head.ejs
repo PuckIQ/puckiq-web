@@ -1,16 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
-<meta name="description" content="<%= description %>">
-<meta name="author" content="<%= author %>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="description" content="<%= description %>">
+  <meta name="author" content="<%= author %>">
 
-<title> <%= title %> </title>
+  <title> <%= title %> </title>
 
-<link href="/puckiq/css/puckiq.css" rel="stylesheet">
-<link href="http://puckiq.com/css/theme.default.min.css" rel="stylesheet">
+  <link href="/puckiq/css/puckiq.css" rel="stylesheet">
+  <link href="http://puckiq.com/css/theme.default.min.css" rel="stylesheet">
+
+  <style>
+    body table {
+      font-size: 12px;
+      color: black;
+    }
+
+    table {
+      margin: 0 0 0 16px;
+    }
+
+    tr.hidden {
+      display:none;
+    }
+
+    .page-header {
+      margin: 0px;
+      border-bottom: none;
+    }
+
+    .page-header h2 {
+      margin: 0px;
+    }
+
+    .page-header h4 {
+      margin: 0 0 16px 0;
+    }
+  </style>
+
   <script>
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
     (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

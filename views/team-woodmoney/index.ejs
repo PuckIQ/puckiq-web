@@ -213,10 +213,11 @@ function renderTable(allPlayersData) {
 
 function renderTableRow(playerData) {
     var pd = playerData;
+    console.log('render ', pd)
     var classname = 'pos-' + pd['ppossible'].toLowerCase() + ' woodmoney-' + pd['woodmoneytier'].toLowerCase() + ' hidden';
     %>
                     <tr class="<%= classname %>">
-                        <td style="white-space: nowrap;"><a href="http://puckiq.com/players/<%=pd['pid']%>"><%= pd['pfullname']%></a></td>
+                        <td style="white-space: nowrap;"><a href="/players/<%=pd['pid']%>"><%= pd['pfullname']%></a></td>
                         <td><%= pd['ppossible']%></td>
                         <td><%= pd['woodmoneytier']%></td>
                         <td>All</td>

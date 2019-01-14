@@ -34,11 +34,26 @@ function PuckIQHandler(app, request, config, cache) {
 
     this.getPlayerWoodmoney = function(req, res) {
         app.use(express.static('views/player-woodmoney/public'));
-        res.render('player-woodmoney/index', { pgname: 'player-woodmoney' });
+
+        let player_id = req.params.player;
+        cache.init().then((iq) => {
+            let current_season = iq.current_woodmoney_season;
+            let season_id = req.query.season ? req.query.season : current_season && current_season._id;
+            let queryParamsIndex = req.url.indexOf('?');
+            // TODO: use 'all' instead of the following abomination
+            let queryParams = 'season=20132014&season=20142015&season=20152016&season=20162017&season=20172018&seaon=20182019'
+            let url = `${baseUrl}/woodmoney/players/${player_id}?${queryParams}`;
+            Request.get({ url: url, json: true }, (err, response, data) => {
+                res.render('player-woodmoney/index', massagePlayerResponse(player_id, data));
+            });
+        }, (err) => {
+            console.log("Error: " + err); //TODO better
+            res.render('500');
+        });
     };
 
     this.getTeamWoodmoney = function(req, res) {
-        app.use(express.static('views/player-search/public')); // seems wrong...
+        app.use(express.static('views/team-woodmoney/public'));
 
         let team_id = req.params.team;
         cache.init().then((iq) => {
@@ -47,7 +62,7 @@ function PuckIQHandler(app, request, config, cache) {
             console.log('Querying woodmoney/team for ' + team_id + ' (' + season_id + ')');
             let url = `${baseUrl}/woodmoney/teams/${team_id}?${encode_query(req.query)}`;
             Request.get({ url: url, json: true }, (err, response, data) => {
-                res.render('player-search/index', massageResponse(team_id, season_id, data));
+                res.render('team-woodmoney/index', massageTeamResponse(team_id, season_id, data));
             });
         }, (err) => {
             console.log("Error: " + err); //TODO better
@@ -67,19 +82,13 @@ function PuckIQHandler(app, request, config, cache) {
     };
 }
 
-function massageResponse(team, season, responseJSON) {
+function massageTeamResponse(team, seasonId, responseJSON) {
     var players = [];
     for(var i = 0; i < responseJSON.length; i++) {
         players.push(massagePlayerData(responseJSON[i]));
     }
 
-    var seasonId = season
-    if(_.isNumber(season)) {
-        season = season.toString();
-        season = season.substr(0, 4) + '-' + season.substr(6);
-    } else {
-        season = season.substr(0, 4) + '-' + season.substr(4);
-    }
+    season = formatSeason(seasonId)
 
     return {
         team: team,
@@ -89,10 +98,43 @@ function massageResponse(team, season, responseJSON) {
     }
 }
 
+function massagePlayerResponse(playerID, responseJSON) {
+    let player = extractPlayerInfo(responseJSON[0])
+    let stats = []
+    for(var i = 0; i < responseJSON.length; i++) {
+        stats.push(massagePlayerData(responseJSON[i]));
+    }
+
+    return {
+        playerID: player.pid,
+        playerName: player.pfullname,
+        playerPosition: player.ppossible,
+        playerStats: stats,
+    }
+}
+
+function extractPlayerInfo(playerData) {
+    let player = _.pick(playerData, ['pid', 'pfullname', 'ppossible'])
+    player.ppossible = player.ppossible && player.ppossible.length ? player.ppossible[0] : {};
+    return player
+}
+
+function formatSeason(seasonId) {
+    if(_.isNumber(seasonId)) {
+        season = seasonId.toString();
+        return season.substr(0, 4) + '-' + season.substr(6);
+    }
+    return seasonId.substr(0, 4) + '-' + seasonId.substr(4);
+}
+
+
 // Make copy; this is the spot to perform any alterations to the data
 function massagePlayerData(playerData) {
-    var player = Object.assign({}, playerData);
+    let player = Object.assign({}, playerData);
     player.ppossible = player.ppossible && player.ppossible.length ? player.ppossible[0] : {};
+    // delete player['ppossible']
+    player.season = formatSeason(player.season)
+
     return player;
 }
 

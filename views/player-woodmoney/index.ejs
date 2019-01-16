@@ -203,7 +203,7 @@ function renderTableRow(playerData) {
     var classname = ' woodmoney-' + pd['woodmoneytier'].toLowerCase() + ' hidden';
     %>
                     <tr class="<%= classname %>">
-                        <td><%= pd['team'] %></td>
+                        <td><a href="/teams/<%= pd['team'] %>?season=<%= pd['seasonId'] %>"><%= pd['team'] %></a></td>
                         <td><%= pd['season'] %></td>
                         <td><%= pd['woodmoneytier']%></td>
                         <td>All</td>

@@ -142,7 +142,7 @@ function massagePlayerResponse(playerID, responseJSON) {
 }
 
 function extractPlayerInfo(playerData) {
-    let player = _.pick(playerData, ['pid', 'pfullname', 'ppossible'])
+    let player = _.pick(playerData, ['pid', 'pfullname', 'ppossible']);
     player.ppossible = player.ppossible && player.ppossible.length ? player.ppossible[0] : {};
     return player
 }
@@ -161,120 +161,9 @@ function formatSeason(seasonId) {
 function massagePlayerData(playerData) {
     let player = Object.assign({}, playerData);
     player.ppossible = player.ppossible && player.ppossible.length ? player.ppossible[0] : {};
-    player.season = formatSeason(player.season)
-
+    player.seasonId = player.season;
+    player.season = formatSeason(player.season);
     return player;
-}
-
-function simulateJSON(team, season) {
-    return {
-        team: team,
-        season: season,
-        players: [
-        {
-          "pid": 8478402,
-          "pfullname": "Connor McDavid",
-          "pfirstname": "Connor",
-          "plastname": "McDavid",
-          "ppossible": [ "C" ],
-          "team": "EDM",
-            "onoff": "On Ice",
-            "wowytype": "WoodMoney",
-            "woodmoneytier": "Middle",
-            "cf": 714,
-            "ca": 612,
-            "cfpct": 53.84615384615385,
-            "cf60": 67.41148701809598,
-            "ca60": 57.78127458693942,
-            "gf": 38,
-            "ga": 27,
-            "gfpct": 58.46153846153847,
-            "gf60": 3.5877261998426437,
-            "ga60": 2.5491738788355627,
-            "ff": 544,
-            "fa": 467,
-            "ffpct": 53.80811078140455,
-            "ff60": 51.36113296616837,
-            "fa60": 44.091266719118806,
-            "sf": 389,
-            "sa": 339,
-            "sfpct": 53.434065934065934,
-            "sf60": 36.726986624704956,
-            "sa60": 32.00629425649095,
-            "oz": 203,
-            "ozpct": 34.232715008431704,
-            "oz60": 19.166011014948857,
-            "dz": 180,
-            "dzpct": 30.354131534569984,
-            "dz60": 16.99449252557042,
-            "nz": 210,
-            "nzpct": 35.413153456998316,
-            "nz60": 19.82690794649882,
-            "dff": 621.1,
-            "dfa": 462.1,
-            "dffpct": 57.33936484490398,
-            "dff60": 58.64044059795437,
-            "dfa60": 43.62863886703383,
-            "sacf": 708.2,
-            "saca": 620.2,
-            "sacfpct": 53.31225534477567,
-            "sacf60": 66.86388670338316,
-            "saca60": 58.555468135326514,
-            "evtoi": 38130
-        },
-        {
-          "pid": 8478402,
-          "pfullname": "McDavid Connor",
-          "pfirstname": "Connor",
-          "plastname": "McDavid",
-          "ppossible": [ "D" ],
-          "team": "EDM",
-            "onoff": "On Ice",
-            "wowytype": "WoodMoney",
-            "woodmoneytier": "Middle",
-            "cf": 714,
-            "ca": 612,
-            "cfpct": 53.84615384615385,
-            "cf60": 67.41148701809598,
-            "ca60": 57.78127458693942,
-            "gf": 38,
-            "ga": 27,
-            "gfpct": 58.46153846153847,
-            "gf60": 3.5877261998426437,
-            "ga60": 2.5491738788355627,
-            "ff": 544,
-            "fa": 467,
-            "ffpct": 53.80811078140455,
-            "ff60": 51.36113296616837,
-            "fa60": 44.091266719118806,
-            "sf": 389,
-            "sa": 339,
-            "sfpct": 53.434065934065934,
-            "sf60": 36.726986624704956,
-            "sa60": 32.00629425649095,
-            "oz": 203,
-            "ozpct": 34.232715008431704,
-            "oz60": 19.166011014948857,
-            "dz": 180,
-            "dzpct": 30.354131534569984,
-            "dz60": 16.99449252557042,
-            "nz": 210,
-            "nzpct": 35.413153456998316,
-            "nz60": 19.82690794649882,
-            "dff": 621.1,
-            "dfa": 462.1,
-            "dffpct": 57.33936484490398,
-            "dff60": 58.64044059795437,
-            "dfa60": 43.62863886703383,
-            "sacf": 708.2,
-            "saca": 620.2,
-            "sacfpct": 53.31225534477567,
-            "sacf60": 66.86388670338316,
-            "saca60": 58.555468135326514,
-            "evtoi": 38130
-        }
-        ]
-    }
 }
 
 module.exports = PuckIQHandler;

@@ -36,6 +36,10 @@ function refreshTableFiltering() {
         $('.woodmoney-' + tier + '.pos-' + positions[i]).removeClass('hidden');
     }
 
+    refreshTableStyles()
+}
+
+function refreshTableStyles() {
     $('#puckiq tbody tr:visible td').css('background', '#efefef');
     $('#puckiq tbody tr:visible:even td').css('background', '#d8f0ff');
 }
@@ -65,7 +69,7 @@ function redirectToSeason(seasonId) {
     if (url.indexOf('season=') > -1) {
         url = url.replace(/season=\d+/, 'season=' + seasonId)
     } else {
-        url += (url.indexOf('season=') = -1) ? '?' : '&'
+        url += (url.indexOf('season=') == -1) ? '?' : '&'
         url += 'season=' + seasonId
     }
     return url
@@ -85,7 +89,7 @@ $(function() {
     $("#puckiq").tablesorter({
         sortInitialOrder  : 'desc',
         widgets           : ['columns'],
-    });
+    }).bind("sortEnd", refreshTableStyles)
 
     $("[name=positions]").change(onPositionsChange);
     $("#pos-f").change(onForwardChange);
@@ -158,7 +162,7 @@ function renderMenu(team, season) {
                   Centres <input type="checkbox" id="pos-c" name="positions" value="c" checked="checked" style="margin-right:5px;" />
                   LW <input type="checkbox" id="pos-l" name="positions" value="l" checked="checked" style="margin-right:5px;" />
                   RW <input type="checkbox" id="pos-r" name="positions" value="r" checked="checked" style="margin-right:5px;" />
-                  Defencemen <input type="checkbox" id="pos-d" name="positions" value="d" checked="checked" />
+                  Defence <input type="checkbox" id="pos-d" name="positions" value="d" checked="checked" />
                 </div>
             </div>
    <%
@@ -213,7 +217,6 @@ function renderTable(allPlayersData) {
 
 function renderTableRow(playerData) {
     var pd = playerData;
-    console.log('render ', pd)
     var classname = 'pos-' + pd['ppossible'].toLowerCase() + ' woodmoney-' + pd['woodmoneytier'].toLowerCase() + ' hidden';
     %>
                     <tr class="<%= classname %>">

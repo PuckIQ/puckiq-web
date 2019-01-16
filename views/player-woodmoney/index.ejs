@@ -34,6 +34,10 @@ function refreshTableFiltering() {
     $('#puckiq tbody tr').addClass('hidden');
     $('.woodmoney-' + tier).removeClass('hidden');
 
+    refreshTableStyles()
+}
+
+function refreshTableStyles() {
     $('#puckiq tbody tr:visible td').css('background', '#efefef');
     $('#puckiq tbody tr:visible:even td').css('background', '#d8f0ff');
 }
@@ -84,7 +88,7 @@ $(function() {
         sortList: [[0,0]],
         sortInitialOrder  : 'desc',
         widgets           : ['columns'],
-    });
+    }).bind("sortEnd", refreshTableStyles)
 
     $("[name=positions]").change(onPositionsChange);
     $("#pos-f").change(onForwardChange);

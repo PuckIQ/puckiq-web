@@ -43,6 +43,7 @@ function PuckIQHandler(app, request, config, cache) {
             // TODO: use 'all' instead of the following abomination
             let queryParams = 'season=20132014&season=20142015&season=20152016&season=20162017&season=20172018&seaon=20182019'
             let url = `${baseUrl}/woodmoney/players/${player_id}?${queryParams}`;
+            console.log(url)
             Request.get({ url: url, json: true }, (err, response, data) => {
                 res.render('player-woodmoney/index', massagePlayerResponse(player_id, data));
             });
@@ -60,7 +61,8 @@ function PuckIQHandler(app, request, config, cache) {
             let current_season = iq.current_woodmoney_season;
             let season_id = req.query.season ? req.query.season : current_season && current_season._id;
             console.log('Querying woodmoney/team for ' + team_id + ' (' + season_id + ')');
-            let url = `${baseUrl}/woodmoney/teams/${team_id}?${encode_query(req.query)}`;
+            let url = `${baseUrl}/woodmoney/teams/${team_id}?season=${season_id}`;
+            console.log(url)
             Request.get({ url: url, json: true }, (err, response, data) => {
                 res.render('team-woodmoney/index', massageTeamResponse(team_id, season_id, data));
             });
@@ -132,7 +134,6 @@ function formatSeason(seasonId) {
 function massagePlayerData(playerData) {
     let player = Object.assign({}, playerData);
     player.ppossible = player.ppossible && player.ppossible.length ? player.ppossible[0] : {};
-    // delete player['ppossible']
     player.season = formatSeason(player.season)
 
     return player;

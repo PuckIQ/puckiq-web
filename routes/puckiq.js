@@ -59,7 +59,7 @@ function PuckIQHandler(app, request, config, cache) {
             let content = massagePlayerResponse(player_id, data);
             let page = _.extend({
                 title: `PuckIQ | ${content.playerName}`,
-                //layout: '__layouts/main2'
+                layout: '__layouts/main2'
             }, content);
 
             res.render('player-woodmoney/index', page);
@@ -137,7 +137,7 @@ function massagePlayerResponse(playerID, responseJSON) {
         playerID: player.pid,
         playerName: player.pfullname,
         playerPosition: player.ppossible,
-        playerStats: stats,
+        playerStats: _.sortBy(stats, x => x.seasonId * -1),
     }
 }
 

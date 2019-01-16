@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<% title = "PuckIQ | " + playerName %>
-<% include ../_partials/head %>
-<% include ../_partials/body-start %>
-<% include ../_partials/body-end %>
       <div class="container-fluid" role="main">
         <div class="page-header">
             <br><br><br>
@@ -16,17 +10,8 @@
           </div>
         </div>
 <% renderTable(playerStats) %>
-        <!-- /container -->
-    <!-- Core JavaScript
-    ================================================== -->
-    <script src="http://puckiq.com/js/app.js"></script>
-    <script src="http://puckiq.com/js/fixes/ie10-viewport-bug-workaround.js"></script>
-    <script type="text/javascript">
-// var playerURL = "http://puckiq.com/players";
-</script>
-<script src="http://puckiq.com/js/tablesort.js"></script>
-<script src="http://puckiq.com/js/widgets.js"></script>
-<!-- <script src="http://puckiq.com/js/teams.js"></script> -->
+
+
 <script>
 function refreshTableFiltering() {
     var tier = $('#competition').val();

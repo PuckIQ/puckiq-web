@@ -14,8 +14,23 @@ function PuckIQHandler(app, request, config, cache) {
 
     this.getHome = function(req, res) {
         app.use(express.static('views/home/public'));
-        cache.currentWoodmoneySeason().then((season) => {
-            res.render('home/index', { pgname: 'home', layout : '__layouts/main', season : season  });
+        cache.init().then((iq) => {
+
+            let division_teams = _.chain(_.values(iq.teams))
+                .filter(x => x.active !== false)
+                .groupBy(x => x.division)
+                .value();
+
+            let divisions = _.map(_.keys(division_teams), x => {
+                return {name : x, teams : division_teams[x]};
+            });
+
+            res.render('home/index', {
+                pgname: 'home',
+                layout : '__layouts/main2',
+                divisions : divisions,
+                season : iq.current_woodmoney_season
+            });
         }, (err) => {
             console.log("Error: " + err); //TODO better
             res.render('500');
@@ -36,20 +51,18 @@ function PuckIQHandler(app, request, config, cache) {
         app.use(express.static('views/player-woodmoney/public'));
 
         let player_id = req.params.player;
-        cache.init().then((iq) => {
-            let current_season = iq.current_woodmoney_season;
-            let season_id = req.query.season ? req.query.season : current_season && current_season._id;
-            let queryParamsIndex = req.url.indexOf('?');
-            // TODO: use 'all' instead of the following abomination
-            let queryParams = 'season=20132014&season=20142015&season=20152016&season=20162017&season=20172018&seaon=20182019'
-            let url = `${baseUrl}/woodmoney/players/${player_id}?${queryParams}`;
-            console.log(url)
-            Request.get({ url: url, json: true }, (err, response, data) => {
-                res.render('player-woodmoney/index', massagePlayerResponse(player_id, data));
-            });
-        }, (err) => {
-            console.log("Error: " + err); //TODO better
-            res.render('500');
+
+        let url = `${baseUrl}/woodmoney/players/${player_id}?${encode_query({ season: "all" })}`;
+        console.log(url);
+        Request.get({ url: url, json: true }, (err, response, data) => {
+
+            let content = massagePlayerResponse(player_id, data);
+            let page = _.extend({
+                title: `PuckIQ | ${content.playerName}`,
+                //layout: '__layouts/main2'
+            }, content);
+
+            res.render('player-woodmoney/index', page);
         });
     };
 
@@ -57,20 +70,35 @@ function PuckIQHandler(app, request, config, cache) {
         app.use(express.static('views/team-woodmoney/public'));
 
         let team_id = req.params.team;
+
+        if(!team_id) return res.jsonp([]); //todo better
+
         cache.init().then((iq) => {
             let current_season = iq.current_woodmoney_season;
             let season_id = req.query.season ? req.query.season : current_season && current_season._id;
-            console.log('Querying woodmoney/team for ' + team_id + ' (' + season_id + ')');
-            let url = `${baseUrl}/woodmoney/teams/${team_id}?season=${season_id}`;
-            console.log(url)
-            Request.get({ url: url, json: true }, (err, response, data) => {
-                res.render('team-woodmoney/index', massageTeamResponse(team_id, season_id, data));
-            });
-        }, (err) => {
-            console.log("Error: " + err); //TODO better
-            res.render('500');
-        });
 
+            let options = { season : season_id};
+
+            let url = `${baseUrl}/woodmoney/teams/${team_id}?${encode_query(options)}`;
+            console.log(url);
+
+            let team = iq.teams[team_id.toLowerCase()];
+
+            Request.get({ url: url, json: true }, (err, response, data) => {
+                let content = massageTeamResponse(team, season_id, data);
+                let page = _.extend({
+                    title: `PuckIQ | ${team.name} | ${content.season}`,
+                    layout: '__layouts/main2'
+                }, content);
+
+                res.render('team-woodmoney/index', page);
+
+            }, (err) => {
+                console.log("Error: " + err); //TODO better
+                res.render('500');
+            });
+
+        });
     };
 
     this.getTemplate = function(req, res) {
@@ -90,12 +118,10 @@ function massageTeamResponse(team, seasonId, responseJSON) {
         players.push(massagePlayerData(responseJSON[i]));
     }
 
-    season = formatSeason(seasonId)
-
     return {
         team: team,
         seasonId: seasonId,
-        season: season,
+        season: formatSeason(seasonId),
         players: players
     }
 }
@@ -122,8 +148,9 @@ function extractPlayerInfo(playerData) {
 }
 
 function formatSeason(seasonId) {
+
     if(_.isNumber(seasonId)) {
-        season = seasonId.toString();
+        let season = seasonId.toString();
         return season.substr(0, 4) + '-' + season.substr(6);
     }
     return seasonId.substr(0, 4) + '-' + seasonId.substr(4);
@@ -249,4 +276,5 @@ function simulateJSON(team, season) {
         ]
     }
 }
+
 module.exports = PuckIQHandler;

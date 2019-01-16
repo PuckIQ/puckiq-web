@@ -1,41 +1,38 @@
-<!-- Content Header (Page header) -->
-<section class="content-header">
-  <h1>
-    Welcome to PuckIQ
-    <small>Home of WoodMoney</small>
-  </h1>
-</section>
+<div style="padding: 17px">
 
-<!-- Main content -->
-<section class="content">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <h1>
+      Welcome to PuckIQ
+      <small>Home of WoodMoney</small>
+    </h1>
+  </section>
 
-  <div>
-    <h3>Players</h3>
-    <a href="/player-search">Search</a> -
-    <a href="/player-woodmoney">Woodmoney</a> -
-    <a href="/player-wowy">Wowy</a>
+  <!-- Main content -->
+  <section class="content">
 
-    <h3>Team Woodmoney</h3>
-    <table style="width: 800px;">
-      <thead>
-      <tr>
-        <td><h4>Metropolitan</h4></td>
-        <td><h4>Atlantic</h4></td>
-        <td><h4>Central</h4></td>
-        <td><h4>Pacific</h4></td>
-      </tr>
-      </thead>
-      <tbody>
-      <tr>
-        <td><a href="/teams/was">Washington Capitals</a></td>
-        <td><a href="/teams/tor">Toronto Maple Leafs</a></td>
-        <td><a href="/teams/col">Colorado Avalanche</a></td>
-        <td><a href="/teams/edm">Edmonton Oilers</a></td>
-      </tr>
-      </tbody>
-    </table>
+    <div>
+      <h3>Players</h3>
+      <a href="/player-search">Search</a> -
+      <a href="/player-woodmoney">Woodmoney</a> -
+      <a href="/player-wowy">Wowy</a>
 
-  </div>
+      <h3>Team Woodmoney</h3>
+      <div style="display: flex; align-items: stretch; width : 800px;">
+        <% divisions.forEach(function(division){ %>
+          <div style="flex: 1;">
+            <h4><%= division.name %></h4>
+            <% division.teams.forEach(function(team){ %>
+              <p><a href="/teams/<%= team._id %>"><%= team.name %></a></p>
+            <% }); %>
+          </div>
+        <% }); %>
 
-</section>
-<!-- /.content -->
+      </div>
+
+    </div>
+
+  </section>
+  <!-- /.content -->
+
+</div>

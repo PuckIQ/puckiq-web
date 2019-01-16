@@ -1,31 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
 
-<% title = "PuckIQ | " + team + " | " + season %>
-<% include ../_partials/head %>
-<% include ../_partials/body-start %>
-<% include ../_partials/body-end %>
-      <div class="container-fluid" role="main">
+<div class="container-fluid" role="main">
         <div class="page-header">
-<% renderMenu(team, season) %>
-              <div class="row">
+            <% renderMenu(team, season) %>
+            <div class="row">
                 <div class="col-md-12">
                 </div>
-              </div>
+            </div>
           </div>
         </div>
-<% renderTable(players) %>
-        <!-- /container -->
-    <!-- Core JavaScript
-    ================================================== -->
-    <script src="http://puckiq.com/js/app.js"></script>
-    <script src="http://puckiq.com/js/fixes/ie10-viewport-bug-workaround.js"></script>
-    <script type="text/javascript">
-// var playerURL = "http://puckiq.com/players";
-</script>
-<script src="http://puckiq.com/js/tablesort.js"></script>
-<script src="http://puckiq.com/js/widgets.js"></script>
-<!-- <script src="http://puckiq.com/js/teams.js"></script> -->
+        <!--Begin render table-->
+        <% renderTable(players) %>
+        <!--End render table-->
+</div>
+
 <script>
 function refreshTableFiltering() {
     var tier = $('#competition').val();
@@ -102,36 +89,12 @@ $(function() {
     refreshTableFiltering();
 })
 </script>
-<style>
-body table {
-    font-size: 12px;
-    color: black;
-}
 
-table {
-    margin: 0 0 0 16px;
-}
-
-tr.hidden {
-    display:none;
-}
-
-.page-header {
-    margin: 0px;
-    border-bottom: none;
-}
-
-.page-header h2 {
-    margin: 0px;
-}
-
-.page-header h4 {
-    margin: 0 0 16px 0;
-}
+<script>
 <%
 function renderMenu(team, season) {
   %>
-            <h2><%= team %></h2>
+            <h2><%= team.name %></h2>
             <h4><div id="season-title"><%= season %></div>
                 <select id="season-input" name="season" id="competition" style="display:none">
                   <option value="20172018" selected>2017-18</option>
@@ -258,3 +221,4 @@ function formatDecimal(val) {
     return parseFloat("" + Math.round(val * 100) / 100).toFixed(2);
 }
 %>
+</script>

@@ -1,4 +1,4 @@
-const env = process.env.NODE_ENV || 'local'; //TODO
+const env = process.env.NODE_ENV || 'staging'; //tmp checkin till Zsolt gets build setup
 const config = require('./config.js')[env];
 
 const express = require('express');

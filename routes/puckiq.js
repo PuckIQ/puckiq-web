@@ -149,7 +149,9 @@ function extractPlayerInfo(playerData) {
 
 function formatSeason(seasonId) {
 
-    if(_.isNumber(seasonId)) {
+    if (seasonId === undefined) {
+        return '2018-2019'
+    } else if (_.isNumber(seasonId)) {
         let season = seasonId.toString();
         return season.substr(0, 4) + '-' + season.substr(6);
     }

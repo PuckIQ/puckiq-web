@@ -27,7 +27,8 @@ const routes = require('./routes');
 const http = require('http');
 const server = http.createServer(app);
 
-console.log("host", config.api.host);
+console.log("env", env);
+console.log("api host", config.api.host);
 app.locals.title = config.site.title;
 app.locals.author = config.site.author;
 app.locals.description = config.site.description;

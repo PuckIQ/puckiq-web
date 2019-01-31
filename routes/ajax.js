@@ -4,7 +4,6 @@ function AjaxHelper(app, request, config) {
 
     var helper = this;
     var baseUrl = config.api.host;
-    console.log("baseUrl", baseUrl);
 
     this.getAjaxRequest = function(req, res) {
         var query = req.query;

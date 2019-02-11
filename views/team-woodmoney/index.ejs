@@ -31,24 +31,14 @@ function refreshTableStyles() {
     $('#puckiq tbody tr:visible:even td').css('background', '#d8f0ff');
 }
 
-function updateSeasonOnPageRender() {
-    $('#season-input').val('<%= seasonId %>')
-    $('#season-input').hide()
-
-    $('#season-title').mouseover(function() {
-        $('#season-input').show()
-        $('#season-title').hide()
-    })
-
-    $('#season-input').mouseout(function() {
-        $('#season-input').hide()
-        $('#season-title').show()
-    })
-
+function updateSeasonOnPageRender(seasonID) {
     $('#season-input').change(function () {
         var newSeason = $('#season-input').val()
         window.location = redirectToSeason(newSeason)
     })
+
+    $('#season-input').val(seasonID)
+    $('#season-input').css('visibility', 'visible')
 }
 
 function redirectToSeason(seasonId) {
@@ -85,7 +75,7 @@ $(function() {
     $("[name=positions]").change(refreshTableFiltering);
     $("#pos-f").change(refreshTableFiltering);
 
-    updateSeasonOnPageRender();
+    updateSeasonOnPageRender('<%= seasonId %>');
     refreshTableFiltering();
 })
 </script>
@@ -95,14 +85,12 @@ $(function() {
 function renderMenu(team, season) {
   %>
             <h2><%= team.name %></h2>
-            <h4><div id="season-title"><%= season %></div>
-                <select id="season-input" name="season" id="competition" style="display:none">
-                  <option value="20172018" selected>2017-18</option>
-                  <option value="20162017" selected>2016-17</option>
-                  <option value="20152016" selected>2015-16</option>
-                  <option value="20142015" selected>2014-15</option>
-                </select>
-            </h4>
+            <select id="season-input" name="season" id="competition" style="visibility:hidden">
+              <option value="20172018" selected>2017-18</option>
+              <option value="20162017" selected>2016-17</option>
+              <option value="20152016" selected>2015-16</option>
+              <option value="20142015" selected>2014-15</option>
+            </select>
             <div class="row">
                 <div class="col-md-4">
                 Competition :

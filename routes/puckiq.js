@@ -47,6 +47,32 @@ function PuckIQHandler(app, request, config, cache) {
         res.render('player-wowy/index', { pgname: 'player-wowy' });
     };
 
+    this.searchPlayers = function(req, res) {
+
+        console.log("searching players body", req.body);
+        console.log("searching players query", req.query);
+
+        res.jsonp([
+            {id: '8470638', name: "Connor McDavid", position : "C", team: 'EDM'},
+            {id: '8470638', name: "Connor Brown", position : "LW", team: 'TBL'},
+            {id: '8470638', name: "Leon Draisatl", position : "C", team: 'EDM'},
+            {id: '8470638', name: "Ryan Nugent-Hopkins", position : "C", team: 'EDM'},
+            {id: '8470638', name: "Oscar Klefbom", position : "LD", team: 'EDM'}
+        ])
+        // let url = `${baseUrl}/woodmoney/players/${player_id}?${encode_query({ season: "all" })}`;
+        // console.log(url);
+        // Request.get({ url: url, json: true }, (err, response, data) => {
+        //
+        //     let content = massagePlayerResponse(player_id, data);
+        //     let page = _.extend({
+        //         title: `PuckIQ | ${content.playerName}`,
+        //         layout: '__layouts/main2'
+        //     }, content);
+        //
+        //     res.render('player-woodmoney/index', page);
+        // });
+    };
+
     this.getPlayerWoodmoney = function(req, res) {
         app.use(express.static('views/player-woodmoney/public'));
 

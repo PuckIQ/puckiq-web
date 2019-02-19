@@ -12,7 +12,8 @@
           <a class="navbar-brand" href="/"><div class="logo-mask"><img style="max-height:200px; margin-top:-80px;" src="/puckiq/img/main-puckiq.svg" /></div></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
+          <div>
+            <ul class="nav navbar-nav">
             <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Teams <span class="caret"></span></a>
               <ul class="dropdown-menu columns-2">
@@ -67,8 +68,22 @@
             <li><a href="#search">Players</a></li>
             <li><a href="#about">About</a></li>
             <li><a href="#contact">Blog</a></li>
-
           </ul>
+          </div>
+          <div style="float: right;">
+            <div style="display: block; position: relative;">
+              <input type="text" id="player-search" placeholder="Enter player name" class="autocomplete-search" style="width: 200px;" />
+              <div class="autocomplete-results x-player-results" style="display:none;">
+              </div>
+            </div>
+          </div>
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+
+    <script src="/puckiq/js/autocomplete.js"></script>
+    <script>
+      $(document).ready(function() {
+        addAutoComplete($('#player-search'), $('.x-player-results'));
+      });
+    </script>

@@ -53,7 +53,7 @@ function PuckIQHandler(app, request, config, cache) {
         let player_id = req.params.player;
 
         let url = `${baseUrl}/woodmoney/players/${player_id}?${encode_query({ season: "all" })}`;
-        console.log(url);
+
         Request.get({ url: url, json: true }, (err, response, data) => {
 
             let content = massagePlayerResponse(player_id, data);

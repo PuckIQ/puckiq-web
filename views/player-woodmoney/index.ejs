@@ -126,10 +126,6 @@ function renderMenu(playerName, playerPosition) {
                   <option value="middle">Middle</option>
                   <option value="gritensity">Gritensity</option>
                 </select>
-                Game Type :
-                <select name="gameType" id="gameType">
-                  <option value="All">All</option>
-                </select>
                 <button type="button" class="btn btn-xs btn-success" id="CompSelectSubmit"><strong>Go</strong></button>
                 </div>
             </div>
@@ -155,7 +151,6 @@ function renderTable(allSeasons) {
                         <th>CF60RC</th>
                         <th>CA60RC</th>
                         <th>CF%RC</th>
-                        <th>CF%RA</th>
                         <th>DFF</th>
                         <th>DFA</th>
                         <th>DFF%</th>
@@ -164,7 +159,6 @@ function renderTable(allSeasons) {
                         <th>DFF60RC</th>
                         <th>DFA60RC</th>
                         <th>DFF%RC</th>
-                        <th>DFF%RA</th>
                         <th>GF</th>
                         <th>GA</th>
                         <th>GF%</th>
@@ -192,26 +186,24 @@ function renderTableRow(playerData) {
                         <td><%= pd['season'] %></td>
                         <td><%= pd['woodmoneytier']%></td>
                         <td>All</td>
-                        <td><%= pd['evtoi']%></td>
-                        <td>CTOI%</td>
+                        <td><%= formatDecimal( pd['evtoi'], 2) %></td>
+                        <td><%= formatDecimal( pd['ctoipct'], 1)%></td>
                         <td><%= formatDecimal( pd['cf'] )%></td>
                         <td><%= formatDecimal( pd['ca'] )%></td>
                         <td><%= formatDecimal( pd['cfpct'] )%></td>
-                        <td><%= formatDecimal( pd['cf60'] )%></td>
-                        <td><%= formatDecimal( pd['ca60'] )%></td>
+                        <td><%= formatDecimal( pd['cf60'], 1 )%></td>
+                        <td><%= formatDecimal( pd['ca60'], 1 )%></td>
                         <td><%= formatDecimal( pd['cf60rc'] )%></td>
                         <td><%= formatDecimal( pd['ca60rc'] )%></td>
                         <td><%= formatDecimal( pd['cfpctrc'] )%></td>
-                        <td><%= formatDecimal( pd['cfpctra'] )%></td>
                         <td><%= formatDecimal( pd['dff'] )%></td>
                         <td><%= formatDecimal( pd['dfa'] )%></td>
                         <td><%= formatDecimal( pd['dffpct'] )%></td>
-                        <td><%= formatDecimal( pd['dff60'] )%></td>
-                        <td><%= formatDecimal( pd['dfa60'] )%></td>
+                        <td><%= formatDecimal( pd['dff60'], 1 )%></td>
+                        <td><%= formatDecimal( pd['dfa60'], 1 )%></td>
                         <td><%= formatDecimal( pd['dff60rc'] )%></td>
                         <td><%= formatDecimal( pd['dfa60rc'] )%></td>
                         <td><%= formatDecimal( pd['dffpctrc'] )%></td>
-                        <td><%= formatDecimal( pd['dffpctra'] )%></td>
                         <td><%= pd['gf']%></td>
                         <td><%= pd['ga']%></td>
                         <td><%= formatDecimal( pd['gfpct'] )%></td>
@@ -222,7 +214,8 @@ function renderTableRow(playerData) {
     <%
 }
 
-function formatDecimal(val) {
-    return parseFloat("" + Math.round(val * 100) / 100).toFixed(2);
+function formatDecimal(val, no_decimals) {
+    if(isNaN(no_decimals)) no_decimals = 2;
+    return parseFloat("" + Math.round(val * 100) / 100).toFixed(no_decimals);
 }
 %>

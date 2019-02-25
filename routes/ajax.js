@@ -86,8 +86,9 @@ function AjaxHelper(app, request, config) {
         //var url = baseUrl + '/stats/woodmoney?' + serialize;
 
         rq.get({url: url, json: true }, (err, response, data) => {
-            var datacheck = (!err && response.statusCode !== 200) ? false : true;
-            var wowy = (!err && response.statusCode !== 200) ? [] : data;
+
+            let datacheck = (!err && response.statusCode !== 200) ? false : true;
+            let wowy = (!err && response.statusCode !== 200) ? [] : data;
 
             console.log(data);
             helper._renderPlayerResults(req, res, {

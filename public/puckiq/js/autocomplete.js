@@ -122,7 +122,7 @@ function addAutoComplete(input, results) {
         self.criteria = criteria;
         if(!criteria) return;
 
-        $.get('/player-search', criteria, function(data) {
+        $.get('/ajax/player-player-search', criteria, function(data) {
 
             self.data = data;
             self.focus = null;
@@ -130,8 +130,9 @@ function addAutoComplete(input, results) {
             let html = '';
             for(let i = 0; i < data.length; i++) {
                 let player = data[i];
-                html += '<div data-id="' + player.playerId + '" class="team-icon team-' + player.team.toLowerCase() + '">';
-                html += '<a href="/players/' + player.playerId + '">' + player.name + ' (' + player.position + ')</a>';
+                let position = player.possible.join("/");
+                html += '<div data-id="' + player.playerid + '">'; //'" class="team-icon team-' + player.team.toLowerCase() + '">';
+                html += '<a href="/players/' + player.playerid + '">' + player.fullName + ' (' + position + ')</a>';
                 html += '</div>';
             }
             $(results).html(html);

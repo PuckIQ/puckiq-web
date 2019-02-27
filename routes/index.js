@@ -22,6 +22,7 @@ module.exports = exports = function (app, request, config) {
 
     // Handle All AJAX Requests Here
     //app.get('/ajax/:pqreq?', ajaxHandler.getAjaxRequest);
+    app.get('/ajax/player-player-search', ajaxHandler.getPlayerSearchResults);
     app.get('/ajax/player-wowy-range', ajaxHandler.getPlayerRangeWowy);
     app.get('/ajax/player-wowy-season', ajaxHandler.getPlayerSeasonWowy);
     app.get('/ajax/player-woodmoney-range', ajaxHandler.getPlayerRangeWoodmoney);

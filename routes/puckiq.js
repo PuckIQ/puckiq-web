@@ -1,12 +1,7 @@
 const _ = require('lodash');
 const express = require('express');
 const Request = require('request');
-
-const encode_query = (query) => {
-    return _.chain(_.keys(query))
-        .map(key => key !== "" && key + "=" + encodeURIComponent(query[key]))
-        .compact().value().join("&");
-};
+const utils = require('../common/utils');
 
 function PuckIQHandler(app, request, config, cache) {
 
@@ -47,30 +42,12 @@ function PuckIQHandler(app, request, config, cache) {
         res.render('player-wowy/index', { pgname: 'player-wowy' });
     };
 
+
     this.searchPlayers = function(req, res) {
 
-        console.log("searching players body", req.body);
-        console.log("searching players query", req.query);
-
-        res.jsonp([
-            {id: '8470638', name: "Connor McDavid", position : "C", team: 'EDM'},
-            {id: '8470638', name: "Connor Brown", position : "LW", team: 'TBL'},
-            {id: '8470638', name: "Leon Draisatl", position : "C", team: 'EDM'},
-            {id: '8470638', name: "Ryan Nugent-Hopkins", position : "C", team: 'EDM'},
-            {id: '8470638', name: "Oscar Klefbom", position : "LD", team: 'EDM'}
-        ])
-        // let url = `${baseUrl}/woodmoney/players/${player_id}?${encode_query({ season: "all" })}`;
-        // console.log(url);
-        // Request.get({ url: url, json: true }, (err, response, data) => {
-        //
-        //     let content = massagePlayerResponse(player_id, data);
-        //     let page = _.extend({
-        //         title: `PuckIQ | ${content.playerName}`,
-        //         layout: '__layouts/main2'
-        //     }, content);
-        //
-        //     res.render('player-woodmoney/index', page);
-        // });
+        //todo implement??
+        // app.use(express.static('views/player-wowy/public'));
+        res.render('player-search/index', { pgname: 'player-search' });
     };
 
     this.getPlayerWoodmoney = function(req, res) {
@@ -78,7 +55,7 @@ function PuckIQHandler(app, request, config, cache) {
 
         let player_id = req.params.player;
 
-        let url = `${baseUrl}/woodmoney/players/${player_id}?${encode_query({ season: "all" })}`;
+        let url = `${baseUrl}/woodmoney/players/${player_id}?${utils.encode_query({ season: "all" })}`;
 
         Request.get({ url: url, json: true }, (err, response, data) => {
 
@@ -105,7 +82,7 @@ function PuckIQHandler(app, request, config, cache) {
 
             let options = { season : season_id};
 
-            let url = `${baseUrl}/woodmoney/teams/${team_id}?${encode_query(options)}`;
+            let url = `${baseUrl}/woodmoney/teams/${team_id}?${utils.encode_query(options)}`;
             console.log(url);
 
             let team = iq.teams[team_id.toLowerCase()];

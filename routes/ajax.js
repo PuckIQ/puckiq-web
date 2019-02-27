@@ -1,4 +1,5 @@
-var rq = require('request');
+const rq = require('request');
+const utils = require('../common/utils');
 
 function AjaxHelper(app, request, config) {
 
@@ -100,6 +101,36 @@ function AjaxHelper(app, request, config) {
             });
         });
     };
+
+    this.getPlayerSearchResults = (req, res) => {
+
+        console.log("searching players body", req.body);
+        console.log("searching players query", req.query);
+
+        // res.jsonp([
+        //     {id: '8470638', name: "Connor McDavid", position : "C", team: 'EDM'},
+        //     {id: '8470638', name: "Connor Brown", position : "LW", team: 'TBL'},
+        //     {id: '8470638', name: "Leon Draisatl", position : "C", team: 'EDM'},
+        //     {id: '8470638', name: "Ryan Nugent-Hopkins", position : "C", team: 'EDM'},
+        //     {id: '8470638', name: "Oscar Klefbom", position : "LD", team: 'EDM'}
+        // ])
+
+        let url = `${baseUrl}/players/search?${utils.encode_query(req.query)}`;
+
+        console.log(url);
+        rq.get({ url: url, json: true }, (err, response, data) => {
+
+            // let content = massagePlayerResponse(player_id, data);
+            // let page = _.extend({
+            //     title: `PuckIQ | ${content.playerName}`,
+            //     layout: '__layouts/main2'
+            // }, content);
+            //
+            // res.render('player-woodmoney/index', page);
+
+            res.jsonp(data);
+        });
+    }
 
     this._renderPlayerResults = function(req, res, options) {
         rq.get({ url: baseUrl + '/players/' + options.player_id, json: true }, (err, r, d) => {

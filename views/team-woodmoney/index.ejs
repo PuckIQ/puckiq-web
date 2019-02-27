@@ -11,7 +11,9 @@
         <!--Begin render table-->
         <% renderTable(players) %>
         <!--End render table-->
-</div>
+        <div style="text-align: center">
+            <a href="/teams/<%= team._id %>/download">download csv</a>
+        </div>
 
 <script>
 function refreshTableFiltering() {

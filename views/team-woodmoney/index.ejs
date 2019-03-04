@@ -88,10 +88,11 @@ function renderMenu(team, season) {
   %>
             <h2><%= team.name %></h2>
             <select id="season-input" name="season" id="competition" style="visibility:hidden">
-              <option value="20172018" selected>2017-18</option>
-              <option value="20162017" selected>2016-17</option>
-              <option value="20152016" selected>2015-16</option>
-              <option value="20142015" selected>2014-15</option>
+              <option value="20182019" <% if(season === "2018-19") { %> selected <% } %>>2018-19</option>
+              <option value="20172018" <% if(season === "2017-18") { %> selected <% } %>>2017-18</option>
+              <option value="20162017" <% if(season === "2016-17") { %> selected <% } %>>2016-17</option>
+              <option value="20152016" <% if(season === "2015-16") { %> selected <% } %>>2015-16</option>
+              <option value="20142015" <% if(season === "2014-15") { %> selected <% } %>>2014-15</option>
             </select>
             <div class="row">
                 <div class="col-md-4">
@@ -127,28 +128,31 @@ function renderTable(allPlayersData) {
                         <th data-sorter="false">Comp</th>
                         <th data-sorter="false">GT</th>
                         <th>TOI</th>
+
                         <th>CTOI%</th>
                         <th>CF</th>
                         <th>CA</th>
                         <th>CF%</th>
                         <th>CF/60</th>
+
                         <th>CA/60</th>
                         <th>CF60RC</th>
                         <th>CA60RC</th>
                         <th>CF%RC</th>
-                        <th>CF%RA</th>
                         <th>DFF</th>
+
                         <th>DFA</th>
                         <th>DFF%</th>
                         <th>DFF/60</th>
                         <th>DFA/60</th>
                         <th>DFF60RC</th>
+
                         <th>DFA60RC</th>
                         <th>DFF%RC</th>
-                        <th>DFF%RA</th>
                         <th>GF</th>
                         <th>GA</th>
                         <th>GF%</th>
+
                         <th>GF/60</th>
                         <th>GA/60</th>
                       </tr>
@@ -174,26 +178,31 @@ function renderTableRow(playerData) {
                         <td><%= pd['woodmoneytier']%></td>
                         <td>All</td>
                         <td><%= formatDecimal( pd['evtoi'], 2) %></td>
+
                         <td><%= formatDecimal( pd['ctoipct'], 1)%></td>
                         <td><%= formatDecimal( pd['cf'] )%></td>
                         <td><%= formatDecimal( pd['ca'] )%></td>
                         <td><%= formatDecimal( pd['cfpct'] )%></td>
                         <td><%= formatDecimal( pd['cf60'], 1 )%></td>
+
                         <td><%= formatDecimal( pd['ca60'], 1 )%></td>
                         <td><%= formatDecimal( pd['cf60rc'] )%></td>
                         <td><%= formatDecimal( pd['ca60rc'] )%></td>
                         <td><%= formatDecimal( pd['cfpctrc'] )%></td>
                         <td><%= formatDecimal( pd['dff'] )%></td>
+
                         <td><%= formatDecimal( pd['dfa'] )%></td>
                         <td><%= formatDecimal( pd['dffpct'] )%></td>
                         <td><%= formatDecimal( pd['dff60'], 1 )%></td>
                         <td><%= formatDecimal( pd['dfa60'], 1 )%></td>
                         <td><%= formatDecimal( pd['dff60rc'] )%></td>
+
                         <td><%= formatDecimal( pd['dfa60rc'] )%></td>
                         <td><%= formatDecimal( pd['dffpctrc'] )%></td>
                         <td><%= pd['gf']%></td>
                         <td><%= pd['ga']%></td>
                         <td><%= formatDecimal( pd['gfpct'] )%></td>
+
                         <td><%= formatDecimal( pd['gf60'] )%></td>
                         <td><%= formatDecimal( pd['ga60'] )%></td>
                       </tr>

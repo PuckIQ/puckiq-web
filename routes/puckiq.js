@@ -250,7 +250,7 @@ function massageTeamResponse(team, seasonId, responseJSON) {
 
     return {
         team: team,
-        //seasonId: seasonId,
+        seasonId: seasonId,
         season: formatSeason(seasonId),
         players: players
     }

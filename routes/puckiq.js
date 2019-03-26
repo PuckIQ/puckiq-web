@@ -62,12 +62,11 @@ function PuckIQHandler(app, request, config, cache) {
             }
 
             let page = _.extend({
-                title: `PuckIQ | ${data.playerName}`,
+                title: `PuckIQ | ${data.name}`,
                 layout: '__layouts/main2'
             }, data);
 
             res.render('player-woodmoney/index', page);
-
         });
     };
 
@@ -80,16 +79,28 @@ function PuckIQHandler(app, request, config, cache) {
                 return res.render('500');
             }
 
-            let records = _.map(data.playerStats, x => {
-                let row = _.extend({
-                    playerId: data.playerID,
-                    playerName: data.playerName,
-                    position: data.playerPosition
-                }, x);
-                return _.values(row);
-            });
+            let records = [];
 
-            let player_name = data.playerName.replace(/\s/g, "_");
+            if(data.playerStats && data.playerStats.length) {
+
+                let tier = req.query.woodmoneytier || null;
+                let headers = _t .keys(_.extend({player_id:1, name:1, position:1}, data.playerStats[0]));
+
+                records = _.chain(data.playerStats)
+                    .filter(x => !tier || x.woodmoneytier.toLowerCase() === tier)
+                    .map(x => {
+                    let row = _.extend({
+                        player_id: data.player_id,
+                        name: data.name,
+                        position: data.position
+                    }, x);
+                    return _.values(row);
+                }).value();
+
+                records.unshift(headers);
+            }
+
+            let player_name = data.name.replace(/\s/g, "_");
             let file_name = `${player_name}_woodmoney.csv`;
 
             res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
@@ -105,7 +116,11 @@ function PuckIQHandler(app, request, config, cache) {
 
         let player_id = req.params.player;
 
-        let url = `${baseUrl}/woodmoney/players/${player_id}?${encode_query({ season: "all" })}`;
+        let options = { season: "all" };
+
+        if(_.has(req.query, "woodmoneytier")) options.woodmoneytier = req.query.woodmoneytier;
+
+        let url = `${baseUrl}/woodmoney/players/${player_id}?${encode_query(options)}`;
 
         Request.get({ url: url, json: true }, (err, response, data) => {
 
@@ -149,10 +164,26 @@ function PuckIQHandler(app, request, config, cache) {
                 return res.render('500');
             }
 
-            let records = _.map(data.players, x => {
-                let row = _.extend({season: data.seasonId, team: data.team.name}, x);
-                return _.values(row);
-            });
+            let records = [];
+
+            if(data.players && data.players.length) {
+
+                let tier = req.query.woodmoneytier || null;
+
+                let headers = _.keys(_.extend({season: 1, team: 1 }, data.players[0]));
+
+                records = _.chain(data.players)
+                    .filter(x => {
+                        console.log(x.woodmoneytier, tier, !tier || x.woodmoneytier.toLowerCase() === tier);
+                        return !tier || x.woodmoneytier.toLowerCase() === tier;
+                    })
+                    .map(x => {
+                        let row = _.extend({season: data.seasonId, team: data.team.name}, x);
+                        return _.values(row);
+                    }).value();
+
+                records.unshift(headers);
+            }
 
             let team_name = data.team.name.replace(/\s/g, "_");
             let file_name = `${team_name}_woodmoney.csv`;
@@ -219,7 +250,7 @@ function massageTeamResponse(team, seasonId, responseJSON) {
 
     return {
         team: team,
-        seasonId: seasonId,
+        //seasonId: seasonId,
         season: formatSeason(seasonId),
         players: players
     }
@@ -233,17 +264,22 @@ function massagePlayerResponse(playerID, responseJSON) {
     }
 
     return {
-        playerID: player.pid,
-        playerName: player.pfullname,
-        playerPosition: player.ppossible,
+        player_id: playerID,
+        name: player.name,
+        position: player.positions,
         playerStats: _.sortBy(stats, x => x.seasonId * -1),
     }
 }
 
 function extractPlayerInfo(playerData) {
-    let player = _.pick(playerData, ['pid', 'pfullname', 'ppossible']);
-    player.ppossible = player.ppossible && player.ppossible.length ? player.ppossible[0] : {};
-    return player
+
+    let player = {
+        player_id : playerData.pid,
+        name : playerData.name,
+        positions : playerData.positions
+    };
+    player.positions = player.positions && player.positions.length ? player.positions[0] : {};
+    return player;
 }
 
 function formatSeason(seasonId) {
@@ -261,7 +297,7 @@ function formatSeason(seasonId) {
 // Make copy; this is the spot to perform any alterations to the data
 function massagePlayerData(playerData) {
     let player = Object.assign({}, playerData);
-    player.ppossible = player.ppossible && player.ppossible.length ? player.ppossible[0] : {};
+    player.positions = player.positions && player.positions.length ? player.positions[0] : {};
     player.seasonId = player.season;
     player.season = formatSeason(player.season);
     return player;

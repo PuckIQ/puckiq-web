@@ -1,3 +1,9 @@
+@media (max-width: 1000px) {
+    .autocomplete-search {
+        display: none;
+    }
+}
+
 .autocomplete-search {
     width: 100%;
     position: relative;
@@ -84,6 +90,7 @@
     width: 100%;
     background: white;
     border: solid 1px lightgrey;
+    padding-left: 7px;
 }
 
 .highlight {

@@ -21,7 +21,6 @@
         var tier = $('#competition').val();
         var positions = $('[name=positions]:checkbox:checked').map(function() { return $(this).val(); }).get()
 
-        console.log("filtering", tier, positions);
         $('#puckiq tbody tr').addClass('hidden');
         for (var i = 0; i < positions.length; i++) {
             $('.woodmoney-' + tier + '.pos-' + positions[i]).removeClass('hidden');
@@ -125,7 +124,6 @@
             }
 
             function renderTable(allPlayersData) {
-                console.log("allPlayersData", allPlayersData);
             %>
         <table class="table table-bordered table-condensed table-hover" id="puckiq">
         <thead>

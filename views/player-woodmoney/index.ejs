@@ -19,8 +19,12 @@ function refreshTableFiltering() {
 
     var tier = $('#competition').val();
 
-    $('#puckiq tbody tr').addClass('hidden');
-    $('.woodmoney-' + tier).removeClass('hidden');
+    if (tier) {
+        $('#puckiq tbody tr').addClass('hidden');
+        $('.woodmoney-' + tier).removeClass('hidden');
+    } else {
+        $('#puckiq tbody tr').removeClass('hidden');
+    }
 
     refreshTableStyles();
 
@@ -127,7 +131,8 @@ function renderMenu(playerName, playerPosition) {
                 <div class="col-md-4">
                 Competition :
                 <select name="competition" id="competition">
-                  <option value="all" selected>All</option>
+                  <option value="" selected>--select</option>
+                  <option value="all">All</option>
                   <option value="elite">Elite</option>
                   <option value="middle">Middle</option>
                   <option value="gritensity">Gritensity</option>

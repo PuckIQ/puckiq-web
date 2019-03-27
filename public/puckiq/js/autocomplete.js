@@ -130,9 +130,10 @@ function addAutoComplete(input, results) {
             let html = '';
             for(let i = 0; i < data.length; i++) {
                 let player = data[i];
-                let position = player.possible.join("/");
-                html += '<div data-id="' + player.playerid + '">'; //'" class="team-icon team-' + player.team.toLowerCase() + '">';
-                html += '<a href="/players/' + player.playerid + '">' + player.fullName + ' (' + position + ')</a>';
+                console.log(JSON.stringify(player));
+                let position = player.positions.join("/");
+                html += '<div data-id="' + player.player_id + '">'; //'" class="team-icon team-' + player.team.toLowerCase() + '">';
+                html += '<a href="/players/' + player.player_id + '">' + player.name + ' (' + position + ')</a>';
                 html += '</div>';
             }
             $(results).html(html);

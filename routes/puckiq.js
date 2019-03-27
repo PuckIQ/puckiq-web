@@ -26,7 +26,7 @@ function PuckIQHandler(app, request, config, cache) {
                 .value();
 
             let divisions = _.map(_.keys(division_teams), x => {
-                return {name : x, teams : division_teams[x]};
+                return {name : x, teams : _.sortBy(division_teams[x], y => y.name) };
             });
 
             res.render('home/index', {

@@ -2,7 +2,7 @@
       <div class="container-fluid" role="main">
         <div class="page-header">
             <br><br><br>
-<% renderMenu(playerName, playerPosition) %>
+<% renderMenu(name, position) %>
               <div class="row">
                 <div class="col-md-12">
                 </div>
@@ -10,16 +10,22 @@
           </div>
         </div>
 <% renderTable(playerStats) %>
-
+      <div style="text-align: center">
+          <a href="#todo" class="x-download">download csv</a>
+      </div>
 
 <script>
 function refreshTableFiltering() {
+
     var tier = $('#competition').val();
 
     $('#puckiq tbody tr').addClass('hidden');
     $('.woodmoney-' + tier).removeClass('hidden');
 
-    refreshTableStyles()
+    refreshTableStyles();
+
+    let player_id = '<%= player_id %>';
+    $('.x-download').attr('href', '/players/' + player_id + '/download?woodmoneytier=' + tier);
 }
 
 function refreshTableStyles() {
@@ -70,8 +76,8 @@ function onForwardChange() {
 
 $(function() {
     $("#puckiq").tablesorter({
-        sortList: [[0,0]],
-        sortInitialOrder  : 'desc',
+        sortList: [[1,1]],
+        //sortInitialOrder  : 'desc',
         widgets           : ['columns'],
     }).bind("sortEnd", refreshTableStyles)
 

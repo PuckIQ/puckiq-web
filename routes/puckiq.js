@@ -93,7 +93,7 @@ function PuckIQHandler(app, request, config, cache) {
             if(data.playerStats && data.playerStats.length) {
 
                 let tier = req.query.woodmoneytier || null;
-                let headers = _t .keys(_.extend({player_id:1, name:1, position:1}, data.playerStats[0]));
+                let headers = _.keys(_.extend({player_id:1, name:1, position:1}, data.playerStats[0]));
 
                 records = _.chain(data.playerStats)
                     .filter(x => !tier || x.woodmoneytier.toLowerCase() === tier)

@@ -174,7 +174,6 @@ function PuckIQHandler(app, request, config, cache) {
 
                 records = _.chain(data.players)
                     .filter(x => {
-                        console.log(x.woodmoneytier, tier, !tier || x.woodmoneytier.toLowerCase() === tier);
                         return !tier || x.woodmoneytier.toLowerCase() === tier;
                     })
                     .map(x => {
@@ -300,6 +299,7 @@ function massagePlayerData(playerData) {
     player.positions = player.positions && player.positions.length ? player.positions[0] : {};
     player.seasonId = player.season;
     player.season = formatSeason(player.season);
+    player.player_id = player.pid;
     return player;
 }
 

@@ -178,7 +178,6 @@
             function renderTableRow(playerData) {
                 var pd = playerData;
                 var classname = 'pos-' + pd['positions'].toLowerCase() + ' woodmoney-' + pd['woodmoneytier'].toLowerCase() + ' hidden';
-                console.log(pd, classname);
             %>
         <tr class="<%= classname %>">
             <td style="white-space: nowrap;"><a href="/players/<%=pd['player_id']%>"><%= pd['name']%></a></td>

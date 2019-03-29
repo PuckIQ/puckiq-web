@@ -18,17 +18,26 @@
 <script>
 
     function refreshTableFiltering() {
-        var tier = $('#competition').val();
-        var positions = $('[name=positions]:checkbox:checked').map(function() { return $(this).val(); }).get()
 
-        $('#puckiq tbody tr').addClass('hidden');
-        for (var i = 0; i < positions.length; i++) {
-            $('.woodmoney-' + tier + '.pos-' + positions[i]).removeClass('hidden');
+        var tier = $('#competition').val();
+        var positions = $('[name=positions]:checkbox:checked').map(function() { return $(this).val(); }).get();
+
+        if (tier) {
+            $('#puckiq tbody tr').addClass('hidden');
+            $('.woodmoney-' + tier).removeClass('hidden');
+        } else {
+            $('#puckiq tbody tr').removeClass('hidden');
         }
 
         refreshTableStyles();
         let team_id = '<%= team._id %>';
-        $('.x-download').attr('href', '/teams/' + team_id + '/download?woodmoneytier=' + tier);
+
+        let filters = {
+            woodmoneytier: tier,
+            positions: positions
+        };
+
+        $('.x-download').attr('href', '/teams/' + team_id + '/download?' + $.param(filters));
     }
 
     function refreshTableStyles() {
@@ -103,7 +112,8 @@
         <div class="col-md-4">
             Competition :
             <select name="competition" id="competition">
-                <option value="all" selected>All</option>
+                <option value="" selected>--select</option>
+                <option value="all">All</option>
                 <option value="elite">Elite</option>
                 <option value="middle">Middle</option>
                 <option value="gritensity">Gritensity</option>

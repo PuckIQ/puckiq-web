@@ -3,6 +3,7 @@ const express = require('express');
 const Request = require('request');
 const stringify = require('csv-stringify/lib/es5');
 const utils = require('../common/utils');
+const csv_file_definition = require('../common/csv_file_definition');
 
 const encode_query = (query) => {
     return _.chain(_.keys(query))
@@ -92,21 +93,12 @@ function PuckIQHandler(app, request, config, cache) {
 
             if(data.playerStats && data.playerStats.length) {
 
-                let tier = req.query.woodmoneytier || null;
-                let headers = _.keys(_.extend({player_id:1, name:1, position:1}, data.playerStats[0]));
+                let filters = {
+                    tier : req.query.woodmoneytier || null,
+                    positions : null //todo
+                };
 
-                records = _.chain(data.playerStats)
-                    .filter(x => !tier || x.woodmoneytier.toLowerCase() === tier)
-                    .map(x => {
-                    let row = _.extend({
-                        player_id: data.player_id,
-                        name: data.name,
-                        position: data.position
-                    }, x);
-                    return _.values(row);
-                }).value();
-
-                records.unshift(headers);
+                records = csv_file_definition.buildForPlayers(data, filters);
             }
 
             let player_name = data.name.replace(/\s/g, "_");
@@ -177,20 +169,14 @@ function PuckIQHandler(app, request, config, cache) {
 
             if(data.players && data.players.length) {
 
-                let tier = req.query.woodmoneytier || null;
+                let filters = {
+                    tier: req.query.woodmoneytier || null,
+                    positions: req.query.positions && req.query.positions.length ?
+                        _.values(req.query.positions) :
+                        null
+                };
 
-                let headers = _.keys(_.extend({season: 1, team: 1 }, data.players[0]));
-
-                records = _.chain(data.players)
-                    .filter(x => {
-                        return !tier || x.woodmoneytier.toLowerCase() === tier;
-                    })
-                    .map(x => {
-                        let row = _.extend({season: data.seasonId, team: data.team.name}, x);
-                        return _.values(row);
-                    }).value();
-
-                records.unshift(headers);
+                records = csv_file_definition.buildForTeam(data, filters);
             }
 
             let team_name = data.team.name.replace(/\s/g, "_");

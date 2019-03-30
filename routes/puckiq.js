@@ -80,7 +80,7 @@ function PuckIQHandler(app, request, config, cache) {
         });
 
     };
-    
+
     controller.getPlayerWoodmoney = function(req, res) {
         app.use(express.static('views/player-woodmoney/public'));
 

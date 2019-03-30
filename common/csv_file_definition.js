@@ -63,10 +63,10 @@ const apply_filter = (record, filters) => {
         return false;
     }
 
-    // if(filters.positions && filters.positions.length) {
-    //     let _pos = record.positions(x => x.toLowerCase());
-    //     return _.intersection(_pos, filters.positions).length > 0;
-    // }
+    if(filters.positions && filters.positions.length) {
+        let _pos = _.map(record.positions, x => x.toLowerCase());
+        return _.intersection(_pos, filters.positions).length > 0;
+    }
 
     return true;
 };

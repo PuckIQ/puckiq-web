@@ -53,7 +53,6 @@ function PuckIQHandler(app, request, config, cache) {
         res.render('player-wowy/index', { pgname: 'player-wowy' });
     };
 
-
     controller.searchPlayers = function(req, res) {
 
         //todo implement??
@@ -61,6 +60,27 @@ function PuckIQHandler(app, request, config, cache) {
         res.render('player-search/index', { pgname: 'player-search' });
     };
 
+    controller.getWoodmoney = function(req, res) {
+
+        app.use(express.static('views/team-woodmoney/public'));
+
+        controller._getTeamWoodmoney(req, res, (err, data) => {
+
+            if(err) {
+                console.log("Error: " + err); //TODO better
+                return res.render('500');
+            }
+
+            let page = _.extend({
+                title: `PuckIQ | ${data.team.name} | ${data.season}`,
+                layout: '__layouts/main2'
+            }, data);
+
+            res.render('team-woodmoney/index', page);
+        });
+
+    };
+    
     controller.getPlayerWoodmoney = function(req, res) {
         app.use(express.static('views/player-woodmoney/public'));
 
@@ -291,7 +311,7 @@ function formatSeason(seasonId) {
 // Make copy; this is the spot to perform any alterations to the data
 function massagePlayerData(playerData) {
     let player = Object.assign({}, playerData);
-    player.positions = player.positions && player.positions.length ? player.positions[0] : {};
+    player.position = player.positions && player.positions.length ? player.positions[0] : {};
     player.seasonId = player.season;
     player.season = formatSeason(player.season);
     player.player_id = player.pid;

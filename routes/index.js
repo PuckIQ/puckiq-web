@@ -11,6 +11,7 @@ module.exports = exports = function (app, request, config) {
     // Handle Primary Requests Here
     app.get('/', puckIQHandler.getHome);
     app.get('/about', puckIQHandler.getAbout);
+    app.get('/woodmoney', puckIQHandler.getWoodmoney);
     app.get('/player-wowy', puckIQHandler.getPlayerWowy);
     app.get('/player-woodmoney', puckIQHandler.getPlayerWoodmoney);
     app.get('/player-search', puckIQHandler.searchPlayers);

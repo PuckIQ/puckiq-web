@@ -166,9 +166,19 @@ function PuckIQHandler(app, request, config, cache) {
                 return res.render('500');
             }
 
+            let positions = {};
+            if(req.query.positions){
+                _.each(_.values(req.query.positions), x => positions[x] = true);
+            } else {
+                _.each(['f','c','l','r','d'], x => positions[x] = true);
+            }
+
             let page = _.extend({
                 title: `PuckIQ | ${data.team.name} | ${data.season}`,
-                layout: '__layouts/main2'
+                layout: '__layouts/main2',
+                season : req.query.season,
+                woodmoneytier : req.query.woodmoneytier,
+                positions : positions
             }, data);
 
             res.render('team-woodmoney/index', page);

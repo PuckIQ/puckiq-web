@@ -45,7 +45,12 @@ function PuckIQHandler(app, request, config, cache) {
 
     controller.getAbout = function(req, res) {
         app.use(express.static('views/home/public'));
-        res.render('home/about', { pgname: 'about', layout : '__layouts/main' });
+        res.render('home/about', { pgname: 'home', layout : '__layouts/main2' });
+    };
+
+    controller.getGlossary = function(req, res) {
+        app.use(express.static('views/home/public'));
+        res.render('home/glossary', { pgname: 'home', layout : '__layouts/main2' });
     };
 
     controller.getPlayerWowy = function(req, res) {
@@ -324,7 +329,7 @@ function massagePlayerData(playerData) {
     player.position = player.positions && player.positions.length ? player.positions[0] : {};
     player.seasonId = player.season;
     player.season = formatSeason(player.season);
-    player.player_id = player.pid;
+    player.player_id = player.player_id;
     return player;
 }
 

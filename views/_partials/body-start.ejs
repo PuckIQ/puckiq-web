@@ -66,9 +66,9 @@
                 </li>
               </ul>
             </li>
-            <li><a href="#search">Players</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Blog</a></li>
+            <!--<li><a href="#search">Players</a></li>-->
+            <li><a href="/glossary">Glossary</a></li>
+            <li><a href="/about">About</a></li>
           </ul>
           </div>
           <div style="float: right; padding-top: 8px;height: 40px;">
@@ -94,8 +94,6 @@
         var tier = $('form.x-wm-filters #competition').val();
         var positions = $('form.x-wm-filters [name=positions]:checkbox:checked').map(function() { return $(this).val(); }).get();
         var season = $('form.x-wm-filters [name=season]').val();
-
-        console.log("teams clicked", tier, positions);
 
         $('.x-teams-dropdown-options a').each(function(index, e) {
           let $target = $(e);

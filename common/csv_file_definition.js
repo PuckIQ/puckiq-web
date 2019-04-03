@@ -82,7 +82,7 @@ exports.buildForPlayers = (data, filters) => {
             return apply_filter(x, filters);
         })
         .map(x => {
-            let row = { season: data.seasonId };
+            let row = { name: x.name, season: data.seasonId };
             _.each(_.keys(definition), field => {
                 if(!_.has(x, field)){
                     console.log("Missing field", field);
@@ -107,7 +107,7 @@ exports.buildForTeam = (data, filters) => {
             return apply_filter(x, filters);
         })
         .map(x => {
-            let row = { season: data.seasonId, team: data.team.name };
+            let row = { name: x.name, season: data.seasonId, team: data.team.name };
             _.each(_.keys(definition), field => {
                 if(!_.has(x, field)){
                     console.log("Missing field", field);

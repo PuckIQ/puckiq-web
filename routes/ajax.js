@@ -1,10 +1,14 @@
 const rq = require('request');
 const utils = require('../common/utils');
 
-function AjaxHelper(app, request, config) {
+//@deprecated
+function AjaxHelper(app, locator) {
 
-    var helper = this;
-    var baseUrl = config.api.host;
+    const helper = this;
+
+    let config = locator.get('config');
+
+    let baseUrl = config.api.host;
 
     this.getAjaxRequest = function(req, res) {
         var query = req.query;

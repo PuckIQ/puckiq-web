@@ -1,9 +1,10 @@
 const _ = require('lodash');
 const express = require('express');
-const Request = require('request');
 const stringify = require('csv-stringify/lib/es5');
 const utils = require('../common/utils');
+const validator = require('../common/validator');
 const csv_file_definition = require('../common/csv_file_definition');
+const WoodmoneyProxy = require('../common/csv_fe_definition');
 
 const encode_query = (query) => {
     return _.chain(_.keys(query))
@@ -11,9 +12,16 @@ const encode_query = (query) => {
         .compact().value().join("&");
 };
 
-function PuckIQHandler(app, request, config, cache) {
+function PuckIQHandler(app, locator) {
 
-    let controller = this;
+    const controller = this;
+
+    let cache = locator.get('cache');
+    let config = locator.get('config');
+    let request = locator.get('request');
+    let error_handler = locator.get('error_handler');
+
+    let wm = new WoodmoneyProxy(locator);
 
     let baseUrl = config.api.host;
 
@@ -59,7 +67,6 @@ function PuckIQHandler(app, request, config, cache) {
     };
 
     controller.searchPlayers = function(req, res) {
-
         //todo implement??
         // app.use(express.static('views/player-wowy/public'));
         res.render('player-search/index', { pgname: 'player-search' });
@@ -67,27 +74,35 @@ function PuckIQHandler(app, request, config, cache) {
 
     controller.getWoodmoney = function(req, res) {
 
-        app.use(express.static('views/team-woodmoney/public'));
+        //not cached
+        if (_.has(req.params, 'team')) {
+            return controller.getTeamWoodmoney(req, res);
+        } else if (_.has(req.params, 'player')) {
+            return controller.getPlayerWoodmoney(req, res);
+        }
 
-        controller._getTeamWoodmoney(req, res, (err, data) => {
+        cache.init().then((iq) => {
 
-            if(err) {
-                console.log("Error: " + err); //TODO better
-                return res.render('500');
-            }
+            //always do 50 for now...
+            let options = _.extend({}, req.query, {count : 50});
 
-            let page = _.extend({
-                title: `PuckIQ | ${data.team.name} | ${data.season}`,
-                layout: '__layouts/main2'
-            }, data);
+            wm.query(req.query, iq).then((data) => {
 
-            res.render('team-woodmoney/index', page);
+                let page = _.extend({
+                    title: `PuckIQ | ${data.team.name} | ${data.season}`,
+                    layout: '__layouts/main2'
+                }, data);
+
+                res.render('team-woodmoney/index', page);
+
+            }, (err) => {
+                return error_handler.handle(req, res, err);
+            });
         });
 
     };
 
     controller.getPlayerWoodmoney = function(req, res) {
-        app.use(express.static('views/player-woodmoney/public'));
 
         controller._getPlayerWoodmoney(req, res, (err, data) => {
 
@@ -148,7 +163,7 @@ function PuckIQHandler(app, request, config, cache) {
 
         let url = `${baseUrl}/woodmoney/players/${player_id}?${encode_query(options)}`;
 
-        Request.get({ url: url, json: true }, (err, response, data) => {
+        request.get({ url: url, json: true }, (err, response, data) => {
 
             if (err) {
                 return done(err);
@@ -162,7 +177,6 @@ function PuckIQHandler(app, request, config, cache) {
     };
 
     controller.getTeamWoodmoney = function(req, res) {
-        app.use(express.static('views/team-woodmoney/public'));
 
         controller._getTeamWoodmoney(req, res, (err, data) => {
 
@@ -227,6 +241,38 @@ function PuckIQHandler(app, request, config, cache) {
 
     };
 
+    controller._getWoodmoney = function(req, res, done) {
+
+        let team_id = req.params.team;
+
+        if (!team_id) return res.jsonp([]); //todo better
+
+        cache.init().then((iq) => {
+
+            let current_season = iq.current_woodmoney_season;
+            let season_id = req.query.season ? req.query.season : current_season && current_season._id;
+
+            let options = {season: season_id};
+
+            let url = `${baseUrl}/woodmoney/teams/${team_id}?${encode_query(options)}`;
+            let team = iq.teams[team_id.toLowerCase()];
+
+            request.get({url: url, json: true}, (err, response, data) => {
+                if (err) {
+                    return done(err);
+                } else if (response.statusCode !== 200) {
+                    return done("Unhandle response " + response);
+                } else {
+                    return done(null, massageTeamResponse(team, season_id, data));
+                }
+            }, (err) => {
+                console.log("Error: " + err); //TODO better
+                return done(err);
+            });
+        });
+
+    };
+
     controller._getTeamWoodmoney = function(req, res, done) {
 
         let team_id = req.params.team;
@@ -243,7 +289,7 @@ function PuckIQHandler(app, request, config, cache) {
             let url = `${baseUrl}/woodmoney/teams/${team_id}?${encode_query(options)}`;
             let team = iq.teams[team_id.toLowerCase()];
 
-            Request.get({url: url, json: true}, (err, response, data) => {
+            request.get({url: url, json: true}, (err, response, data) => {
                 if (err) {
                     return done(err);
                 } else if (response.statusCode !== 200) {

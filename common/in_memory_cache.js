@@ -4,7 +4,7 @@ const _ = require('lodash');
 
 class InMemoryCache {
 
-    constructor(options){
+    constructor(options) {
         options = _.extend({timeout: 30}, options || {});
 
         this.data = {};
@@ -23,13 +23,17 @@ class InMemoryCache {
 
     set(key, val, cb) {
         this.data[key] = val;
-        if(cb) cb();
-        if(this.timeout) {
+        if (cb) cb();
+        if (this.timeout) {
             var self = this;
-            setTimeout(function() {
+            setTimeout(function () {
                 delete self.data[key];
             }, this.timeout * 1000);
         }
+    }
+
+    reset() {
+        this.data = {};
     }
 }
 

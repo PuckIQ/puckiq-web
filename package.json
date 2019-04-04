@@ -19,5 +19,9 @@
     "lodash": "4.17.11",
     "request": "2.83.0",
     "serve-favicon": "2.5.0"
+  },
+  "devDependencies": {
+    "mocha": "2.5.3",
+    "shelljs": "0.8.1"
   }
 }

@@ -1,12 +1,25 @@
 const PuckIQHandler = require('./puckiq');
 const AjaxHandler = require('./ajax');
 const LocalCache = require('../common/local_cache');
+const ServiceLocator = require('../common/service_locator');
+const ErrorHandler = require('../common/error_handler');
 
 module.exports = exports = function (app, request, config) {
 
+    //bootstrap... todo move
     let cache = new LocalCache(config);
-    let puckIQHandler = new PuckIQHandler(app, request, config, cache);
-    let ajaxHandler = new AjaxHandler(app, request, config, cache);
+    let locator = new ServiceLocator();
+
+    locator.register('cache', cache);
+    locator.register('config', config);
+    locator.register('error_handler', ErrorHandler);
+    locator.register('request', require('request'));
+
+    ErrorHandler.init(config);
+
+
+    let puckIQHandler = new PuckIQHandler(app, locator);
+    let ajaxHandler = new AjaxHandler(app, locator);
 
     // Handle Primary Requests Here
     app.get('/', puckIQHandler.getHome);
@@ -21,6 +34,7 @@ module.exports = exports = function (app, request, config) {
     app.get('/players/:player', puckIQHandler.getPlayerWoodmoney);
     app.get('/players/:player/download', puckIQHandler.downloadPlayerWoodmoney);
     app.get('/_template', puckIQHandler.getTemplate);
+    app.get('/flush', puckIQHandler.flushCache);
 
     app.get('/error404', puckIQHandler.get404);
 

@@ -1,0 +1,29 @@
+body table {
+    font-size: 12px;
+    color: black;
+}
+
+table {
+    margin: 0 0 0 16px;
+}
+
+tr.hidden {
+    display:none;
+}
+
+.page-header {
+    margin: 0px;
+    border-bottom: none;
+}
+
+.page-header h2 {
+    margin: 0px;
+}
+
+.page-header h4 {
+    margin: 0 0 16px 0;
+}
+
+.content {
+    padding: 17px;
+}

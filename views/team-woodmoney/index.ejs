@@ -2,35 +2,38 @@
     <div class="page-header">
 
         <h2><%= team.name %></h2>
-        <select id="season-input" name="season" style="visibility:hidden">
-            <option value="20182019" <% if(season === "2018-19") { %> selected <% } %>>2018-19</option>
-            <option value="20172018" <% if(season === "2017-18") { %> selected <% } %>>2017-18</option>
-            <option value="20162017" <% if(season === "2016-17") { %> selected <% } %>>2016-17</option>
-            <option value="20152016" <% if(season === "2015-16") { %> selected <% } %>>2015-16</option>
-            <option value="20142015" <% if(season === "2014-15") { %> selected <% } %>>2014-15</option>
-        </select>
-        <div class="row">
-            <div class="col-md-4">
-                Competition :
-                <select name="competition" id="competition">
-                    <option value="" selected>--select</option>
-                    <option value="all">All</option>
-                    <option value="elite">Elite</option>
-                    <option value="middle">Middle</option>
-                    <option value="gritensity">Gritensity</option>
-                </select>
-                <button type="button" class="btn btn-xs btn-success" id="CompSelectSubmit"><strong>Go</strong></button>
+
+        <form class="x-wm-filters">
+            <select id="season-input" name="season" style="visibility:hidden">
+                <option value="20182019" <% if(season === "20182019") { %> selected <% } %>>2018-19</option>
+                <option value="20172018" <% if(season === "20172018") { %> selected <% } %>>2017-18</option>
+                <option value="20162017" <% if(season === "20162017") { %> selected <% } %>>2016-17</option>
+                <option value="20152016" <% if(season === "20152016") { %> selected <% } %>>2015-16</option>
+                <option value="20142015" <% if(season === "20142015") { %> selected <% } %>>2014-15</option>
+            </select>
+            <div class="row">
+                <div class="col-md-4">
+                    Competition :
+                    <select name="competition" id="competition">
+                        <option value="" <% if(!woodmoneytier) { %>selected <% } %>>--select</option>
+                        <option value="all" <% if(woodmoneytier === "all") { %>selected <% } %>>All</option>
+                        <option value="elite" <% if(woodmoneytier === "elite") { %>selected <% } %>>Elite</option>
+                        <option value="middle" <% if(woodmoneytier === "middle") { %>selected <% } %>>Middle</option>
+                        <option value="gritensity" <% if(woodmoneytier === "gritensity") { %>selected <% } %>>Gritensity</option>
+                    </select>
+                    <button type="button" class="btn btn-xs btn-success" id="CompSelectSubmit"><strong>Go</strong></button>
+                </div>
+                <div class="col-md-4 selector">
+                    <input type="hidden" id="compSelect" value="All">
+                    <input type="hidden" id="confSelect" value="All">
+                    Forwards <input type="checkbox" id="pos-f" value="clr" <% if(positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
+                    Centres <input type="checkbox" id="pos-c" name="positions" value="c" <% if(positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    LW <input type="checkbox" id="pos-l" name="positions" value="l" <% if(positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    RW <input type="checkbox" id="pos-r" name="positions" value="r" <% if(positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    Defence <input type="checkbox" id="pos-d" name="positions" value="d" <% if(positions.d) { %>checked="checked" <% } %>  />
+                </div>
             </div>
-            <div class="col-md-4 selector">
-                <input type="hidden" id="compSelect" value="All">
-                <input type="hidden" id="confSelect" value="All">
-                Forwards <input type="checkbox" id="pos-f" value="clr" checked="checked" style="margin-right:5px;" />
-                Centres <input type="checkbox" id="pos-c" name="positions" value="c" checked="checked" style="margin-right:5px;" />
-                LW <input type="checkbox" id="pos-l" name="positions" value="l" checked="checked" style="margin-right:5px;" />
-                RW <input type="checkbox" id="pos-r" name="positions" value="r" checked="checked" style="margin-right:5px;" />
-                Defence <input type="checkbox" id="pos-d" name="positions" value="d" checked="checked" />
-            </div>
-        </div>
+        </form>
 
         <div class="row">
             <div class="col-md-12">
@@ -76,6 +79,8 @@
 
         <th>GF/60</th>
         <th>GA/60</th>
+        <th>OZS%</th>
+        <th>FO/60</th>
     </tr>
     </thead>
     <tbody id="dataTable">
@@ -229,6 +234,8 @@
 
             <td><%= formatDecimal( pd['gf60'] )%></td>
             <td><%= formatDecimal( pd['ga60'] )%></td>
+            <td><%= formatDecimal( pd['ozspct'] )%></td>
+            <td><%= formatDecimal( pd['fo60'] )%></td>
         </tr>
 
     <%

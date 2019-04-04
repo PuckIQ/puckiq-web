@@ -45,7 +45,12 @@ function PuckIQHandler(app, request, config, cache) {
 
     controller.getAbout = function(req, res) {
         app.use(express.static('views/home/public'));
-        res.render('home/about', { pgname: 'about', layout : '__layouts/main' });
+        res.render('home/about', { pgname: 'home', layout : '__layouts/main2' });
+    };
+
+    controller.getGlossary = function(req, res) {
+        app.use(express.static('views/home/public'));
+        res.render('home/glossary', { pgname: 'home', layout : '__layouts/main2' });
     };
 
     controller.getPlayerWowy = function(req, res) {
@@ -166,9 +171,19 @@ function PuckIQHandler(app, request, config, cache) {
                 return res.render('500');
             }
 
+            let positions = {};
+            if(req.query.positions){
+                _.each(_.values(req.query.positions), x => positions[x] = true);
+            } else {
+                _.each(['f','c','l','r','d'], x => positions[x] = true);
+            }
+
             let page = _.extend({
                 title: `PuckIQ | ${data.team.name} | ${data.season}`,
-                layout: '__layouts/main2'
+                layout: '__layouts/main2',
+                season : req.query.season,
+                woodmoneytier : req.query.woodmoneytier,
+                positions : positions
             }, data);
 
             res.render('team-woodmoney/index', page);
@@ -314,7 +329,7 @@ function massagePlayerData(playerData) {
     player.position = player.positions && player.positions.length ? player.positions[0] : {};
     player.seasonId = player.season;
     player.season = formatSeason(player.season);
-    player.player_id = player.pid;
+    player.player_id = player.player_id;
     return player;
 }
 

@@ -3,7 +3,7 @@ const constants = require('../common/constants');
 const AppException = require('../common/app_exception');
 const validator = require('../common/validator');
 
-class WoodmoneyProxy {
+class WoodmoneyService {
 
     constructor(locator) {
         this.locator = locator;
@@ -18,8 +18,12 @@ class WoodmoneyProxy {
         return new Promise((resolve, reject) => {
 
             let defaults = {
-                positions : 'all',
                 season: null,
+                // from_date : null,
+                // to_date : null,
+                player: null,
+                team: null,
+                positions : 'all',
                 tier: null,
                 offset : 0,
                 sort : 'evtoi',
@@ -99,4 +103,4 @@ class WoodmoneyProxy {
 
 }
 
-module.exports = WoodmoneyProxy;
+module.exports = WoodmoneyService;

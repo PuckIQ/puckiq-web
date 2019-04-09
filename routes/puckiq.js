@@ -4,7 +4,7 @@ const stringify = require('csv-stringify/lib/es5');
 const utils = require('../common/utils');
 const validator = require('../common/validator');
 const csv_file_definition = require('../common/csv_file_definition');
-const WoodmoneyProxy = require('../common/csv_fe_definition');
+const WoodmoneyService = require('../services/woodmoney');
 
 const encode_query = (query) => {
     return _.chain(_.keys(query))
@@ -21,7 +21,7 @@ function PuckIQHandler(app, locator) {
     let request = locator.get('request');
     let error_handler = locator.get('error_handler');
 
-    let wm = new WoodmoneyProxy(locator);
+    let wm = new WoodmoneyService(locator);
 
     let baseUrl = config.api.host;
 
@@ -86,14 +86,14 @@ function PuckIQHandler(app, locator) {
             //always do 50 for now...
             let options = _.extend({}, req.query, {count : 50});
 
-            wm.query(req.query, iq).then((data) => {
+            wm.query(options, iq).then((data) => {
 
                 let page = _.extend({
                     title: `PuckIQ | ${data.team.name} | ${data.season}`,
                     layout: '__layouts/main2'
                 }, data);
 
-                res.render('team-woodmoney/index', page);
+                res.render('woodmoney/index', page);
 
             }, (err) => {
                 return error_handler.handle(req, res, err);
@@ -195,12 +195,12 @@ function PuckIQHandler(app, locator) {
             let page = _.extend({
                 title: `PuckIQ | ${data.team.name} | ${data.season}`,
                 layout: '__layouts/main2',
-                season : req.query.season,
+                season : data.seasonId,
                 woodmoneytier : req.query.woodmoneytier,
                 positions : positions
             }, data);
 
-            res.render('team-woodmoney/index', page);
+            res.render('woodmoney/index', page);
         });
 
     };

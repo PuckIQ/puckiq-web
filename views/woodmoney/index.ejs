@@ -1,0 +1,163 @@
+<div class="container-fluid" role="main">
+    <div class="page-header">
+
+        <h2><%= team.name %></h2>
+
+        <form class="x-wm-filters">
+            <select id="season-input" name="season" style="visibility:hidden">
+                <option value="20182019" <% if(seasonId === 20182019) { %> selected <% } %>>2018-19</option>
+                <option value="20172018" <% if(seasonId === 20172018) { %> selected <% } %>>2017-18</option>
+                <option value="20162017" <% if(seasonId === 20162017) { %> selected <% } %>>2016-17</option>
+                <option value="20152016" <% if(seasonId === 20152016) { %> selected <% } %>>2015-16</option>
+                <option value="20142015" <% if(seasonId === 20142015) { %> selected <% } %>>2014-15</option>
+            </select>
+            <div class="row">
+                <div class="col-md-4">
+                    Competition :
+                    <select name="competition" id="competition">
+                        <option value="" <% if(!woodmoneytier) { %>selected <% } %>>--select</option>
+                        <option value="all" <% if(woodmoneytier === "all") { %>selected <% } %>>All</option>
+                        <option value="elite" <% if(woodmoneytier === "elite") { %>selected <% } %>>Elite</option>
+                        <option value="middle" <% if(woodmoneytier === "middle") { %>selected <% } %>>Middle</option>
+                        <option value="gritensity" <% if(woodmoneytier === "gritensity") { %>selected <% } %>>Gritensity</option>
+                    </select>
+                    <button type="button" class="btn btn-xs btn-success" id="CompSelectSubmit"><strong>Go</strong></button>
+                </div>
+                <div class="col-md-4 selector">
+                    <input type="hidden" id="compSelect" value="All">
+                    <input type="hidden" id="confSelect" value="All">
+                    Forwards <input type="checkbox" id="pos-f" value="clr" <% if(positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
+                    Centres <input type="checkbox" id="pos-c" name="positions" value="c" <% if(positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    LW <input type="checkbox" id="pos-l" name="positions" value="l" <% if(positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    RW <input type="checkbox" id="pos-r" name="positions" value="r" <% if(positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    Defence <input type="checkbox" id="pos-d" name="positions" value="d" <% if(positions.d) { %>checked="checked" <% } %>  />
+                </div>
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-md-12">
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!--Begin render table-->
+<table id="puckiq" class="table table-bordered table-condensed table-hover" >
+    <thead>
+    <tr>
+        <th>Player</th>
+        <th>Pos</th>
+        <th data-sorter="false">Comp</th>
+        <th data-sorter="false">GT</th>
+        <th>TOI</th>
+
+        <th>CTOI%</th>
+        <th>CF</th>
+        <th>CA</th>
+        <th>CF%</th>
+        <th>CF/60</th>
+
+        <th>CA/60</th>
+        <th>CF60RC</th>
+        <th>CA60RC</th>
+        <th>CF%RC</th>
+        <th>DFF</th>
+
+        <th>DFA</th>
+        <th>DFF%</th>
+        <th>DFF/60</th>
+        <th>DFA/60</th>
+        <th>DFF60RC</th>
+
+        <th>DFA60RC</th>
+        <th>DFF%RC</th>
+        <th>GF</th>
+        <th>GA</th>
+        <th>GF%</th>
+
+        <th>GF/60</th>
+        <th>GA/60</th>
+        <th>OZS%</th>
+        <th>FO/60</th>
+    </tr>
+    </thead>
+    <tbody id="dataTable">
+    <%
+    for (var i = 0; i < players.length; i++) {
+        renderTableRow(players[i]);
+    }
+    %>
+    </tbody>
+</table>
+
+<!--End render table-->
+<div style="text-align: center">
+    <a href="#todo" class="x-download">download csv</a>
+</div>
+
+<script>
+    <%
+
+    function renderTableRow(playerData) {
+                var pd = playerData;
+                var classname = 'pos-' + pd['position'].toLowerCase() + ' woodmoney-' + pd['woodmoneytier'].toLowerCase() + ' hidden';
+            %>
+        <tr class="<%= classname %>">
+            <td style="white-space: nowrap;"><a href="/players/<%=pd['player_id']%>"><%= pd['name']%></a></td>
+            <td><%= pd['position']%></td>
+            <td><%= pd['woodmoneytier']%></td>
+            <td>All</td>
+            <td><%= formatDecimal( pd['evtoi'], 2) %></td>
+
+            <td><%= formatDecimal( pd['ctoipct'], 1)%></td>
+            <td><%= formatDecimal( pd['cf'] )%></td>
+            <td><%= formatDecimal( pd['ca'] )%></td>
+            <td><%= formatDecimal( pd['cfpct'] )%></td>
+            <td><%= formatDecimal( pd['cf60'], 1 )%></td>
+
+            <td><%= formatDecimal( pd['ca60'], 1 )%></td>
+            <td><%= formatDecimal( pd['cf60rc'] )%></td>
+            <td><%= formatDecimal( pd['ca60rc'] )%></td>
+            <td><%= formatDecimal( pd['cfpctrc'] )%></td>
+            <td><%= formatDecimal( pd['dff'] )%></td>
+
+            <td><%= formatDecimal( pd['dfa'] )%></td>
+            <td><%= formatDecimal( pd['dffpct'] )%></td>
+            <td><%= formatDecimal( pd['dff60'], 1 )%></td>
+            <td><%= formatDecimal( pd['dfa60'], 1 )%></td>
+            <td><%= formatDecimal( pd['dff60rc'] )%></td>
+
+            <td><%= formatDecimal( pd['dfa60rc'] )%></td>
+            <td><%= formatDecimal( pd['dffpctrc'] )%></td>
+            <td><%= pd['gf']%></td>
+            <td><%= pd['ga']%></td>
+            <td><%= formatDecimal( pd['gfpct'] )%></td>
+
+            <td><%= formatDecimal( pd['gf60'] )%></td>
+            <td><%= formatDecimal( pd['ga60'] )%></td>
+            <td><%= formatDecimal( pd['ozspct'] )%></td>
+            <td><%= formatDecimal( pd['fo60'] )%></td>
+        </tr>
+
+    <%
+    }
+
+    function formatDecimal(val, no_decimals) {
+        if(isNaN(no_decimals)) no_decimals = 2;
+        return parseFloat("" + Math.round(val * 100) / 100).toFixed(no_decimals);
+    }
+
+    %>
+
+    var wmState = {
+        season : <%= seasonId %>
+    };
+
+    console.log(wmState);
+
+</script>
+
+<script src="/puckiq/js/woodmoney.js"></script>
+

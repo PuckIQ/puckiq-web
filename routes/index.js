@@ -14,9 +14,9 @@ module.exports = exports = function (app, request, config) {
     locator.register('config', config);
     locator.register('error_handler', ErrorHandler);
     locator.register('request', require('request'));
+    locator.register('email_service', require('../services/email')(locator));
 
-    ErrorHandler.init(config);
-
+    ErrorHandler.init(locator);
 
     let puckIQHandler = new PuckIQHandler(app, locator);
     let ajaxHandler = new AjaxHandler(app, locator);
@@ -34,7 +34,6 @@ module.exports = exports = function (app, request, config) {
     app.get('/players/:player', puckIQHandler.getPlayerWoodmoney);
     app.get('/players/:player/download', puckIQHandler.downloadPlayerWoodmoney);
     app.get('/_template', puckIQHandler.getTemplate);
-    app.get('/flush', puckIQHandler.flushCache);
 
     app.get('/error404', puckIQHandler.get404);
 

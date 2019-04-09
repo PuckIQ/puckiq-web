@@ -1,5 +1,5 @@
 const env = process.env.NODE_ENV || 'staging'; //tmp checkin till Zsolt gets build setup
-const config = require('./config.js').getFor(env);
+const config = require('./config.js')[env];
 
 const express = require('express');
 const path = require('path');

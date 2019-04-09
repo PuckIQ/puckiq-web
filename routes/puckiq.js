@@ -74,22 +74,31 @@ function PuckIQHandler(app, locator) {
 
     controller.getWoodmoney = function(req, res) {
 
-        //not cached
-        if (_.has(req.params, 'team')) {
-            return controller.getTeamWoodmoney(req, res);
-        } else if (_.has(req.params, 'player')) {
-            return controller.getPlayerWoodmoney(req, res);
-        }
+        // //todo this works the other way...
+        //
+        // //not cached
+        // if (_.has(req.params, 'team')) {
+        //     return controller.getTeamWoodmoney(req, res);
+        // } else if (_.has(req.params, 'player')) {
+        //     return controller.getPlayerWoodmoney(req, res);
+        // }
 
         cache.init().then((iq) => {
 
             //always do 50 for now...
-            let options = _.extend({}, req.query, {count : 50});
+            let options = _.extend({}, req.query, {count: 50});
 
             wm.query(options, iq).then((data) => {
 
+                let title = 'PuckIQ | Woodmoney';
+                if (data.team) {
+                    title += ` | ${data.team.name}`;
+                } else if (data.player) {
+                    title += ` | ${data.player.name}`;
+                }
+
                 let page = _.extend({
-                    title: `PuckIQ | ${data.team.name} | ${data.season}`,
+                    title: title,
                     layout: '__layouts/main2'
                 }, data);
 
@@ -178,31 +187,36 @@ function PuckIQHandler(app, locator) {
 
     controller.getTeamWoodmoney = function(req, res) {
 
-        controller._getTeamWoodmoney(req, res, (err, data) => {
+        if (!_.has(req.params, 'team')) {
+            return res.render('400', 'Missing parameter team');
+        } else {
+            return controller.getWoodmoney(req, res);
+        }
 
-            if(err) {
-                console.log("Error: " + err); //TODO better
-                return res.render('500');
-            }
-
-            let positions = {};
-            if(req.query.positions){
-                _.each(_.values(req.query.positions), x => positions[x] = true);
-            } else {
-                _.each(['f','c','l','r','d'], x => positions[x] = true);
-            }
-
-            let page = _.extend({
-                title: `PuckIQ | ${data.team.name} | ${data.season}`,
-                layout: '__layouts/main2',
-                season : data.seasonId,
-                woodmoneytier : req.query.woodmoneytier,
-                positions : positions
-            }, data);
-
-            res.render('woodmoney/index', page);
-        });
-
+        // controller._getTeamWoodmoney(req, res, (err, data) => {
+        //
+        //     if(err) {
+        //         console.log("Error: " + err); //TODO better
+        //         return res.render('500');
+        //     }
+        //
+        //     let positions = {};
+        //     if(req.query.positions){
+        //         _.each(_.values(req.query.positions), x => positions[x] = true);
+        //     } else {
+        //         _.each(['f','c','l','r','d'], x => positions[x] = true);
+        //     }
+        //
+        //     let page = _.extend({
+        //         title: `PuckIQ | ${data.team.name} | ${data.season}`,
+        //         layout: '__layouts/main2',
+        //         season : data.seasonId,
+        //         woodmoneytier : req.query.woodmoneytier,
+        //         positions : positions
+        //     }, data);
+        //
+        //     res.render('woodmoney/index', page);
+        // });
     };
 
     controller.downloadTeamWoodmoney = function(req, res) {

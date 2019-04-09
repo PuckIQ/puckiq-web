@@ -88,7 +88,7 @@ class WoodmoneyProxy {
 
             request.post({url: `${baseUrl}/woodmoney`, json: true, data: options}, (err, response, data) => {
                 if (err) return reject(new AppException(constants.exceptions.unhandled_error, "An unhandled error occurred", {err: err}));
-                return resolve(data);
+                return resolve(_.extend({request : options}, data));
             }, (err) => {
                 return reject(err);
             });

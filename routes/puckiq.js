@@ -98,7 +98,7 @@ function PuckIQHandler(app, locator) {
         controller._getWoodmoney(options).then((data) => {
 
             let page = _.extend({
-                title: `PuckIQ | Woodmoney | ${data.player.name}`,
+                title: `PuckIQ | Woodmoney | ${(data.player && data.player.name) || 'unknown'}`,
                 layout: '__layouts/main2'
             }, data);
 

@@ -59,28 +59,11 @@ const definition = {
     "dffpctra": "DFF%RA"
 };
 
-const apply_filter = (record, filters) => {
-
-    if(!(!filters.tier || record.woodmoneytier.toLowerCase() === filters.tier)){
-        return false;
-    }
-
-    if(filters.positions && filters.positions.length) {
-        let _pos = _.map(record.positions, x => x.toLowerCase());
-        return _.intersection(_pos, filters.positions).length > 0;
-    }
-
-    return true;
-};
-
-exports.buildForPlayers = (data, filters) => {
+exports.build = (data) => {
 
     let headers = _.values(definition);
 
-    let records = _.chain(data.playerStats)
-        .filter(x => {
-            return apply_filter(x, filters);
-        })
+    let records = _.chain(data.results)
         .map(x => {
             let row = { name: x.name, season: data.seasonId };
             _.each(_.keys(definition), field => {
@@ -90,32 +73,6 @@ exports.buildForPlayers = (data, filters) => {
                     row[field] = x[field];
                 }
             });
-            return _.values(row);
-        }).value();
-
-    records.unshift(headers);
-
-    return records;
-};
-
-exports.buildForTeam = (data, filters) => {
-
-    let headers = _.values(definition);
-
-    let records = _.chain(data.players)
-        .filter(x => {
-            return apply_filter(x, filters);
-        })
-        .map(x => {
-            let row = { name: x.name, season: data.seasonId, team: data.team.name };
-            _.each(_.keys(definition), field => {
-                if(!_.has(x, field)){
-                    console.log("Missing field", field);
-                } else {
-                    row[field] = x[field];
-                }
-            });
-
             return _.values(row);
         }).value();
 

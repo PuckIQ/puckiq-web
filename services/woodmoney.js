@@ -23,27 +23,27 @@ class WoodmoneyService {
                 // to_date : null,
                 player: null,
                 team: null,
-                positions : 'all',
+                positions: 'all',
                 tier: null,
-                offset : 0,
-                sort : 'evtoi',
-                sort_direction : 'desc',
+                offset: 0,
+                sort: 'evtoi',
+                sort_direction: 'desc',
                 count: 50
             };
 
-            options = _.extend({ }, defaults, options);
+            options = _.extend({}, defaults, options);
 
-            if(_.has(options, "from_date") && _.has(options, "to_date")){
+            if (_.has(options, "from_date") && _.has(options, "to_date")) {
 
                 let err = validator.validateDate(options.from_date, "from_date");
-                if(err) return reject(err);
+                if (err) return reject(err);
 
                 err = validator.validateDate(options.to_date, "to_date");
-                if(err) return reject(err);
+                if (err) return reject(err);
 
             } else {
 
-                if(_.has(options, "season")) {
+                if (_.has(options, "season")) {
                     let err = validator.validateSeason(options.season, "season");
                     if (err) return reject(err);
                 } else {
@@ -53,25 +53,44 @@ class WoodmoneyService {
 
             }
 
-            if(options.positions !== 'all'){
+            if (options.player) {
+                options.player = parseInt(options.player);
+                let err = validator.validateInteger(options.player, "player", {nullable: false, min: 1});
+                if (err) return reject(err);
+            }
+
+            if (options.team) {
+                let err = validator.validateString(options.team, "team", {nullable: false});
+                if (err) return reject(err);
+                options.team = options.team.toLowerCase(); //just in case
+                if(!_.has(iq.teams, options.team)){
+                    return new AppException(
+                        constants.exceptions.invalid_argument,
+                        `Invalid value for parameter: ${options.team}`,
+                        {param: 'team', value: value}
+                    );
+                }
+            }
+
+            if (options.positions !== 'all') {
                 options.positions = options.positions.toLowerCase();
                 const all_positions = _.keys(constants.positions);
-                for(var i=0; i< options.positions.length; i++){
-                    if(!~all_positions.indexOf(options.positions[i])){
+                for (var i = 0; i < options.positions.length; i++) {
+                    if (!~all_positions.indexOf(options.positions[i])) {
                         return new AppException(
                             constants.exceptions.invalid_argument,
                             `Invalid value for parameter: ${options.positions}`,
-                            { param: 'tier', value: value }
+                            {param: 'tier', value: value}
                         );
                     }
                 }
             }
 
-            if(options.tier && !~_.values(constants.woodmoney_tier).indexOf(options.tier)){
+            if (options.tier && !~_.values(constants.woodmoney_tier).indexOf(options.tier)) {
                 return new AppException(
                     constants.exceptions.invalid_argument,
                     `Invalid value for parameter: ${options.tier}`,
-                    { param: 'tier', value: value }
+                    {param: 'tier', value: value}
                 );
             }
 
@@ -84,15 +103,15 @@ class WoodmoneyService {
             //     );
             // }
 
-            if(options.count) {
+            if (options.count) {
                 options.count = parseInt(options.count);
                 let err = validator.validateInteger(options.count, 'count', {min: 1, max: 50});
-                if(err) return reject(err);
+                if (err) return reject(err);
             }
 
             request.post({url: `${baseUrl}/woodmoney`, json: true, data: options}, (err, response, data) => {
                 if (err) return reject(new AppException(constants.exceptions.unhandled_error, "An unhandled error occurred", {err: err}));
-                return resolve(_.extend({request : options}, data));
+                return resolve(_.extend({request: options}, data));
             }, (err) => {
                 return reject(err);
             });

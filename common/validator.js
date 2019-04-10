@@ -231,6 +231,12 @@ exports.validateArray = function(value, name, options = {}) {
 
 };
 
-exports.validateSeason = (season) => {
-    return season && season.length === 8 && this.validateInteger(season);
+exports.validateSeason = (value, name, options = {}) => {
+
+    if(!options.nullable) {
+        let err = exports.validateNonNull(value, name);
+        if(err) return err;
+    }
+
+    return this.validateInteger(value, name, { min: 20000000, max : 21000000});
 };

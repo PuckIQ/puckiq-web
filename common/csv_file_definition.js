@@ -53,7 +53,7 @@ const definition = {
     "saca": "SACA",
     //"seasonId": "SeasonId",
     "player_id": "PlayerId",
-    "cfpctra": "CF%RA",
+    //"cfpctra": "CF%RA",
     "onoff": "ONOFF",
     "wowytype": "WowyType",
     "dffpctra": "DFF%RA"

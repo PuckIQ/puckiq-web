@@ -123,15 +123,6 @@ function AjaxHelper(app, locator) {
 
         console.log(url);
         rq.get({ url: url, json: true }, (err, response, data) => {
-
-            // let content = massagePlayerResponse(player_id, data);
-            // let page = _.extend({
-            //     title: `PuckIQ | ${content.playerName}`,
-            //     layout: '__layouts/main2'
-            // }, content);
-            //
-            // res.render('player-woodmoney/index', page);
-
             res.jsonp(data);
         });
     }

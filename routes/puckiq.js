@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const express = require('express');
 const stringify = require('csv-stringify/lib/es5');
+const constants = require('../common/constants');
 const utils = require('../common/utils');
 const validator = require('../common/validator');
 const AppException = require('../common/app_exception');
@@ -20,20 +21,16 @@ function PuckIQHandler(app, locator) {
         app.use(express.static('views/home/public'));
         cache.init().then((iq) => {
 
-            let division_teams = _.chain(_.values(iq.teams))
-                .filter(x => x.active !== false)
-                .groupBy(x => x.division)
-                .value();
+            let division_teams = _.chain(_.values(iq.teams)).filter(x => x.active !== false).groupBy(x => x.division).value();
 
             let divisions = _.map(_.keys(division_teams), x => {
-                return {name : x, teams : _.sortBy(division_teams[x], y => y.name) };
+                return { name: x, teams: _.sortBy(division_teams[x], y => y.name) };
             });
 
             res.render('home/index', {
                 pgname: 'home',
-                layout : '__layouts/main2',
-                divisions : divisions,
-                season : iq.current_woodmoney_season
+                divisions: divisions,
+                season: iq.current_woodmoney_season
             });
 
         }, (err) => {
@@ -44,12 +41,12 @@ function PuckIQHandler(app, locator) {
 
     controller.getAbout = function(req, res) {
         app.use(express.static('views/home/public'));
-        res.render('home/about', { pgname: 'home', layout : '__layouts/main2' });
+        res.render('home/about', { pgname: 'home' });
     };
 
     controller.getGlossary = function(req, res) {
         app.use(express.static('views/home/public'));
-        res.render('home/glossary', { pgname: 'home', layout : '__layouts/main2' });
+        res.render('home/glossary', { pgname: 'home' });
     };
 
     controller.getPlayerWowy = function(req, res) {
@@ -68,16 +65,13 @@ function PuckIQHandler(app, locator) {
         controller._getWoodmoney(req.query).then((data) => {
 
             let title = 'PuckIQ | Woodmoney';
-            if (data.team) {
+            if(data.team) {
                 title += ` | ${data.team.name}`;
-            } else if (data.player) {
+            } else if(data.player) {
                 title += ` | ${data.player.name}`;
             }
 
-            let page = _.extend({
-                title: title,
-                layout: '__layouts/main2'
-            }, data);
+            let page = _.extend({ title: title }, data);
 
             res.render('woodmoney/index', page);
 
@@ -89,17 +83,16 @@ function PuckIQHandler(app, locator) {
 
     controller.getPlayerWoodmoney = function(req, res) {
 
-        if(_.has(req.params, "player")){
+        if(_.has(req.params, "player")) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: player"));
         }
 
-        let options = _.extend({ player: req.params.player}, req.query);
+        let options = _.extend({ player: req.params.player }, req.query);
 
         controller._getWoodmoney(options).then((data) => {
 
             let page = _.extend({
-                title: `PuckIQ | Woodmoney | ${(data.player && data.player.name) || 'unknown'}`,
-                layout: '__layouts/main2'
+                title: `PuckIQ | Woodmoney | ${(data.player && data.player.name) || 'unknown'}`
             }, data);
 
             res.render('woodmoney/index', page);
@@ -111,11 +104,11 @@ function PuckIQHandler(app, locator) {
 
     controller.downloadPlayerWoodmoney = function(req, res) {
 
-        if(_.has(req.params, "player")){
+        if(_.has(req.params, "player")) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: player"));
         }
 
-        let options = _.extend({ player: req.params.player}, req.query);
+        let options = _.extend({ player: req.params.player }, req.query);
 
         controller._getWoodmoney(options).then((data) => {
 
@@ -131,7 +124,7 @@ function PuckIQHandler(app, locator) {
             res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
             res.setHeader('Content-Type', 'text/csv');
 
-            stringify(records, {quoted_string: true}, (err, content) => {
+            stringify(records, { quoted_string: true }, (err, content) => {
                 res.send(content);
             });
 
@@ -143,7 +136,7 @@ function PuckIQHandler(app, locator) {
 
     controller.getTeamWoodmoney = function(req, res) {
 
-        if (!_.has(req.params, 'team')) {
+        if(!_.has(req.params, 'team')) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: team"));
         }
 
@@ -153,7 +146,6 @@ function PuckIQHandler(app, locator) {
 
             let page = _.extend({
                 title: `PuckIQ | Woodmoney | ${data.request.team.name}`,
-                layout: '__layouts/main2'
             }, data);
 
             res.render('woodmoney/index', page);
@@ -166,7 +158,7 @@ function PuckIQHandler(app, locator) {
 
     controller.downloadTeamWoodmoney = function(req, res) {
 
-        if (!_.has(req.params, 'team')) {
+        if(!_.has(req.params, 'team')) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: team"));
         }
 
@@ -186,7 +178,7 @@ function PuckIQHandler(app, locator) {
             res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
             res.setHeader('Content-Type', 'text/csv');
 
-            stringify(records, {quoted_string: true}, (err, content) => {
+            stringify(records, { quoted_string: true }, (err, content) => {
                 res.send(content);
             });
 
@@ -203,12 +195,19 @@ function PuckIQHandler(app, locator) {
             cache.init().then((iq) => {
 
                 //always do 50 for now...
-                options = _.extend({}, options, {count: 50});
+                options = _.extend({}, options, { count: 50 });
 
                 wm.query(options, iq).then((data) => {
 
-                    if (options.team) {
+                    if(options.team) {
                         data.team = iq.teams[options.team];
+                    }
+
+                    data.request.selected_positions = {};
+                    if(data.request.positions === "all"){
+                        _.each(_.keys(constants.positions), pos => data.request.selected_positions[pos] = true);
+                    } else {
+                        _.each(data.request.positions.split(''), pos => data.request.selected_positions[pos] = true);
                     }
 
                     return resolve(data);

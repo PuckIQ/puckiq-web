@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const constants = require('../common/constants');
 const AppException = require('../common/app_exception');
+const utils = require('../common/utils');
 const validator = require('../common/validator');
 
 class WoodmoneyService {
@@ -19,12 +20,12 @@ class WoodmoneyService {
 
             let defaults = {
                 season: null,
-                // from_date : null,
-                // to_date : null,
-                player: null,
-                team: null,
+                //from_date : null,
+                //to_date : null,
+                //player: null,
+                //team: null,
+                //tier: null,
                 positions: 'all',
-                tier: null,
                 offset: 0,
                 sort: 'evtoi',
                 sort_direction: 'desc',
@@ -33,7 +34,7 @@ class WoodmoneyService {
 
             options = _.extend({}, defaults, options);
 
-            if (_.has(options, "from_date") && _.has(options, "to_date")) {
+            if (!_.has(options, "from_date") && _.has(options, "to_date")) {
 
                 let err = validator.validateDate(options.from_date, "from_date");
                 if (err) return reject(err);
@@ -43,7 +44,7 @@ class WoodmoneyService {
 
             } else {
 
-                if (_.has(options, "season")) {
+                if (_.has(options, "season") && options.season) {
                     let err = validator.validateSeason(options.season, "season");
                     if (err) return reject(err);
                 } else {
@@ -109,7 +110,11 @@ class WoodmoneyService {
                 if (err) return reject(err);
             }
 
-            request.post({url: `${baseUrl}/woodmoney`, json: true, data: options}, (err, response, data) => {
+            options.count ="adfasdasdfa";
+
+            let url = `${baseUrl}/woodmoney`; //?${utils.encode_query(options)}`;
+
+            request.post({ url: url, body: options, json: true, is_xhr: true }, (err, response, data) => {
                 if (err) return reject(new AppException(constants.exceptions.unhandled_error, "An unhandled error occurred", {err: err}));
                 return resolve(_.extend({request: options}, data));
             }, (err) => {

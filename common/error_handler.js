@@ -30,13 +30,15 @@ exports.handle = function(req, res, err) {
     }
 
     if(req && !req.xhr) {
-        if(statusCode === 403) {
-            res.render('404'); // hide this from the user
+        if(statusCode === 400) {
+            res.render('400', error);
+        } else if(statusCode === 403) {
+            res.render('404', error);
         } else if(!!~_.indexOf([404, 500, 503], statusCode)) {
             //known error pages
-            res.render(statusCode.toString());
+            res.render(statusCode.toString(), { message: 'Sorry and error occurred'});
         } else {
-            res.render('500');
+            res.render('500', error);
         }
     } else {
         res.status(statusCode).jsonp({

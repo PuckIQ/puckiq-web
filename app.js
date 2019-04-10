@@ -15,7 +15,7 @@ app.set('views', [
 ]);
 app.set('view engine', 'ejs');
 app.use(require('express-ejs-layouts'));
-app.set('layout', false); //default to no layout
+app.set('layout', '__layouts/main');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));

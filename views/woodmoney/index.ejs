@@ -5,32 +5,32 @@
 
         <form class="x-wm-filters">
             <select id="season-input" name="season" style="visibility:hidden">
-                <option value="20182019" <% if(seasonId === 20182019) { %> selected <% } %>>2018-19</option>
-                <option value="20172018" <% if(seasonId === 20172018) { %> selected <% } %>>2017-18</option>
-                <option value="20162017" <% if(seasonId === 20162017) { %> selected <% } %>>2016-17</option>
-                <option value="20152016" <% if(seasonId === 20152016) { %> selected <% } %>>2015-16</option>
-                <option value="20142015" <% if(seasonId === 20142015) { %> selected <% } %>>2014-15</option>
+                <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
+                <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
+                <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
+                <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
+                <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
             </select>
             <div class="row">
                 <div class="col-md-4">
                     Competition :
                     <select name="competition" id="competition">
-                        <option value="" <% if(!woodmoneytier) { %>selected <% } %>>--select</option>
-                        <option value="all" <% if(woodmoneytier === "all") { %>selected <% } %>>All</option>
-                        <option value="elite" <% if(woodmoneytier === "elite") { %>selected <% } %>>Elite</option>
-                        <option value="middle" <% if(woodmoneytier === "middle") { %>selected <% } %>>Middle</option>
-                        <option value="gritensity" <% if(woodmoneytier === "gritensity") { %>selected <% } %>>Gritensity</option>
+                        <option value="" <% if(!request.tier) { %>selected <% } %>>--select</option>
+                        <option value="all" <% if(request.tier === "all") { %>selected <% } %>>All</option>
+                        <option value="elite" <% if(request.tier === "elite") { %>selected <% } %>>Elite</option>
+                        <option value="middle" <% if(request.tier === "middle") { %>selected <% } %>>Middle</option>
+                        <option value="gritensity" <% if(request.tier === "gritensity") { %>selected <% } %>>Gritensity</option>
                     </select>
                     <button type="button" class="btn btn-xs btn-success" id="CompSelectSubmit"><strong>Go</strong></button>
                 </div>
                 <div class="col-md-4 selector">
                     <input type="hidden" id="compSelect" value="All">
                     <input type="hidden" id="confSelect" value="All">
-                    Forwards <input type="checkbox" id="pos-f" value="clr" <% if(positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
-                    Centres <input type="checkbox" id="pos-c" name="positions" value="c" <% if(positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    LW <input type="checkbox" id="pos-l" name="positions" value="l" <% if(positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    RW <input type="checkbox" id="pos-r" name="positions" value="r" <% if(positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    Defence <input type="checkbox" id="pos-d" name="positions" value="d" <% if(positions.d) { %>checked="checked" <% } %>  />
+                    Forwards <input type="checkbox" id="pos-f" value="clr" <% if(request.selected_positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
+                    Centres <input type="checkbox" id="pos-c" name="positions" value="c" <% if(request.selected_positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    LW <input type="checkbox" id="pos-l" name="positions" value="l" <% if(request.selected_positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    RW <input type="checkbox" id="pos-r" name="positions" value="r" <% if(request.selected_positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    Defence <input type="checkbox" id="pos-d" name="positions" value="d" <% if(request.selected_positions.d) { %>checked="checked" <% } %>  />
                 </div>
             </div>
         </form>
@@ -85,8 +85,8 @@
     </thead>
     <tbody id="dataTable">
     <%
-    for (var i = 0; i < players.length; i++) {
-        renderTableRow(players[i]);
+    for (var i = 0; i < results.length; i++) {
+        renderTableRow(results[i]);
     }
     %>
     </tbody>

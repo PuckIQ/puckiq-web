@@ -20,12 +20,12 @@
                 </div>
                 <div class="col-padded">
                     Competition :
-                    <select name="competition" id="competition">
+                    <select id="tier" name="tier">
                         <option value="" <% if(!request.tier) { %>selected <% } %>>--select</option>
-                        <option value="all" <% if(request.tier === "all") { %>selected <% } %>>All</option>
-                        <option value="elite" <% if(request.tier === "elite") { %>selected <% } %>>Elite</option>
-                        <option value="middle" <% if(request.tier === "middle") { %>selected <% } %>>Middle</option>
-                        <option value="gritensity" <% if(request.tier === "gritensity") { %>selected <% } %>>Gritensity</option>
+                        <option value="All" <% if(request.tier === "All") { %>selected <% } %>>All</option>
+                        <option value="Elite" <% if(request.tier === "Elite") { %>selected <% } %>>Elite</option>
+                        <option value="Middle" <% if(request.tier === "Middle") { %>selected <% } %>>Middle</option>
+                        <option value="Gritensity" <% if(request.tier === "Gritensity") { %>selected <% } %>>Gritensity</option>
                     </select>
                 </div>
                 <% if(!request.player){ %>
@@ -39,10 +39,10 @@
                 </div>
                 <div class="col-padded">
                     Min TOI:
-                    <input type="text" id="min_toi" name="min_toi" placeholder="min" class="toi_minutes"
+                    <input type="text" id="min_toi" name="min_toi" placeholder="min" class="toi_minutes" maxlength="5"
                            value="<% if(request.min_toi !== null){%><%= request.min_toi %><% } %>" />
                     Max TOI:
-                    <input type="text" id="max_toi" name="max_toi" placeholder="max" class="toi_minutes"
+                    <input type="text" id="max_toi" name="max_toi" placeholder="max" class="toi_minutes" maxlength="5"
                            value="<% if(request.max_toi !== null){%><%= request.max_toi %><% } %>" />
                 </div>
                 <% } %>

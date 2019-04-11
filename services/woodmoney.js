@@ -107,21 +107,21 @@ class WoodmoneyService {
                 const all_positions = _.keys(constants.positions);
                 for (var i = 0; i < options.positions.length; i++) {
                     if (!~all_positions.indexOf(options.positions[i])) {
-                        return new AppException(
+                        return reject(new AppException(
                             constants.exceptions.invalid_argument,
                             `Invalid value for parameter: ${options.positions}`,
                             {param: 'positions', value: value}
-                        );
+                        ));
                     }
                 }
             }
 
             if (options.tier && !~_.values(constants.woodmoney_tier).indexOf(options.tier)) {
-                return new AppException(
+                return reject(new AppException(
                     constants.exceptions.invalid_argument,
-                    `Invalid value for parameter: ${options.tier}`,
-                    {param: 'tier', value: value}
-                );
+                    `Invalid value for parameter: tier`,
+                    {param: 'tier', value: options.tier}
+                ));
             }
 
             //TODO sort
@@ -141,6 +141,7 @@ class WoodmoneyService {
 
             let url = `${baseUrl}/woodmoney`;
 
+            console.log('options', JSON.stringify(options));
             request.post({
                 url: url,
                 body: options,

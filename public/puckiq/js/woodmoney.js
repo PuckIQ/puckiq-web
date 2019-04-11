@@ -1,11 +1,11 @@
 function getFilters() {
 
     var season = $('form.x-wm-filters [name=season]').val();
-    var tier = $('form.x-wm-filters #competition').val();
+    var tier = $('form.x-wm-filters #tier').val();
 
     var positions = null;
     if ($('form.x-wm-filters .x-positions').length) {
-        positions = $('form.x-wm-filters [name=positions]:checkbox:checked').map(function () {
+        positions = $('form.x-wm-filters .x-positions:checkbox:checked').map(function () {
             return $(this).val();
         }).get();
         if (positions.length === 4) {
@@ -39,12 +39,12 @@ function updateSeasonOnPageRender(season) {
 function redirectToSeason(seasonId) {
     var url = window.location.href;
     if (url.indexOf('season=') > -1) {
-        url = url.replace(/season=\d+/, 'season=' + seasonId)
+        url = url.replace(/season=\d+/, 'season=' + seasonId);
     } else {
-        url += (url.indexOf('season=') == -1) ? '?' : '&'
-        url += 'season=' + seasonId
+        url += (url.indexOf('season=') == -1) ? '?' : '&';
+        url += 'season=' + seasonId;
     }
-    return url
+    return url;
 }
 
 function onPositionsChange() {
@@ -52,13 +52,16 @@ function onPositionsChange() {
     $('#pos-f').prop('checked', forwardPosSelected == 3);
 
     var filters = getFilters();
+    console.log("positions changed", filters);
 
+    console.log("updating positions to", filters.positions);
     $('form.x-wm-filters [name=positions]').val(filters.positions);
 }
 
 function onForwardChange() {
     var fSelected = $('#pos-f').is(':checked');
     $('#pos-c,#pos-l,#pos-r').prop('checked', fSelected);
+    onPositionsChange();
 }
 
 $(function() {
@@ -68,7 +71,7 @@ $(function() {
         //sortList: [[0,0]],
         // sortInitialOrder  : 'desc',
         widgets           : ['columns'],
-    }).bind("sortEnd", refreshTableStyles)
+    }).bind("sortEnd", refreshTableStyles);
 
     $(".x-positions").change(onPositionsChange);
     $("#pos-f").change(onForwardChange);
@@ -79,6 +82,5 @@ $(function() {
     });
 
     updateSeasonOnPageRender(wmState.request.season);
-    refreshTableFiltering();
 
 });

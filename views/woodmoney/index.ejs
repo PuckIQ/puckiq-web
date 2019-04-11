@@ -3,7 +3,7 @@
 
         <h2><%= sub_title %> <% if(player) { %><small><%= player.positions %></small><% } %></h2>
 
-        <form class="x-wm-filters">
+        <form class="x-wm-filters" method="get">
             <div class="row content" style="padding-bottom: 0">
                 <div class="col">
                     Season :
@@ -47,7 +47,7 @@
                 </div>
                 <% } %>
                 <div class="col-padded">
-                    <button type="button" class="btn btn-xs btn-success" id="CompSelectSubmit"><strong>Go</strong></button>
+                    <button type="button" class="btn btn-xs btn-success" id="woodmoney-submit"><strong>Go</strong></button>
                 </div>
             </div>
         </form>
@@ -67,6 +67,8 @@
         <% if(!player) { %>
             <th>Player</th>
             <th>Pos</th>
+        <% } else { %>
+            <th>Season</th>
         <% } %>
         <% if(!team){ %><th>Team</th><% } %>
         <th data-sorter="false">Comp</th>
@@ -129,6 +131,8 @@
             <% if(!player) { %>
             <td style="white-space: nowrap;"><a href="/players/<%=pd['player_id']%>"><%= pd['name']%></a></td>
             <td><%= pd['position']%></td>
+            <% } else { %>
+            <td><%= pd['season']%></td>
             <% } %>
             <% if(!team){ %><td><a href="/teams/<%= pd['team']%>"><%= pd['team']%></a></td><% } %>
             <td><%= pd['woodmoneytier']%></td>

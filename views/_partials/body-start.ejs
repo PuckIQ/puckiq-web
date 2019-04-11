@@ -98,6 +98,7 @@
 
         let filters = getFilters();
         if(!filters.positions) delete filters.positions;
+        if(filters.season === 'all') delete filters.season;
 
         $('.x-teams-dropdown-options a').each(function (index, e) {
           let $target = $(e);

@@ -71,6 +71,34 @@ function PuckIQHandler(app, locator) {
 
     };
 
+    controller.downloadWoodmoney = function(req, res) {
+
+        let options = _.extend({ }, req.query);
+
+        controller._getWoodmoney(options).then((data) => {
+
+            let records = [];
+
+            if(data.results && data.results.length) {
+                records = csv_file_definition.build(data);
+            }
+
+            let file_name = `woodmoney.csv`;
+
+            res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
+            res.setHeader('Content-Type', 'text/csv');
+
+            stringify(records, { quoted_string: true }, (err, content) => {
+                res.send(content);
+            });
+
+        }, (err) => {
+            return error_handler.handle(req, res, err);
+        });
+
+    };
+
+
     controller.getPlayerWoodmoney = function(req, res) {
 
         if(!_.has(req.params, "player")) {
@@ -209,6 +237,10 @@ function getWoodmoneyPage(data, base_url){
     page.title =  `PuckIQ | Woodmoney ${sub_title ? '| ' + sub_title : ''}`;
     page.sub_title = `${sub_title || 'Woodmoney'}`;
 
+    if(!(data.request.from_date && data.request.to_date)){
+        data.request.season = data.request.season || 'all';
+    }
+
     let _request = _.extend({}, data.request);
     delete _request._id;
     _.each(_.keys(_request), key => {
@@ -218,6 +250,10 @@ function getWoodmoneyPage(data, base_url){
     base_url = url.parse(base_url).pathname;
 
     page.download_url = `${base_url}/download?${utils.encode_query(_request)}`;
+
+    //required for ejs
+    data.player = data.player || null;
+    data.team = data.team || null;
 
     return _.extend(page, data);
 }

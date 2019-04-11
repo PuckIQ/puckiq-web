@@ -4,7 +4,7 @@ function getFilters() {
     var tier = $('form.x-wm-filters #competition').val();
 
     var positions = null;
-    if ($('form.x-wm-filters [name=positions]').length) {
+    if ($('form.x-wm-filters .x-positions').length) {
         positions = $('form.x-wm-filters [name=positions]:checkbox:checked').map(function () {
             return $(this).val();
         }).get();
@@ -15,44 +15,10 @@ function getFilters() {
         }
     }
 
-    return {season: season, tier: tier, positions: positions};
-}
+    var min_toi = $('form.x-wm-filters #min_toi').val();
+    var max_toi = $('form.x-wm-filters #max_toi').val();
 
-function refreshTableFiltering() {
-
-    // var tier = $('#competition').val();
-    // var positions = $('[name=positions]:checkbox:checked').map(function() { return $(this).val(); }).get();
-    //
-    // $('#puckiq tbody tr').addClass('hidden');
-    //
-    // let classes_to_show = [];
-    // $.each(["l","r","c","d"], function(index, x) {
-    //     if (!!~positions.indexOf(x)) {
-    //         if (tier) {
-    //             classes_to_show.push({pos: x, tier: tier});
-    //         } else {
-    //             classes_to_show.push({pos: x});
-    //         }
-    //     }
-    // });
-    //
-    // $.each(classes_to_show, function(index, cls) {
-    //     if (cls.tier) {
-    //         console.log('#puckiq tbody tr.pos-' + cls.tier + ', #puckiq tbody tr.woodmoney-' + tier);
-    //         $('#puckiq tbody tr.pos-' + cls.pos + '.woodmoney-' + tier).removeClass('hidden');
-    //     } else {
-    //         $('#puckiq tbody tr.pos-' + cls.pos).removeClass('hidden');
-    //     }
-    // });
-    //
-    // refreshTableStyles();
-
-    // let filters = {
-    //     tier: tier,
-    //     positions: positions
-    // };
-    //
-    // $('.x-download').attr('href', wmState.base_download_url + '?' + $.param(filters));
+    return {season: season, tier: tier, positions: positions, min_toi: min_toi, max_toi: max_toi};
 }
 
 function refreshTableStyles() {
@@ -84,6 +50,10 @@ function redirectToSeason(seasonId) {
 function onPositionsChange() {
     var forwardPosSelected = $('#pos-c:checked, #pos-l:checked, #pos-r:checked').length;
     $('#pos-f').prop('checked', forwardPosSelected == 3);
+
+    var filters = getFilters();
+
+    $('form.x-wm-filters [name=positions]').val(filters.positions);
 }
 
 function onForwardChange() {
@@ -93,18 +63,20 @@ function onForwardChange() {
 
 $(function() {
 
+    //sorting done server side atm (SS)
     $("#puckiq").tablesorter({
         //sortList: [[0,0]],
         // sortInitialOrder  : 'desc',
         widgets           : ['columns'],
     }).bind("sortEnd", refreshTableStyles)
 
-    $("[name=positions]").change(onPositionsChange);
+    $(".x-positions").change(onPositionsChange);
     $("#pos-f").change(onForwardChange);
 
-    $("#competition").change(refreshTableFiltering);
-    $("[name=positions]").change(refreshTableFiltering);
-    $("#pos-f").change(refreshTableFiltering);
+    $("#woodmoney-submit").click(function(){
+        console.log('submitting form...');
+        $('form.x-wm-filters').submit();
+    });
 
     updateSeasonOnPageRender(wmState.request.season);
     refreshTableFiltering();

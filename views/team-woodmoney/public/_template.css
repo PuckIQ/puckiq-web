@@ -1,1 +1,0 @@
-/* Rename this file to match your folder name */

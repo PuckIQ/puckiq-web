@@ -26,13 +26,16 @@ module.exports = exports = function (app, request, config) {
     app.get('/about', puckIQHandler.getAbout);
     app.get('/glossary', puckIQHandler.getGlossary);
     app.get('/woodmoney', puckIQHandler.getWoodmoney);
-    app.get('/player-wowy', puckIQHandler.getPlayerWowy);
-    app.get('/player-woodmoney', puckIQHandler.getPlayerWoodmoney);
-    app.get('/player-search', puckIQHandler.searchPlayers);
+    app.get('/woodmoney/download', puckIQHandler.downloadWoodmoney);
     app.get('/teams/:team', puckIQHandler.getTeamWoodmoney);
     app.get('/teams/:team/download', puckIQHandler.downloadTeamWoodmoney);
     app.get('/players/:player', puckIQHandler.getPlayerWoodmoney);
     app.get('/players/:player/download', puckIQHandler.downloadPlayerWoodmoney);
+
+    app.get('/player-wowy', puckIQHandler.getPlayerWowy);
+    app.get('/player-woodmoney', puckIQHandler.getPlayerWoodmoney);
+    app.get('/player-search', puckIQHandler.searchPlayers);
+
     app.get('/_template', puckIQHandler.getTemplate);
 
     app.get('/error404', puckIQHandler.get404);

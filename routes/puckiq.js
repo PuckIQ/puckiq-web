@@ -212,7 +212,7 @@ function getWoodmoneyPage(data, base_url){
     let _request = _.extend({}, data.request);
     delete _request._id;
     _.each(_.keys(_request), key => {
-       if(!_request[key]) delete _request[key];
+       if(_request[key] === null) delete _request[key];
     });
 
     base_url = url.parse(base_url).pathname;

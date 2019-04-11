@@ -1,18 +1,21 @@
 <div class="container-fluid" role="main">
     <div class="page-header">
 
-        <h2><%= team.name %></h2>
+        <h2><%= sub_title %></h2>
 
         <form class="x-wm-filters">
-            <select id="season-input" name="season" style="visibility:hidden">
-                <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
-                <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
-                <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
-                <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
-                <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
-            </select>
-            <div class="row">
-                <div class="col-md-4">
+            <div class="row content" style="padding-bottom: 0">
+                <div class="col">
+                    Season :
+                    <select id="season-input" name="season" style="visibility:hidden">
+                        <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
+                        <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
+                        <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
+                        <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
+                        <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
+                    </select>
+                </div>
+                <div class="col-padded">
                     Competition :
                     <select name="competition" id="competition">
                         <option value="" <% if(!request.tier) { %>selected <% } %>>--select</option>
@@ -21,9 +24,8 @@
                         <option value="middle" <% if(request.tier === "middle") { %>selected <% } %>>Middle</option>
                         <option value="gritensity" <% if(request.tier === "gritensity") { %>selected <% } %>>Gritensity</option>
                     </select>
-                    <button type="button" class="btn btn-xs btn-success" id="CompSelectSubmit"><strong>Go</strong></button>
                 </div>
-                <div class="col-md-4 selector">
+                <div class="col-padded">
                     <input type="hidden" id="compSelect" value="All">
                     <input type="hidden" id="confSelect" value="All">
                     Forwards <input type="checkbox" id="pos-f" value="clr" <% if(request.selected_positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
@@ -31,6 +33,9 @@
                     LW <input type="checkbox" id="pos-l" name="positions" value="l" <% if(request.selected_positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
                     RW <input type="checkbox" id="pos-r" name="positions" value="r" <% if(request.selected_positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
                     Defence <input type="checkbox" id="pos-d" name="positions" value="d" <% if(request.selected_positions.d) { %>checked="checked" <% } %>  />
+                </div>
+                <div class="col-padded">
+                    <button type="button" class="btn btn-xs btn-success" id="CompSelectSubmit"><strong>Go</strong></button>
                 </div>
             </div>
         </form>
@@ -49,6 +54,7 @@
     <tr>
         <th>Player</th>
         <th>Pos</th>
+        <% if(!team){ %><th>Team</th><% } %>
         <th data-sorter="false">Comp</th>
         <th data-sorter="false">GT</th>
         <th>TOI</th>
@@ -107,6 +113,7 @@
         <tr class="<%= classname %>">
             <td style="white-space: nowrap;"><a href="/players/<%=pd['player_id']%>"><%= pd['name']%></a></td>
             <td><%= pd['position']%></td>
+            <% if(!team){ %><td><%= pd['team']%></td><% } %>
             <td><%= pd['woodmoneytier']%></td>
             <td>All</td>
             <td><%= formatDecimal( pd['evtoi'], 2) %></td>
@@ -151,12 +158,11 @@
 
     %>
 
+    //TODO change
     var wmState = {
-        season : <%= seasonId %>,
-        team : <%= team %>
+        request : <%- JSON.stringify(request) %>,
+        team : <%- JSON.stringify(team) %>
     };
-
-    console.log(wmState);
 
 </script>
 

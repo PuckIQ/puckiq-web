@@ -64,14 +64,17 @@ function PuckIQHandler(app, locator) {
 
         controller._getWoodmoney(req.query).then((data) => {
 
-            let title = 'PuckIQ | Woodmoney';
+            let sub_title = '';
             if(data.team) {
-                title += ` | ${data.team.name}`;
+                sub_title = data.team.name;
             } else if(data.player) {
-                title += ` | ${data.player.name}`;
+                sub_title = data.player.name;
             }
 
-            let page = _.extend({ title: title }, data);
+            let page = _.extend({
+                title: `PuckIQ | Woodmoney ${sub_title ? '| ' + sub_title : ''}`,
+                sub_title: `${sub_title || 'Woodmoney'}`
+                }, data);
 
             res.render('woodmoney/index', page);
 
@@ -83,7 +86,7 @@ function PuckIQHandler(app, locator) {
 
     controller.getPlayerWoodmoney = function(req, res) {
 
-        if(_.has(req.params, "player")) {
+        if(!_.has(req.params, "player")) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: player"));
         }
 
@@ -92,7 +95,8 @@ function PuckIQHandler(app, locator) {
         controller._getWoodmoney(options).then((data) => {
 
             let page = _.extend({
-                title: `PuckIQ | Woodmoney | ${(data.player && data.player.name) || 'unknown'}`
+                title: `PuckIQ | Woodmoney | ${(data.player && data.player.name) || 'unknown'}`,
+                sub_title: `${(data.player && data.player.name) || 'unknown'}`
             }, data);
 
             res.render('woodmoney/index', page);
@@ -104,7 +108,7 @@ function PuckIQHandler(app, locator) {
 
     controller.downloadPlayerWoodmoney = function(req, res) {
 
-        if(_.has(req.params, "player")) {
+        if(!_.has(req.params, "player")) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: player"));
         }
 
@@ -146,6 +150,7 @@ function PuckIQHandler(app, locator) {
 
             let page = _.extend({
                 title: `PuckIQ | Woodmoney | ${data.request.team.name}`,
+                sub_title : `${data.request.team.name}`
             }, data);
 
             res.render('woodmoney/index', page);
@@ -198,26 +203,12 @@ function PuckIQHandler(app, locator) {
                 options = _.extend({}, options, { count: 50 });
 
                 wm.query(options, iq).then((data) => {
-
-                    if(options.team) {
-                        data.team = iq.teams[options.team];
-                    }
-
-                    data.request.selected_positions = {};
-                    if(data.request.positions === "all"){
-                        _.each(_.keys(constants.positions), pos => data.request.selected_positions[pos] = true);
-                    } else {
-                        _.each(data.request.positions.split(''), pos => data.request.selected_positions[pos] = true);
-                    }
-
                     return resolve(data);
                 }, (err) => {
                     return reject(err);
                 });
             });
-
         });
-
     };
 
     controller.getTemplate = function(req, res) {

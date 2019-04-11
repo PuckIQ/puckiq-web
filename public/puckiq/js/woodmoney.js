@@ -88,7 +88,7 @@ $(function() {
     $("[name=positions]").change(refreshTableFiltering);
     $("#pos-f").change(refreshTableFiltering);
 
-    updateSeasonOnPageRender(wmState.season);
+    updateSeasonOnPageRender(wmState.request.season);
     refreshTableFiltering();
 
 });

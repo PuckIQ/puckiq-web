@@ -27,3 +27,12 @@ tr.hidden {
 .content {
     padding: 17px;
 }
+
+.col-padded {
+    float: left;
+    padding-left : 7px;
+}
+
+.col {
+    float: left;
+}

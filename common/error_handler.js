@@ -36,7 +36,9 @@ exports.handle = function(req, res, err) {
             res.render('404', error);
         } else if(!!~_.indexOf([404, 500, 503], statusCode)) {
             //known error pages
-            res.render(statusCode.toString(), { message: 'Sorry and error occurred'});
+            res.render(statusCode.toString(), {
+                message: 'Sorry and error occurred. For feedback or to report this issue please email slopitch@gmail.com'
+            });
         } else {
             res.render('500', error);
         }

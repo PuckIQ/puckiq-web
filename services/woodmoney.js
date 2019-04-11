@@ -110,11 +110,13 @@ class WoodmoneyService {
                 if (err) return reject(err);
             }
 
-            options.count ="adfasdasdfa";
+            let url = `${baseUrl}/woodmoney`;
 
-            let url = `${baseUrl}/woodmoney`; //?${utils.encode_query(options)}`;
-
-            request.post({ url: url, body: options, json: true, is_xhr: true }, (err, response, data) => {
+            request.post({
+                url: url,
+                body: options,
+                json: true,
+                headers : { 'X-Requested-With' : 'XMLHttpRequest'} }, (err, response, data) => {
                 if (err) return reject(new AppException(constants.exceptions.unhandled_error, "An unhandled error occurred", {err: err}));
                 return resolve(_.extend({request: options}, data));
             }, (err) => {

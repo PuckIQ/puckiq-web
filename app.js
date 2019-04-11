@@ -21,7 +21,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(favicon(path.join(__dirname, '/public/puckiq/img/favicon.ico')));
+
+app.use(favicon(path.join(__dirname, `/public/puckiq/img/favicon.${config.site.skin}.ico`)));
 
 const routes = require('./routes');
 const http = require('http');

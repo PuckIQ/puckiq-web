@@ -52,11 +52,11 @@ const definition = {
     "sacf": "SACF",
     "saca": "SACA",
     //"seasonId": "SeasonId",
-    "player_id": "PlayerId",
+    // "player_id": "PlayerId",
     //"cfpctra": "CF%RA",
-    "onoff": "ONOFF",
-    "wowytype": "WowyType",
-    "dffpctra": "DFF%RA"
+    // "onoff": "ONOFF",
+    // "wowytype": "WowyType",
+    // "dffpctra": "DFF%RA"
 };
 
 const apply_filter = (record, filters) => {

@@ -71,6 +71,7 @@
               </ul>
             </li>
             <!--<li><a href="#search">Players</a></li>-->
+            <li><a href="/woodmoney">Woodmoney</a></li>
             <li><a href="/glossary">Glossary</a></li>
             <li><a href="/about">About</a></li>
           </ul>
@@ -93,16 +94,15 @@
         addAutoComplete($('#player-search'), $('.x-player-results'));
       });
 
-      $(".x-teams-dropdown").click(function(){
+      $(".x-teams-dropdown").click(function() {
 
-        var tier = $('form.x-wm-filters #competition').val();
-        var positions = $('form.x-wm-filters [name=positions]:checkbox:checked').map(function() { return $(this).val(); }).get();
-        var season = $('form.x-wm-filters [name=season]').val();
+        let filters = getFilters();
+        if(!filters.positions) delete filters.positions;
 
-        $('.x-teams-dropdown-options a').each(function(index, e) {
+        $('.x-teams-dropdown-options a').each(function (index, e) {
           let $target = $(e);
           let href = '/teams/' + $target.attr('data-team');
-          href += '?' + $.param({woodmoneytier : tier, positions: positions, season: season});
+          href += '?' + $.param(filters);
           $target.attr("href", href);
         });
 

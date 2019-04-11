@@ -128,7 +128,7 @@ class WoodmoneyService {
                     return x;
                 });
 
-                data.team = (options.team && iq.teams[options.team]) || null;;
+                data.team = (options.team && iq.teams[options.team]) || null;
 
                 data.request.selected_positions = {};
                 if(data.request.positions === "all"){

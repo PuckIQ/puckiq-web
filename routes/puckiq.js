@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const express = require('express');
+const url = require('url');
 const stringify = require('csv-stringify/lib/es5');
 const constants = require('../common/constants');
 const utils = require('../common/utils');
@@ -63,21 +64,7 @@ function PuckIQHandler(app, locator) {
     controller.getWoodmoney = function(req, res) {
 
         controller._getWoodmoney(req.query).then((data) => {
-
-            let sub_title = '';
-            if(data.team) {
-                sub_title = data.team.name;
-            } else if(data.player) {
-                sub_title = data.player.name;
-            }
-
-            let page = _.extend({
-                title: `PuckIQ | Woodmoney ${sub_title ? '| ' + sub_title : ''}`,
-                sub_title: `${sub_title || 'Woodmoney'}`
-                }, data);
-
-            res.render('woodmoney/index', page);
-
+            res.render('woodmoney/index', getWoodmoneyPage(data, req.url));
         }, (err) => {
             return error_handler.handle(req, res, err);
         });
@@ -93,14 +80,7 @@ function PuckIQHandler(app, locator) {
         let options = _.extend({ player: req.params.player }, req.query);
 
         controller._getWoodmoney(options).then((data) => {
-
-            let page = _.extend({
-                title: `PuckIQ | Woodmoney | ${(data.player && data.player.name) || 'unknown'}`,
-                sub_title: `${(data.player && data.player.name) || 'unknown'}`
-            }, data);
-
-            res.render('woodmoney/index', page);
-
+            res.render('woodmoney/index', getWoodmoneyPage(data, req.url));
         }, (err) => {
             return error_handler.handle(req, res, err);
         });
@@ -147,14 +127,7 @@ function PuckIQHandler(app, locator) {
         let options = _.extend({ team: req.params.team }, req.query);
 
         controller._getWoodmoney(options).then((data) => {
-
-            let page = _.extend({
-                title: `PuckIQ | Woodmoney | ${data.request.team.name}`,
-                sub_title : `${data.request.team.name}`
-            }, data);
-
-            res.render('woodmoney/index', page);
-
+            res.render('woodmoney/index', getWoodmoneyPage(data, req.url));
         }, (err) => {
             return error_handler.handle(req, res, err);
         });
@@ -222,67 +195,31 @@ function PuckIQHandler(app, locator) {
     };
 }
 
-function massageTeamResponse(team, seasonId, responseJSON) {
+function getWoodmoneyPage(data, base_url){
 
-    var players = [];
-    for(var i = 0; i < responseJSON.length; i++) {
-        players.push(massagePlayerData(responseJSON[i]));
+    let page = {};
+
+    let sub_title = '';
+    if(data.team) {
+        sub_title = data.team.name;
+    } else if(data.player) {
+        sub_title = data.player.name;
     }
 
-    return {
-        team: team,
-        seasonId: seasonId,
-        season: formatSeason(seasonId),
-        players: players
-    }
-}
+    page.title =  `PuckIQ | Woodmoney ${sub_title ? '| ' + sub_title : ''}`;
+    page.sub_title = `${sub_title || 'Woodmoney'}`;
 
-function massagePlayerResponse(playerID, responseJSON) {
-    let player = extractPlayerInfo(responseJSON[0]);
-    let stats = [];
-    for(var i = 0; i < responseJSON.length; i++) {
-        stats.push(massagePlayerData(responseJSON[i]));
-    }
+    let _request = _.extend({}, data.request);
+    delete _request._id;
+    _.each(_.keys(_request), key => {
+       if(!_request[key]) delete _request[key];
+    });
 
-    return {
-        player_id: playerID,
-        name: player.name,
-        position: player.positions,
-        playerStats: _.sortBy(stats, x => x.seasonId * -1),
-    }
-}
+    base_url = url.parse(base_url).pathname;
 
-function extractPlayerInfo(playerData) {
+    page.download_url = `${base_url}/download?${utils.encode_query(_request)}`;
 
-    let player = {
-        player_id : playerData.pid,
-        name : playerData.name,
-        positions : playerData.positions
-    };
-    player.positions = player.positions && player.positions.length ? player.positions[0] : {};
-    return player;
-}
-
-function formatSeason(seasonId) {
-
-    if (seasonId === undefined) {
-        return '2018-2019'
-    } else if (_.isNumber(seasonId)) {
-        let season = seasonId.toString();
-        return season.substr(0, 4) + '-' + season.substr(6);
-    }
-    return seasonId.substr(0, 4) + '-' + seasonId.substr(4);
-}
-
-
-// Make copy; this is the spot to perform any alterations to the data
-function massagePlayerData(playerData) {
-    let player = Object.assign({}, playerData);
-    player.position = player.positions && player.positions.length ? player.positions[0] : {};
-    player.seasonId = player.season;
-    player.season = formatSeason(player.season);
-    player.player_id = player.player_id;
-    return player;
+    return _.extend(page, data);
 }
 
 module.exports = PuckIQHandler;

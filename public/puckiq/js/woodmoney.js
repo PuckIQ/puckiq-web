@@ -1,39 +1,58 @@
+function getFilters() {
+
+    var season = $('form.x-wm-filters [name=season]').val();
+    var tier = $('form.x-wm-filters #competition').val();
+
+    var positions = null;
+    if ($('form.x-wm-filters [name=positions]').length) {
+        positions = $('form.x-wm-filters [name=positions]:checkbox:checked').map(function () {
+            return $(this).val();
+        }).get();
+        if (positions.length === 4) {
+            positions = 'all';
+        } else {
+            positions = positions.join('');
+        }
+    }
+
+    return {season: season, tier: tier, positions: positions};
+}
+
 function refreshTableFiltering() {
 
-    var tier = $('#competition').val();
-    var positions = $('[name=positions]:checkbox:checked').map(function() { return $(this).val(); }).get();
+    // var tier = $('#competition').val();
+    // var positions = $('[name=positions]:checkbox:checked').map(function() { return $(this).val(); }).get();
+    //
+    // $('#puckiq tbody tr').addClass('hidden');
+    //
+    // let classes_to_show = [];
+    // $.each(["l","r","c","d"], function(index, x) {
+    //     if (!!~positions.indexOf(x)) {
+    //         if (tier) {
+    //             classes_to_show.push({pos: x, tier: tier});
+    //         } else {
+    //             classes_to_show.push({pos: x});
+    //         }
+    //     }
+    // });
+    //
+    // $.each(classes_to_show, function(index, cls) {
+    //     if (cls.tier) {
+    //         console.log('#puckiq tbody tr.pos-' + cls.tier + ', #puckiq tbody tr.woodmoney-' + tier);
+    //         $('#puckiq tbody tr.pos-' + cls.pos + '.woodmoney-' + tier).removeClass('hidden');
+    //     } else {
+    //         $('#puckiq tbody tr.pos-' + cls.pos).removeClass('hidden');
+    //     }
+    // });
+    //
+    // refreshTableStyles();
 
-    $('#puckiq tbody tr').addClass('hidden');
-
-    let classes_to_show = [];
-    $.each(["l","r","c","d"], function(index, x) {
-        if (!!~positions.indexOf(x)) {
-            if (tier) {
-                classes_to_show.push({pos: x, tier: tier});
-            } else {
-                classes_to_show.push({pos: x});
-            }
-        }
-    });
-
-    $.each(classes_to_show, function(index, cls) {
-        if (cls.tier) {
-            console.log('#puckiq tbody tr.pos-' + cls.tier + ', #puckiq tbody tr.woodmoney-' + tier);
-            $('#puckiq tbody tr.pos-' + cls.pos + '.woodmoney-' + tier).removeClass('hidden');
-        } else {
-            $('#puckiq tbody tr.pos-' + cls.pos).removeClass('hidden');
-        }
-    });
-
-    refreshTableStyles();
-    let team_id = '<%= team._id %>';
-
-    let filters = {
-        woodmoneytier: tier,
-        positions: positions
-    };
-
-    $('.x-download').attr('href', '/teams/' + team_id + '/download?' + $.param(filters));
+    // let filters = {
+    //     tier: tier,
+    //     positions: positions
+    // };
+    //
+    // $('.x-download').attr('href', wmState.base_download_url + '?' + $.param(filters));
 }
 
 function refreshTableStyles() {
@@ -42,7 +61,6 @@ function refreshTableStyles() {
 }
 
 function updateSeasonOnPageRender(season) {
-    console.log("adfasdasd", season);
     $('#season-input').change(function () {
         var newSeason = $('#season-input').val();
         window.location = redirectToSeason(newSeason);
@@ -76,7 +94,7 @@ function onForwardChange() {
 $(function() {
 
     $("#puckiq").tablesorter({
-        sortList: [[0,0]],
+        //sortList: [[0,0]],
         // sortInitialOrder  : 'desc',
         widgets           : ['columns'],
     }).bind("sortEnd", refreshTableStyles)

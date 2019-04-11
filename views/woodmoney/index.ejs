@@ -100,7 +100,7 @@
 
 <!--End render table-->
 <div style="text-align: center">
-    <a href="#todo" class="x-download">download csv</a>
+    <a href="<%= download_url %>" class="x-download">download csv</a>
 </div>
 
 <script>
@@ -108,7 +108,8 @@
 
     function renderTableRow(playerData) {
                 var pd = playerData;
-                var classname = 'pos-' + pd['position'].toLowerCase() + ' woodmoney-' + pd['woodmoneytier'].toLowerCase() + ' hidden';
+                var classname = '';
+                //var classname = 'pos-' + pd['position'].toLowerCase() + ' woodmoney-' + pd['woodmoneytier'].toLowerCase() + ' hidden';
             %>
         <tr class="<%= classname %>">
             <td style="white-space: nowrap;"><a href="/players/<%=pd['player_id']%>"><%= pd['name']%></a></td>
@@ -158,6 +159,7 @@
 
     %>
 
+    //used by woodmoney
     //TODO change
     var wmState = {
         request : <%- JSON.stringify(request) %>,

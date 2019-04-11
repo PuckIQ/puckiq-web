@@ -104,7 +104,7 @@ exports.validateInteger = function(value, name, options) {
  * @param {regex} [options.regex] will validate that value matches the provided regex
  * @returns {AppException} err
  */
-exports.validateString = function(value, name, options) {
+exports.validateString = function(value, name, options = {}) {
 
     if(!options.nullable) {
         let err = exports.validateNonNull(value, name);

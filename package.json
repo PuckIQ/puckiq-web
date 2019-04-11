@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "mocha": "2.5.3",
-    "shelljs": "0.8.1"
+    "shelljs": "0.8.1",
+    "should": "11.1.2"
   }
 }

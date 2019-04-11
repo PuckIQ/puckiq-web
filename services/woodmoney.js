@@ -25,6 +25,8 @@ class WoodmoneyService {
                 //player: null,
                 //team: null,
                 //tier: null,
+                min_toi: null,
+                max_toi: null,
                 positions: 'all',
                 offset: 0,
                 sort: 'evtoi',
@@ -44,10 +46,14 @@ class WoodmoneyService {
 
             } else {
 
-                if (_.has(options, "season") && options.season) {
-                    options.season = parseInt(options.season);
-                    let err = validator.validateSeason(options.season, "season");
-                    if (err) return reject(err);
+                if(_.has(options, "season") && options.season) {
+                    if(options.season !== "all") {
+                        options.season = parseInt(options.season);
+                        let err = validator.validateSeason(options.season, "season");
+                        if(err) return reject(err);
+                    }
+                } else if(options.player) {
+                    options.season = 'all';
                 } else {
                     let current_season = iq.current_woodmoney_season;
                     options.season = current_season && current_season._id;
@@ -59,6 +65,26 @@ class WoodmoneyService {
                 options.player = parseInt(options.player);
                 let err = validator.validateInteger(options.player, "player", {nullable: false, min: 1});
                 if (err) return reject(err);
+            }
+
+            if (options.min_toi) {
+                options.min_toi = parseInt(options.min_toi);
+                let err = validator.validateInteger(options.min_toi, "min_toi", {nullable: true, min: 0});
+                if (err) return reject(err);
+            }
+
+            if (options.max_toi) {
+                options.max_toi = parseInt(options.max_toi);
+                let err = validator.validateInteger(options.max_toi, "max_toi", {nullable: true, min: 0});
+                if (err) return reject(err);
+            }
+
+            if(options.min_toi && options.max_toi && options.min_toi > options.max_toi){
+                return new AppException(
+                    constants.exceptions.invalid_argument,
+                    `Min toi cannot be greater than max toi`,
+                    {param: 'min_toi', value: value}
+                );
             }
 
             if (options.team) {

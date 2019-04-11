@@ -36,3 +36,7 @@ tr.hidden {
 .col {
     float: left;
 }
+
+.toi_minutes {
+    width: 40px;
+}

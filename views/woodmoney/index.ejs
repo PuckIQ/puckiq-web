@@ -1,13 +1,16 @@
 <div class="container-fluid" role="main">
     <div class="page-header">
 
-        <h2><%= sub_title %></h2>
+        <h2><%= sub_title %> <% if(player) { %><small><%= player.positions %></small><% } %></h2>
 
         <form class="x-wm-filters">
             <div class="row content" style="padding-bottom: 0">
                 <div class="col">
                     Season :
                     <select id="season-input" name="season" style="visibility:hidden">
+                        <% if(player) { %>
+                        <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
+                        <% } %>
                         <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
                         <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
                         <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
@@ -25,15 +28,24 @@
                         <option value="gritensity" <% if(request.tier === "gritensity") { %>selected <% } %>>Gritensity</option>
                     </select>
                 </div>
+                <% if(!request.player){ %>
                 <div class="col-padded">
-                    <input type="hidden" id="compSelect" value="All">
-                    <input type="hidden" id="confSelect" value="All">
+                    <input type="hidden" id="positions" name="positions" value="<%= request.positions%>">
                     Forwards <input type="checkbox" id="pos-f" value="clr" <% if(request.selected_positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
-                    Centres <input type="checkbox" id="pos-c" name="positions" value="c" <% if(request.selected_positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    LW <input type="checkbox" id="pos-l" name="positions" value="l" <% if(request.selected_positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    RW <input type="checkbox" id="pos-r" name="positions" value="r" <% if(request.selected_positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    Defence <input type="checkbox" id="pos-d" name="positions" value="d" <% if(request.selected_positions.d) { %>checked="checked" <% } %>  />
+                    Centres <input type="checkbox" id="pos-c" class="x-positions" value="c" <% if(request.selected_positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    LW <input type="checkbox" id="pos-l" class="x-positions" value="l" <% if(request.selected_positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    RW <input type="checkbox" id="pos-r" class="x-positions" value="r" <% if(request.selected_positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    Defence <input type="checkbox" id="pos-d" class="x-positions" value="d" <% if(request.selected_positions.d) { %>checked="checked" <% } %>  />
                 </div>
+                <div class="col-padded">
+                    Min TOI:
+                    <input type="text" id="min_toi" name="min_toi" placeholder="min" class="toi_minutes"
+                           value="<% if(request.min_toi !== null){%><%= request.min_toi %><% } %>" />
+                    Max TOI:
+                    <input type="text" id="max_toi" name="max_toi" placeholder="max" class="toi_minutes"
+                           value="<% if(request.max_toi !== null){%><%= request.max_toi %><% } %>" />
+                </div>
+                <% } %>
                 <div class="col-padded">
                     <button type="button" class="btn btn-xs btn-success" id="CompSelectSubmit"><strong>Go</strong></button>
                 </div>
@@ -52,8 +64,10 @@
 <table id="puckiq" class="table table-bordered table-condensed table-hover" >
     <thead>
     <tr>
-        <th>Player</th>
-        <th>Pos</th>
+        <% if(!player) { %>
+            <th>Player</th>
+            <th>Pos</th>
+        <% } %>
         <% if(!team){ %><th>Team</th><% } %>
         <th data-sorter="false">Comp</th>
         <th data-sorter="false">GT</th>
@@ -112,9 +126,11 @@
                 //var classname = 'pos-' + pd['position'].toLowerCase() + ' woodmoney-' + pd['woodmoneytier'].toLowerCase() + ' hidden';
             %>
         <tr class="<%= classname %>">
+            <% if(!player) { %>
             <td style="white-space: nowrap;"><a href="/players/<%=pd['player_id']%>"><%= pd['name']%></a></td>
             <td><%= pd['position']%></td>
-            <% if(!team){ %><td><%= pd['team']%></td><% } %>
+            <% } %>
+            <% if(!team){ %><td><a href="/teams/<%= pd['team']%>"><%= pd['team']%></a></td><% } %>
             <td><%= pd['woodmoneytier']%></td>
             <td>All</td>
             <td><%= formatDecimal( pd['evtoi'], 2) %></td>

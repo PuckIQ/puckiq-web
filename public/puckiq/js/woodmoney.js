@@ -66,15 +66,21 @@ function onForwardChange() {
 
 $(function() {
 
-    //sorting done server side atm (SS)
-    $("#puckiq").tablesorter({
-        sortList: [[4,1]],
+    var options = {
         //sortInitialOrder  : 'desc',
         widgets           : ['zebra','columns','stickyHeaders'],
         widgetOptions: {
             stickyHeaders_attachTo : null
         }
-    }); //.bind("sortEnd", refreshTableStyles);
+    };
+
+    var $sort = $("#puckiq thead tr th[data-sort='" + wmState.request.sort + "']");
+    if($sort && $sort.length){
+        options.sortList = [[$sort[0].cellIndex,1]];
+    }
+
+    //sorting done server side atm (SS)
+    $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
 
     $(".x-positions").change(onPositionsChange);
     $("#pos-f").change(onForwardChange);

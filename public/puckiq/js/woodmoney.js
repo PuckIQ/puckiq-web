@@ -68,10 +68,13 @@ $(function() {
 
     //sorting done server side atm (SS)
     $("#puckiq").tablesorter({
-        //sortList: [[0,0]],
-        // sortInitialOrder  : 'desc',
-        widgets           : ['columns'],
-    }).bind("sortEnd", refreshTableStyles);
+        sortList: [[4,1]],
+        //sortInitialOrder  : 'desc',
+        widgets           : ['zebra','columns','stickyHeaders'],
+        widgetOptions: {
+            stickyHeaders_attachTo : null
+        }
+    }); //.bind("sortEnd", refreshTableStyles);
 
     $(".x-positions").change(onPositionsChange);
     $("#pos-f").change(onForwardChange);

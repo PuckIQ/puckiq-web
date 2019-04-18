@@ -99,8 +99,12 @@
             <th data-sort="ga">GA</th>
             <th data-sort="gfpct">GF%</th>
 
+            <th data-sort="gfpct">ONSH%</th>
+            <th data-sort="gfpct">ONSV%</th>
+            <th data-sort="gfpct">PDO</th>
             <th data-sort="gf60">GF/60</th>
             <th data-sort="ga60">GA/60</th>
+
             <th data-sort="ozspct">OZS%</th>
             <th data-sort="fo60">FO/60</th>
         </tr>
@@ -163,8 +167,12 @@
             <td><%= pd['ga']%></td>
             <td><%= formatDecimal( pd['gfpct'] )%></td>
 
+            <td><%= formatDecimal( pd['onshpct'], 1)%></td>
+            <td><%= formatDecimal( pd['onsvpct'], 1)%></td>
+            <td><%= formatDecimal( pd['pdo'], 0)%></td>
             <td><%= formatDecimal( pd['gf60'] )%></td>
             <td><%= formatDecimal( pd['ga60'] )%></td>
+
             <td><%= formatDecimal( pd['ozspct'] )%></td>
             <td><%= formatDecimal( pd['fo60'] )%></td>
         </tr>

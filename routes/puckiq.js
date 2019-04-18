@@ -130,7 +130,7 @@ function PuckIQHandler(app, locator) {
                 records = csv_file_definition.build(data);
             }
 
-            let player_name = data.name.replace(/\s/g, "_");
+            let player_name = data.player.name.replace(/\s/g, "_");
             let file_name = `${player_name}_woodmoney.csv`;
 
             res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);

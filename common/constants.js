@@ -2,6 +2,7 @@
 
 //ALPHABETICAL
 module.exports = {
+    MAX_COUNT : 100,
     exceptions: {
         invalid_argument: 'invalid_argument', // 400
         invalid_request: 'invalid_request', // 400

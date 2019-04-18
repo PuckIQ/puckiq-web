@@ -1,8 +1,7 @@
 const _ = require('lodash');
 const constants = require('../common/constants');
-const AppException = require('../common/app_exception');
-const utils = require('../common/utils');
 const validator = require('../common/validator');
+const AppException = require('../common/app_exception');
 
 class WoodmoneyService {
 
@@ -31,7 +30,7 @@ class WoodmoneyService {
                 offset: 0,
                 sort: 'evtoi',
                 sort_direction: 'desc',
-                count: 50
+                count: constants.MAX_COUNT
             };
 
             options = _.extend({}, defaults, options);
@@ -135,7 +134,7 @@ class WoodmoneyService {
 
             if (options.count) {
                 options.count = parseInt(options.count);
-                let err = validator.validateInteger(options.count, 'count', {min: 1, max: 50});
+                let err = validator.validateInteger(options.count, 'count', {min: 1, max: constants.MAX_COUNT});
                 if (err) return reject(err);
             }
 

@@ -98,7 +98,6 @@ function PuckIQHandler(app, locator) {
 
     };
 
-
     controller.getPlayerWoodmoney = function(req, res) {
 
         if(!_.has(req.params, "player")) {
@@ -200,8 +199,8 @@ function PuckIQHandler(app, locator) {
 
             cache.init().then((iq) => {
 
-                //always do 50 for now...
-                options = _.extend({}, options, { count: 50 });
+                //always do 100 for now...
+                options = _.extend({}, options, { count: constants.MAX_COUNT });
 
                 wm.query(options, iq).then((data) => {
                     return resolve(data);

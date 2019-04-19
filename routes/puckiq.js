@@ -200,7 +200,7 @@ function PuckIQHandler(app, locator) {
             cache.init().then((iq) => {
 
                 //always do 50 for now...
-                options = _.extend({}, { count: 100 }, options);
+                options = _.extend({}, { count: constants.MAX_COUNT }, options);
 
                 wm.query(options, iq).then((data) => {
                     return resolve(data);

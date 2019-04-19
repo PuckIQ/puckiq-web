@@ -1,3 +1,5 @@
+"use strict";
+
 const PuckIQHandler = require('./puckiq');
 const AjaxHandler = require('./ajax');
 const LocalCache = require('../common/local_cache');

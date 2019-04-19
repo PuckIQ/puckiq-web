@@ -74,10 +74,10 @@ $(function() {
         }
     };
 
-    var $sort = $("#puckiq thead tr th[data-sort='" + wmState.request.sort + "']");
-    if($sort && $sort.length){
-        options.sortList = [[$sort[0].cellIndex,1]];
-    }
+    // var $sort = $("#puckiq thead tr th[data-sort='" + wmState.request.sort + "']");
+    // if($sort && $sort.length){
+    //     options.sortList = [[$sort[0].cellIndex,1]];
+    // }
 
     //sorting done server side atm (SS)
     $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);

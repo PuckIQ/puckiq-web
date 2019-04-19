@@ -73,7 +73,7 @@ function PuckIQHandler(app, locator) {
 
     controller.downloadWoodmoney = function(req, res) {
 
-        let options = _.extend({ }, req.query);
+        let options = _.extend({ }, req.query, { count: 10000});
 
         controller._getWoodmoney(options).then((data) => {
 
@@ -168,7 +168,7 @@ function PuckIQHandler(app, locator) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: team"));
         }
 
-        let options = _.extend({ team: req.params.team }, req.query);
+        let options = _.extend({ team: req.params.team }, req.query, {count : 1000});
 
         controller._getWoodmoney(options).then((data) => {
 
@@ -201,7 +201,7 @@ function PuckIQHandler(app, locator) {
             cache.init().then((iq) => {
 
                 //always do 50 for now...
-                options = _.extend({}, options, { count: 50 });
+                options = _.extend({}, { count: 100 }, options);
 
                 wm.query(options, iq).then((data) => {
                     return resolve(data);

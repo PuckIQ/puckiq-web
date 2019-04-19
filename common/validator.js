@@ -62,7 +62,7 @@ exports.validateId = function(value, name, options) {
  * @param {number} [options.max] will validate that value <= options.max
  * @returns {AppException} err
  */
-exports.validateInteger = function(value, name, options) {
+exports.validateInteger = function(value, name, options = {}) {
 
     if(!options.nullable) {
         let err = exports.validateNonNull(value, name);

@@ -135,7 +135,7 @@ class WoodmoneyService {
 
             if (options.count) {
                 options.count = parseInt(options.count);
-                let err = validator.validateInteger(options.count, 'count', {min: 1, max: 50});
+                let err = validator.validateInteger(options.count, 'count'); //, {min: 1, max: 50});
                 if (err) return reject(err);
             }
 

@@ -1,13 +1,15 @@
 <div class="container-fluid" role="main">
     <div class="page-header">
 
-        <h2><%= sub_title %> <% if(player) { %><small><%= player.positions %></small><% } %></h2>
+        <h2>
+            <%= sub_title %>
+            <% if(player) { %><small><%= player.positions %></small><% } %>
+        </h2>
 
         <form class="x-wm-filters" method="get">
             <div class="row" style="padding-top: 17px;">
                 <div class="col-padded">
-                    Season :
-                    <select id="season-input" name="season" style="visibility:hidden">
+                    <select id="season-input" name="season" class="" style="visibility:hidden">
                         <% if(player) { %>
                         <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
                         <% } %>
@@ -16,12 +18,21 @@
                         <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
                         <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
                         <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
+                        <option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>
                     </select>
+                    <div id="date-range-modal" class="modal" style="height: 340px;">
+                        <h4>Select date range for games</h4>
+                        From: <input type="text" class="x-date-range" id="dp-from" data-target="from_date" />
+                        To: <input type="text" class="x-date-range" id="dp-to" data-target="to_date" />
+                        <button type="button" class="btn btn-xs btn-success x-date-range-submit"><strong>Go</strong></button>
+                    </div>
+                    <!--not sure why this has to be outside modal div -->
+                    <input type="hidden" id="from_date" name="from_date" />
+                    <input type="hidden" id="to_date" name="to_date" />
                 </div>
                 <div class="col-padded">
-                    Competition :
                     <select id="tier" name="tier">
-                        <option value="" <% if(!request.tier) { %>selected <% } %>>--select</option>
+                        <option value="" <% if(!request.tier) { %>selected <% } %>>--Competition</option>
                         <option value="All" <% if(request.tier === "All") { %>selected <% } %>>All</option>
                         <option value="Elite" <% if(request.tier === "Elite") { %>selected <% } %>>Elite</option>
                         <option value="Middle" <% if(request.tier === "Middle") { %>selected <% } %>>Middle</option>
@@ -47,7 +58,7 @@
                 </div>
                 <% } %>
                 <div class="col-padded">
-                    <button type="button" class="btn btn-xs btn-success" id="woodmoney-submit"><strong>Go</strong></button>
+                    <button type="button" class="btn btn-xs btn-success x-woodmoney-submit"><strong>Go</strong></button>
                 </div>
             </div>
         </form>

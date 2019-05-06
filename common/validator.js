@@ -149,7 +149,7 @@ exports.validateString = function(value, name, options = {}) {
  * @param {number} [options.max] will validate that value <= options.max
  * @returns {AppException} err
  */
-exports.validateDate = function(value, name, options) {
+exports.validateDate = function(value, name, options={}) {
 
     if(!options.nullable) {
         let err = exports.validateNonNull(value, name);

@@ -35,12 +35,13 @@ class WoodmoneyService {
 
             options = _.extend({}, defaults, options);
 
-            if (!_.has(options, "from_date") && _.has(options, "to_date")) {
+            if (_.has(options, "from_date") && _.has(options, "to_date")) {
 
-                let err = validator.validateDate(options.from_date, "from_date");
+                // dates are in the format of ms since epoch
+                let err = validator.validateDate(parseInt(options.from_date), "from_date");
                 if (err) return reject(err);
 
-                err = validator.validateDate(options.to_date, "to_date");
+                err = validator.validateDate(parseInt(options.to_date), "to_date");
                 if (err) return reject(err);
 
             } else {

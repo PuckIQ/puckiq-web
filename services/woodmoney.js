@@ -140,7 +140,7 @@ class WoodmoneyService {
 
             let url = `${baseUrl}/woodmoney`;
 
-            console.log('options', JSON.stringify(options));
+            // console.log('options', JSON.stringify(options));
             request.post({
                 url: url,
                 body: options,

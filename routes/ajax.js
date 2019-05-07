@@ -27,7 +27,6 @@ function AjaxHelper(app, locator) {
         rq.get({ url: url, json: true }, (err, response, data) => {
             var datacheck = (!err && response.statusCode !== 200) ? false : true;
             var wowy = (!err && response.statusCode !== 200) ? [] : data;
-            console.log("getting stats from", url);
 
             helper._renderPlayerResults(req, res, {
                 view: '__player-wowy-range/index',
@@ -95,7 +94,6 @@ function AjaxHelper(app, locator) {
             let datacheck = (!err && response.statusCode !== 200) ? false : true;
             let wowy = (!err && response.statusCode !== 200) ? [] : data;
 
-            console.log(data);
             helper._renderPlayerResults(req, res, {
                 view : '__player-woodmoney-season/index',
                 player_id : query.q2player1id,
@@ -108,9 +106,6 @@ function AjaxHelper(app, locator) {
 
     this.getPlayerSearchResults = (req, res) => {
 
-        console.log("searching players body", req.body);
-        console.log("searching players query", req.query);
-
         // res.jsonp([
         //     {id: '8470638', name: "Connor McDavid", position : "C", team: 'EDM'},
         //     {id: '8470638', name: "Connor Brown", position : "LW", team: 'TBL'},
@@ -121,7 +116,6 @@ function AjaxHelper(app, locator) {
 
         let url = `${baseUrl}/players/search?${utils.encode_query(req.query)}`;
 
-        console.log(url);
         rq.get({ url: url, json: true }, (err, response, data) => {
             res.jsonp(data);
         });

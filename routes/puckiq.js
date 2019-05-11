@@ -36,7 +36,7 @@ function PuckIQHandler(app, locator) {
 
         }, (err) => {
             console.log("Error: " + err); //TODO better
-            res.render('500');
+            return error_handler.handle(req, res, err);
         });
     };
 

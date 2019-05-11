@@ -119,7 +119,7 @@ function AjaxHelper(app, locator) {
         rq.get({ url: url, json: true }, (err, response, data) => {
             res.jsonp(data);
         });
-    }
+    };
 
     this._renderPlayerResults = function(req, res, options) {
         rq.get({ url: baseUrl + '/players/' + options.player_id, json: true }, (err, r, d) => {

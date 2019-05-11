@@ -35,6 +35,11 @@ class WoodmoneyService {
 
             options = _.extend({}, defaults, options);
 
+            if(options.season === 'custom') {
+                console.log("todo cleanup season.custom");
+                delete options.season;
+            }
+
             if (_.has(options, "from_date") && _.has(options, "to_date")) {
 
                 // dates are in the format of ms since epoch
@@ -149,6 +154,10 @@ class WoodmoneyService {
                 headers : { 'X-Requested-With' : 'XMLHttpRequest'} }, (err, response, data) => {
 
                 if (err) return reject(new AppException(constants.exceptions.unhandled_error, "An unhandled error occurred", {err: err}));
+
+                if(response.statusCode === 400) {
+                    return reject(new AppException(constants.exceptions.invalid_request, "Invalid request. Please check your parameters and try again. If you think this is an error please report to slopitch@gmail.com"));
+                }
 
                 data.results = _.map(data.results, x => {
                     x.position = x.positions.length ? x.positions[0] : '';

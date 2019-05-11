@@ -155,6 +155,7 @@ class WoodmoneyService {
 
                 if (err) return reject(new AppException(constants.exceptions.unhandled_error, "An unhandled error occurred", {err: err}));
 
+                //shouldnt really be possible as web should prevalidate but just in case
                 if(response.statusCode === 400) {
                     return reject(new AppException(constants.exceptions.invalid_request, "Invalid request. Please check your parameters and try again. If you think this is an error please report to slopitch@gmail.com"));
                 }

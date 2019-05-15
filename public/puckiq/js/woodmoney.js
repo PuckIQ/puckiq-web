@@ -20,15 +20,20 @@ function getFilters() {
     var from_date = $('form.x-wm-filters #from_date').val();
     var to_date = $('form.x-wm-filters #to_date').val();
 
-    return {
+    var filters = {
         season: season,
         tier: tier,
         positions: positions,
         min_toi: min_toi,
-        max_toi: max_toi,
-        from_date: from_date,
-        to_date: to_date
+        max_toi: max_toi
     };
+
+    if(from_date && to_date) {
+        filters.from_date = new Date(from_date).getTime();
+        filters.to_date = new Date(to_date).getTime();
+    }
+
+    return filters;
 }
 
 function updateSeasonOnPageRender(season) {
@@ -39,7 +44,9 @@ function updateSeasonOnPageRender(season) {
             console.log("showing modal");
             $('#date-range-modal').modal({});
         } else {
-            window.location = redirectToSeason(newSeason);
+            $("#from_date").val('');
+            $("#to_date").val('');
+            submitForm();
         }
     });
 
@@ -47,15 +54,14 @@ function updateSeasonOnPageRender(season) {
     $('#season-input').css('visibility', 'visible')
 }
 
-function redirectToSeason(seasonId) {
-    var url = window.location.href;
-    if (url.indexOf('season=') > -1) {
-        url = url.replace(/season=\d+/, 'season=' + seasonId);
-    } else {
-        url += (url.indexOf('season=') == -1) ? '?' : '&';
-        url += 'season=' + seasonId;
-    }
-    return url;
+function submitForm(clearSeason){
+    console.log('submitting form...', clearSeason);
+    // console.log(getFilters());
+    // console.log($("input[name='to_date']").val());
+    // if(clearSeason) {
+    //     $("#season-input").val('');
+    // }
+    $('form.x-wm-filters').submit();
 }
 
 function onPositionsChange() {
@@ -119,16 +125,6 @@ $(function() {
         }
     });
 
-    function submitForm(clearSeason){
-        console.log('submitting form...', clearSeason);
-        // console.log(getFilters());
-        // console.log($("input[name='to_date']").val());
-        // if(clearSeason) {
-        //     $("#season-input").val('');
-        // }
-        $('form.x-wm-filters').submit();
-    }
-
     $(".x-woodmoney-submit").click(function(){
         submitForm(false);
     });
@@ -140,9 +136,13 @@ $(function() {
     updateSeasonOnPageRender(wmState.request.season);
 
     $( ".x-date-range" ).datepicker({});
-    let today = new Date();
-    today.setHours(0, 0, 0, 0);
-    console.log("today", today);
-    $("#dp-to").datepicker("setDate", today);
-    $("#to_date").val(today.getTime());
+    if(wmState.request && wmState.request.from_date && wmState.request.to_date) {
+        $("#from_date").val(wmState.request.from_date);
+        $("#to_date").val(wmState.request.to_date);
+    } else {
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+        $("#dp-to").datepicker("setDate", today);
+        $("#to_date").val(today.getTime());
+    }
 });

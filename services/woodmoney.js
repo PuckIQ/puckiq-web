@@ -40,7 +40,7 @@ class WoodmoneyService {
                 delete options.season;
             }
 
-            if (_.has(options, "from_date") && _.has(options, "to_date")) {
+            if (_.has(options, "from_date") && _.has(options, "to_date") && options.from_date && options.to_date) {
 
                 // dates are in the format of ms since epoch
                 let err = validator.validateDate(parseInt(options.from_date), "from_date");

@@ -6,7 +6,7 @@ exports.encode_query = (query) => {
         .compact().value().join("&");
 };
 
-exports.getIpAddress = function(req) {
+exports.getIpAddress = (req) => {
     if(!_.isObject(req)) return '';
 
     let ip = '';
@@ -18,4 +18,14 @@ exports.getIpAddress = function(req) {
     }
 
     return ip.split(',')[0];
+};
+
+exports.dateString = (dt) => {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+    if(!_.isDate(dt)) {
+        dt = new Date(dt);
+    }
+
+    return `${months[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()}`;
 };

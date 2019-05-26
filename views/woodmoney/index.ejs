@@ -9,6 +9,7 @@
         <form class="x-wm-filters" method="get">
             <div class="row" style="padding-top: 17px;">
                 <div class="col-padded">
+                    Select date range:
                     <select id="season-input" name="season" class="" style="visibility:hidden">
                         <% if(player) { %>
                         <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
@@ -20,6 +21,12 @@
                         <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
                         <option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>
                     </select>
+                    <% if(request.from_date && request.to_date) { %>
+                        <span style="padding-left: 10px">
+                        <%= request.from_date_str + " to " + request.to_date_str %>
+                        <a href="#change" class="x-change-date-range">change</a>
+                        </span>
+                    <% } %>
                     <div id="date-range-modal" class="modal" style="height: 340px;">
                         <h4>Select date range for games</h4>
                         From: <input type="text" class="x-date-range" id="dp-from" data-target="from_date" />
@@ -30,7 +37,10 @@
                     <input type="hidden" id="from_date" name="from_date" value="" />
                     <input type="hidden" id="to_date" name="to_date" value="" />
                 </div>
+            </div>
+            <div class="row" style="padding-top: 17px;">
                 <div class="col-padded">
+                    Filters:
                     <select id="tier" name="tier">
                         <option value="" <% if(!request.tier) { %>selected <% } %>>--Competition</option>
                         <option value="All" <% if(request.tier === "All") { %>selected <% } %>>All</option>
@@ -131,7 +141,11 @@
 
 <!--End render table-->
 <div style="text-align: center">
-    <a href="<%= download_url %>" class="x-download">download csv</a>
+    <% if(results.length === 0) {%>
+        No results
+    <% } else { %>
+        <a href="<%= download_url %>" class="x-download">download csv</a>
+    <% } %>
 </div>
 
 <script>

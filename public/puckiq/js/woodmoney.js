@@ -51,7 +51,12 @@ function updateSeasonOnPageRender(season) {
     });
 
     $('#season-input').val(season);
-    $('#season-input').css('visibility', 'visible')
+    $('#season-input').css('visibility', 'visible');
+
+    $('.x-change-date-range').click(function(e){
+        $('#date-range-modal').modal({});
+        return false;
+    });
 }
 
 function submitForm(clearSeason){
@@ -112,13 +117,13 @@ $(function() {
         let $target = $(e.target);
         let val = $target.val();
         console.log("change", e.target, val);
-        if(val){
-            let year = parseInt(val.substr(6,4));
-            let month = parseInt(val.substr(0,2));
-            let day =parseInt(val.substr(3,2));
-            console.log(year,month, day);
-            if(year > 0 && month > 0 && day > 0){
-                let dt = new Date(year, month-1, day);
+        if (val) {
+            let year = parseInt(val.substr(6, 4));
+            let month = parseInt(val.substr(0, 2));
+            let day = parseInt(val.substr(3, 2));
+            console.log(year, month, day);
+            if (year > 0 && month > 0 && day > 0) {
+                let dt = new Date(year, month - 1, day);
                 console.log("setting date", "input[name='" + $target.attr("data-target") + "']", $("#" + $target.attr("data-target")), dt.getTime());
                 $("#" + $target.attr("data-target")).val(dt.getTime());
             }
@@ -137,8 +142,11 @@ $(function() {
 
     $( ".x-date-range" ).datepicker({});
     if(wmState.request && wmState.request.from_date && wmState.request.to_date) {
+        console.log('defaulting from and to date', wmState.request.from_date, wmState.request.to_date);
         $("#from_date").val(wmState.request.from_date);
         $("#to_date").val(wmState.request.to_date);
+        $("#dp-from").datepicker("setDate", new Date(wmState.request.from_date));
+        $("#dp-to").datepicker("setDate", new Date(wmState.request.to_date));
     } else {
         let today = new Date();
         today.setHours(0, 0, 0, 0);

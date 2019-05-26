@@ -222,28 +222,31 @@ function PuckIQHandler(app, locator) {
     };
 }
 
-function getWoodmoneyPage(data, base_url){
+function getWoodmoneyPage(data, base_url) {
 
     let page = {};
 
     let sub_title = '';
-    if(data.team) {
+    if (data.team) {
         sub_title = data.team.name;
-    } else if(data.player) {
+    } else if (data.player) {
         sub_title = data.player.name;
     }
 
-    page.title =  `PuckIQ | Woodmoney ${sub_title ? '| ' + sub_title : ''}`;
+    page.title = `PuckIQ | Woodmoney ${sub_title ? '| ' + sub_title : ''}`;
     page.sub_title = `${sub_title || 'Woodmoney'}`;
 
-    if(!(data.request.from_date && data.request.to_date)){
+    if (!(data.request.from_date && data.request.to_date)) {
         data.request.season = data.request.season || 'all';
+    } else {
+        data.request.from_date_str = utils.dateString(data.request.from_date);
+        data.request.to_date_str = utils.dateString(data.request.to_date);
     }
 
     let _request = _.extend({}, data.request);
     delete _request._id;
     _.each(_.keys(_request), key => {
-       if(_request[key] === null) delete _request[key];
+        if (_request[key] === null) delete _request[key];
     });
 
     base_url = url.parse(base_url).pathname;

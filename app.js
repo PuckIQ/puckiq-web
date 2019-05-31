@@ -6,6 +6,7 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
+const morgan = require('morgan');
 
 const app = express();
 
@@ -21,6 +22,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+//todo if local
+app.use(morgan('dev'));
 
 app.use(favicon(path.join(__dirname, `/public/puckiq/img/favicon.${config.site.skin}.ico`)));
 

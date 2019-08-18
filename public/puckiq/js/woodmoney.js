@@ -54,6 +54,7 @@ function updateSeasonOnPageRender(season) {
     $('#season-input').css('visibility', 'visible');
 
     $('.x-change-date-range').click(function(e){
+        $('.x-date-error').hide();
         $('#date-range-modal').modal({});
         return false;
     });
@@ -116,15 +117,12 @@ $(function() {
     $(".x-date-range").change(function(e) {
         let $target = $(e.target);
         let val = $target.val();
-        console.log("change", e.target, val);
         if (val) {
             let year = parseInt(val.substr(6, 4));
             let month = parseInt(val.substr(0, 2));
             let day = parseInt(val.substr(3, 2));
-            console.log(year, month, day);
             if (year > 0 && month > 0 && day > 0) {
                 let dt = new Date(year, month - 1, day);
-                console.log("setting date", "input[name='" + $target.attr("data-target") + "']", $("#" + $target.attr("data-target")), dt.getTime());
                 $("#" + $target.attr("data-target")).val(dt.getTime());
             }
         }
@@ -135,7 +133,18 @@ $(function() {
     });
 
     $(".x-date-range-submit").click(function(){
-        submitForm(true);
+
+        let dt_from = $("#from_date").val();
+        let dt_to = $("#to_date").val();
+
+        console.log(new Date(parseInt(dt_from)), new Date(parseInt(dt_to)));
+        if(new Date(parseInt(dt_from)) >= new Date(parseInt(dt_to))){
+            $('.x-date-error').html("From date cannot be greater than to date");
+            $('.x-date-error').show();
+        } else {
+            $('.x-date-error').hide();
+            submitForm(true);
+        }
     });
 
     updateSeasonOnPageRender(wmState.request.season);

@@ -243,7 +243,8 @@ function getWoodmoneyPage(data, base_url) {
         data.request.to_date_str = utils.dateString(data.request.to_date);
     }
 
-    let _request = _.extend({}, data.request);
+    //delete selected_positions its not used by the backend
+    let _request = _.extend({}, data.request, {selected_positions: null});
     delete _request._id;
     _.each(_.keys(_request), key => {
         if (_request[key] === null) delete _request[key];

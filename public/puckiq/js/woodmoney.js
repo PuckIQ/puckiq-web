@@ -24,13 +24,13 @@ function getFilters() {
         season: season,
         tier: tier,
         positions: positions,
-        min_toi: min_toi,
-        max_toi: max_toi
+        min_toi: parseInt(min_toi),
+        max_toi: parseInt(max_toi)
     };
 
     if(from_date && to_date) {
-        filters.from_date = new Date(from_date).getTime();
-        filters.to_date = new Date(to_date).getTime();
+        filters.from_date = new Date(parseInt(from_date)).getTime();
+        filters.to_date = new Date(parseInt(to_date)).getTime();
     }
 
     return filters;

@@ -28,6 +28,9 @@ function getFilters() {
         max_toi: parseInt(max_toi)
     };
 
+    if(isNaN(filters.min_toi)) delete filters.min_toi;
+    if(isNaN(filters.max_toi)) delete filters.max_toi;
+
     if(from_date && to_date) {
         filters.from_date = new Date(parseInt(from_date)).getTime();
         filters.to_date = new Date(parseInt(to_date)).getTime();

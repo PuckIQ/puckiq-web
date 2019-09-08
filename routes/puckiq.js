@@ -239,6 +239,7 @@ function getWoodmoneyPage(data, base_url) {
     if (!(data.request.from_date && data.request.to_date)) {
         data.request.season = data.request.season || 'all';
     } else {
+        page.is_date_range = true;
         data.request.from_date_str = utils.dateString(data.request.from_date);
         data.request.to_date_str = utils.dateString(data.request.to_date);
     }

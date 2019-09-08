@@ -94,6 +94,8 @@
                 <th>Season</th>
             <% } %>
             <% if(!team){ %><th>Team</th><% } %>
+
+            <th data-sort="games_played">GP</th>
             <th data-sorter="false">Comp</th>
             <th data-sorter="false">GT</th>
             <th data-sort="evtoi">TOI</th>
@@ -166,6 +168,7 @@
             <td><%= pd['season']%></td>
             <% } %>
             <% if(!team){ %><td><a href="/teams/<%= pd['team']%>"><%= pd['team']%></a></td><% } %>
+            <td><%= pd['games_played']%></td>
             <td><%= pd['woodmoneytier']%></td>
             <td>All</td>
             <td><%= formatDecimal( pd['evtoi'], 2) %></td>

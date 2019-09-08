@@ -7,7 +7,8 @@ const definition = {
     "season": "Season",
     "team": "Team",
     "positions": "Positions",
-    "woodmoneytier": "Woodmoneytier",
+    "games_played": "GP",
+    "woodmoneytier": "WMTier",
     "evtoi": 'EVTOI',
     "ctoipct": "CTOI%",
     "cf60": "CF/60",
@@ -25,9 +26,9 @@ const definition = {
     "gf60": "GF/60",
     "ga60": "GA/60",
     "gfpct": "GF%",
-    "onshpct" : "ONSH%",
-    "onsvpct" : "ONSV%",
-    "pdo" : "PDO",
+    "onshpct": "ONSH%",
+    "onsvpct": "ONSV%",
+    "pdo": "PDO",
     "sf60": "SF/60",
     "sa60": "SA/60",
     "sfpct": "SF%",
@@ -64,12 +65,20 @@ const definition = {
 
 exports.build = (data) => {
 
-    let headers = _.values(definition);
+    let is_date_range = !!(data.request.from_date && data.request.to_date);
+
+    let _definition = _.extend({}, definition);
+    if(is_date_range) delete _definition.season;
+
+    let headers = _.values(_definition);
 
     let records = _.chain(data.results)
         .map(x => {
-            let row = { name: x.name, season: data.seasonId };
-            _.each(_.keys(definition), field => {
+            let row = { name: x.name };
+
+            if(!is_date_range) row.season = data.seasonId;
+
+            _.each(_.keys(_definition), field => {
                 if(!_.has(x, field)){
                     console.log("Missing field", field);
                 } else {

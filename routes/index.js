@@ -34,6 +34,9 @@ module.exports = exports = function (app, request, config) {
     app.get('/players/:player', puckIQHandler.getPlayerWoodmoney);
     app.get('/players/:player/download', puckIQHandler.downloadPlayerWoodmoney);
 
+    app.get('/woodwowy', puckIQHandler.getWoodwowy);
+    app.get('/woodwowy/download', puckIQHandler.downloadWoodwowy);
+
     app.get('/player-wowy', puckIQHandler.getPlayerWowy);
     app.get('/player-woodmoney', puckIQHandler.getPlayerWoodmoney);
     app.get('/player-search', puckIQHandler.searchPlayers);

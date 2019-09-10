@@ -19,9 +19,10 @@ class WoodwowyService {
 
             let defaults = {
                 season: null,
+                player: null,
+                teammates: [],
                 //from_date : null,
                 //to_date : null,
-                //player: null,
                 //team: null,
                 //tier: null,
                 min_toi: null,
@@ -66,11 +67,25 @@ class WoodwowyService {
 
             }
 
-            if (options.player) {
-                options.player = parseInt(options.player);
-                let err = validator.validateInteger(options.player, "player", {nullable: false, min: 1});
-                if (err) return reject(err);
+            if (!options.player) {
+                return reject(new AppException(constants.exceptions.missing_argument, "player is required"));
             }
+
+            if (!(options.teammates && options.teammates.length)) {
+                return reject(new AppException(constants.exceptions.missing_argument, "at least one teammate is required"));
+            }
+
+            options.player = parseInt(options.player);
+            let err = validator.validateInteger(options.player, "player", {nullable: false, min: 1});
+            if (err) return reject(err);
+
+            options.teammates = _.map(optionts.teammates, x => parseInt(x));
+            err = validator.validateArray(options.teammates, "teamates", {
+                nullable: false,
+                iterator : (x) => {
+                    validator.validateInteger(x, 'teammate', {nullable: false, min: 1})
+                }});
+            if (err) return reject(err);
 
             if (options.min_toi) {
                 options.min_toi = parseInt(options.min_toi);
@@ -144,7 +159,7 @@ class WoodwowyService {
                 if (err) return reject(err);
             }
 
-            let url = `${baseUrl}/woodmoney`;
+            let url = `${baseUrl}/woodwowy`;
 
             // console.log('options', JSON.stringify(options));
             request.post({

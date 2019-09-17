@@ -2,11 +2,13 @@ const env = process.env.NODE_ENV || 'staging'; //tmp checkin till Zsolt gets bui
 const config = require('./config.js')[env];
 
 const express = require('express');
+const fs = require('fs');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
 const morgan = require('morgan');
+const rfs = require('rotating-file-stream');
 
 const app = express();
 
@@ -22,8 +24,23 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-//todo if local
-app.use(morgan('dev'));
+
+if(config.env === 'local'){
+    app.use(morgan('dev'));
+} else {
+
+    let logDirectory = path.join(__dirname, 'logs');
+
+    fs.existsSync(logDirectory) || fs.mkdirSync(logDirectory);
+
+    const accessLogStream = rfs('request.log', {
+        interval: '1d',
+        path: logDirectory,
+        maxSize : '10M'
+    });
+
+    app.use(morgan('dev', {stream: accessLogStream}));
+}
 
 app.use(favicon(path.join(__dirname, `/public/puckiq/img/favicon.${config.site.skin}.ico`)));
 

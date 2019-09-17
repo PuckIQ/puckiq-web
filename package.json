@@ -19,6 +19,7 @@
     "lodash": "4.17.11",
     "morgan": "1.9.1",
     "request": "2.83.0",
+    "rotating-file-stream": "1.4.3",
     "serve-favicon": "2.5.0",
     "winston": "2.3.0"
   },

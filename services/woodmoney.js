@@ -51,6 +51,9 @@ class WoodmoneyService {
 
             } else {
 
+                delete options.from_date;
+                delete options.to_date;
+
                 if(_.has(options, "season") && options.season) {
                     if(options.season !== "all") {
                         options.season = parseInt(options.season);
@@ -146,7 +149,7 @@ class WoodmoneyService {
 
             let url = `${baseUrl}/woodmoney`;
 
-            // console.log('options', JSON.stringify(options));
+            if(config.env === 'local') console.log('options', JSON.stringify(options, null, 2));
             request.post({
                 url: url,
                 body: options,

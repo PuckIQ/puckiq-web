@@ -35,15 +35,24 @@ class WoodmoneyService {
 
             options = _.extend({}, defaults, options);
 
-            if (!_.has(options, "from_date") && _.has(options, "to_date")) {
+            if(options.season === 'custom') {
+                console.log("todo cleanup season.custom");
+                delete options.season;
+            }
 
-                let err = validator.validateDate(options.from_date, "from_date");
+            if (_.has(options, "from_date") && _.has(options, "to_date") && options.from_date && options.to_date) {
+
+                // dates are in the format of ms since epoch
+                let err = validator.validateDate(parseInt(options.from_date), "from_date");
                 if (err) return reject(err);
 
-                err = validator.validateDate(options.to_date, "to_date");
+                err = validator.validateDate(parseInt(options.to_date), "to_date");
                 if (err) return reject(err);
 
             } else {
+
+                delete options.from_date;
+                delete options.to_date;
 
                 if(_.has(options, "season") && options.season) {
                     if(options.season !== "all") {
@@ -140,18 +149,24 @@ class WoodmoneyService {
 
             let url = `${baseUrl}/woodmoney`;
 
-            // console.log('options', JSON.stringify(options));
+            if(config.env === 'local') console.log('options', JSON.stringify(options, null, 2));
             request.post({
                 url: url,
                 body: options,
                 json: true,
                 headers : { 'X-Requested-With' : 'XMLHttpRequest'} }, (err, response, data) => {
 
-                if (err) return reject(new AppException(constants.exceptions.unhandled_error, "An unhandled error occurred", {err: err}));
+                if (err) {
+                    return reject(new AppException(constants.exceptions.unhandled_error, "An unhandled error occurred", {err: err}));
+                }
 
                 //shouldnt really be possible as web should prevalidate but just in case
                 if(response.statusCode === 400) {
                     return reject(new AppException(constants.exceptions.invalid_request, "Invalid request. Please check your parameters and try again. If you think this is an error please report to slopitch@gmail.com"));
+                }
+
+                if(data.error) {
+                    return reject(new AppException(data.error.type, data.error.message));
                 }
 
                 data.results = _.map(data.results, x => {

@@ -22,7 +22,9 @@ let Keys = {
     del: 46
 };
 
-function addAutoComplete(input, results) {
+function addAutoComplete(input, results, options) {
+
+    options = options || {};
 
     let self = this;
 
@@ -133,7 +135,11 @@ function addAutoComplete(input, results) {
                 console.log(JSON.stringify(player));
                 let position = player.positions.join("/");
                 html += '<div data-id="' + player.player_id + '">'; //'" class="team-icon team-' + player.team.toLowerCase() + '">';
-                html += '<a href="/players/' + player.player_id + '">' + player.name + ' (' + position + ')</a>';
+                if(options.url_function){
+                    html += '<a href="' + options.url_function(player) + '">' + player.name + ' (' + position + ')</a>';
+                } else {
+                    html += '<a href="/players/' + player.player_id + '">' + player.name + ' (' + position + ')</a>';
+                }
                 html += '</div>';
             }
             $(results).html(html);

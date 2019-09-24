@@ -25,16 +25,14 @@ class WoodwowyService {
                 //to_date : null,
                 //team: null,
                 //tier: null,
-                min_toi: null,
-                max_toi: null,
-                positions: 'all',
-                offset: 0,
-                sort: 'evtoi',
-                sort_direction: 'desc',
-                count: constants.MAX_COUNT
             };
 
             options = _.extend({}, defaults, options);
+
+            if(options.teammate){
+                options.teammates = [options.teammate];
+                delete options.teammate;
+            }
 
             if(options.season === 'custom') {
                 console.log("todo cleanup season.custom");
@@ -79,7 +77,7 @@ class WoodwowyService {
             let err = validator.validateInteger(options.player, "player", {nullable: false, min: 1});
             if (err) return reject(err);
 
-            options.teammates = _.map(optionts.teammates, x => parseInt(x));
+            options.teammates = _.map(options.teammates, x => parseInt(x));
             err = validator.validateArray(options.teammates, "teamates", {
                 nullable: false,
                 iterator : (x) => {
@@ -87,81 +85,9 @@ class WoodwowyService {
                 }});
             if (err) return reject(err);
 
-            if (options.min_toi) {
-                options.min_toi = parseInt(options.min_toi);
-                let err = validator.validateInteger(options.min_toi, "min_toi", {nullable: true, min: 0});
-                if (err) return reject(err);
-            }
-
-            if (options.max_toi) {
-                options.max_toi = parseInt(options.max_toi);
-                let err = validator.validateInteger(options.max_toi, "max_toi", {nullable: true, min: 0});
-                if (err) return reject(err);
-            }
-
-            if(options.min_toi && options.max_toi && options.min_toi > options.max_toi){
-                return new AppException(
-                    constants.exceptions.invalid_argument,
-                    `Min toi cannot be greater than max toi`,
-                    {param: 'min_toi', value: value}
-                );
-            }
-
-            if (options.team) {
-                let err = validator.validateString(options.team, "team", {nullable: false});
-                if (err) return reject(err);
-                options.team = options.team.toLowerCase(); //just in case
-                if(!_.has(iq.teams, options.team)){
-                    return new AppException(
-                        constants.exceptions.invalid_argument,
-                        `Invalid value for parameter: ${options.team}`,
-                        {param: 'team', value: value}
-                    );
-                }
-            }
-
-            if (options.positions !== 'all') {
-                let err = validator.validateString(options.positions, "positions");
-                if(err) return reject(err);
-                options.positions = options.positions.toLowerCase();
-                const all_positions = _.keys(constants.positions);
-                for (var i = 0; i < options.positions.length; i++) {
-                    if (!~all_positions.indexOf(options.positions[i])) {
-                        return reject(new AppException(
-                            constants.exceptions.invalid_argument,
-                            `Invalid value for parameter: ${options.positions}`,
-                            {param: 'positions', value: value}
-                        ));
-                    }
-                }
-            }
-
-            if (options.tier && !~_.values(constants.woodmoney_tier).indexOf(options.tier)) {
-                return reject(new AppException(
-                    constants.exceptions.invalid_argument,
-                    `Invalid value for parameter: tier`,
-                    {param: 'tier', value: options.tier}
-                ));
-            }
-
-            //TODO sort
-            // if(options.sort && !~constants.sortable_columns).indexOf(options.sort)){
-            //     return new AppException(
-            //         constants.exceptions.invalid_argument,
-            //         `Invalid value for parameter: ${options.tier}`,
-            //         { param: 'tier', value: value }
-            //     );
-            // }
-
-            if (options.count) {
-                options.count = parseInt(options.count);
-                let err = validator.validateInteger(options.count, 'count'); //, {min: 1, max: 50});
-                if (err) return reject(err);
-            }
-
             let url = `${baseUrl}/woodwowy`;
 
-            // console.log('options', JSON.stringify(options));
+            console.log('getting woodwowy', JSON.stringify(options));
             request.post({
                 url: url,
                 body: options,

@@ -3,85 +3,84 @@
 
         <h2>
             <%= sub_title %>
-            <% if(player) { %><small><%= player.positions %></small><% } %>
+            <% if(player && !teammate) {%>
+                <small>todo change</small>
+            <% } %>
         </h2>
 
         <form class="x-wm-filters" method="get">
             <div class="row" style="padding-top: 17px;">
                 <div class="col-padded">
-                    <div style="display: block; position: relative;">
-                        <input type="text" id="player-search" placeholder="Enter player name" class="autocomplete-search" style="width: 200px; margin-top: 8px;" />
-                        <div class="autocomplete-results x-player-results" style="display:none; text-align: left;">
+                    <% if(!player) { %>
+                    <span style="">Player to run wowy for:</span>
+                    <div style="display: inline-block; position: relative;">
+                        <input type="text" id="wowy-player-search" placeholder="Enter player name" class="autocomplete-search" style="width: 200px; margin-top: 8px;" />
+                        <div class="autocomplete-results x-wowy-player-results" style="display:none; text-align: left;">
                         </div>
                     </div>
-                </div>
-            </div>
-            <div class="row" style="padding-top: 17px;">
-                <div class="col-padded">
-                    Select date range:
-                    <select id="season-input" name="season" class="" style="visibility:hidden">
-                        <% if(player) { %>
-                        <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
-                        <% } %>
-                        <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
-                        <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
-                        <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
-                        <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
-                        <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
-                        <option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>
-                    </select>
-                    <% if(request.from_date && request.to_date) { %>
-                        <span style="padding-left: 10px">
-                        <%= request.from_date_str + " to " + request.to_date_str %>
-                        <a href="#change" class="x-change-date-range">change</a>
-                        </span>
                     <% } %>
-                    <div id="date-range-modal" class="modal" style="height: 340px;">
-                        <h4>Select date range for games</h4>
-                        From: <input type="text" class="x-date-range" id="dp-from" data-target="from_date" />
-                        To: <input type="text" class="x-date-range" id="dp-to" data-target="to_date" />
-                        <button type="button" class="btn btn-xs btn-success x-date-range-submit"><strong>Go</strong></button>
-                        <div class="col-padded x-date-error" style="padding-top: 17px; color: Red; display:none;">
-                        </div>
-                    </div>
-                    <!--not sure why this has to be outside modal div -->
-                    <input type="hidden" id="from_date" name="from_date" value="" />
-                    <input type="hidden" id="to_date" name="to_date" value="" />
                 </div>
             </div>
-            <div class="row" style="padding-top: 17px;">
-                <div class="col-padded">
-                    Filters:
-                    <select id="tier" name="tier">
-                        <option value="" <% if(!request.tier) { %>selected <% } %>>--Competition</option>
-                        <option value="All" <% if(request.tier === "All") { %>selected <% } %>>All</option>
-                        <option value="Elite" <% if(request.tier === "Elite") { %>selected <% } %>>Elite</option>
-                        <option value="Middle" <% if(request.tier === "Middle") { %>selected <% } %>>Middle</option>
-                        <option value="Gritensity" <% if(request.tier === "Gritensity") { %>selected <% } %>>Gritensity</option>
-                    </select>
+
+            <% if(player) { %>
+
+                <% if(!teammate) { %>
+                <div class="row" style="padding-top: 17px;">
+                    <div class="col-padded">
+                        <span style="">Teammate:</span>
+                        <div style="display: inline-block; position: relative;">
+                            <input type="text" id="wowy-teammate-search" placeholder="Enter player name" class="autocomplete-search" style="width: 200px; margin-top: 8px;" />
+                            <div class="autocomplete-results x-wowy-teammate-results" style="display:none; text-align: left;">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <% if(!request.player){ %>
-                <div class="col-padded">
-                    <input type="hidden" id="positions" name="positions" value="<%= request.positions%>">
-                    Forwards <input type="checkbox" id="pos-f" value="clr" <% if(request.selected_positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
-                    Centres <input type="checkbox" id="pos-c" class="x-positions" value="c" <% if(request.selected_positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    LW <input type="checkbox" id="pos-l" class="x-positions" value="l" <% if(request.selected_positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    RW <input type="checkbox" id="pos-r" class="x-positions" value="r" <% if(request.selected_positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    Defence <input type="checkbox" id="pos-d" class="x-positions" value="d" <% if(request.selected_positions.d) { %>checked="checked" <% } %>  />
+
+                <% } else { %>
+
+                todo chance
+                <div class="row" style="padding-top: 17px;">
+                    <div class="col-padded">
+                        Select date range:
+                        <select id="season-input" name="season" class="" style="visibility:hidden">
+                            <% if(player) { %>
+                            <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
+                            <% } %>
+                            <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
+                            <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
+                            <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
+                            <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
+                            <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
+                            <option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>
+                        </select>
+                        <% if(request.from_date && request.to_date) { %>
+                            <span style="padding-left: 10px">
+                            <%= request.from_date_str + " to " + request.to_date_str %>
+                            <a href="#change" class="x-change-date-range">change</a>
+                            </span>
+                        <% } %>
+                        <div id="date-range-modal" class="modal" style="height: 340px;">
+                            <h4>Select date range for games</h4>
+                            From: <input type="text" class="x-date-range" id="dp-from" data-target="from_date" />
+                            To: <input type="text" class="x-date-range" id="dp-to" data-target="to_date" />
+                            <button type="button" class="btn btn-xs btn-success x-date-range-submit"><strong>Go</strong></button>
+                            <div class="col-padded x-date-error" style="padding-top: 17px; color: Red; display:none;">
+                            </div>
+                        </div>
+                        <!--not sure why this has to be outside modal div -->
+                        <input type="hidden" id="from_date" name="from_date" value="" />
+                        <input type="hidden" id="to_date" name="to_date" value="" />
+                    </div>
                 </div>
-                <div class="col-padded">
-                    Min TOI:
-                    <input type="text" id="min_toi" name="min_toi" placeholder="min" class="toi_minutes" maxlength="5"
-                           value="<% if(request.min_toi !== null){%><%= request.min_toi %><% } %>" />
-                    Max TOI:
-                    <input type="text" id="max_toi" name="max_toi" placeholder="max" class="toi_minutes" maxlength="5"
-                           value="<% if(request.max_toi !== null){%><%= request.max_toi %><% } %>" />
+
+                <div class="row" style="padding-top: 17px;">
+                    <div class="col-padded">
+                        <button type="button" class="btn btn-xs btn-success x-woodmoney-submit"><strong>Go</strong></button>
+                    </div>
                 </div>
                 <% } %>
-                <div class="col-padded">
-                    <button type="button" class="btn btn-xs btn-success x-woodmoney-submit"><strong>Go</strong></button>
-                </div>
-            </div>
+
+            <% } %>
         </form>
 
         <div class="row">
@@ -91,6 +90,8 @@
 
     </div>
 </div>
+
+<% if(player && teammate) { %>
 
 <!--Begin render table-->
 <table id="puckiq" class="table table-bordered table-condensed table-hover">
@@ -102,7 +103,7 @@
             <% } else { %>
                 <th>Season</th>
             <% } %>
-            <% if(!team){ %><th>Team</th><% } %>
+            <th>Team</th>
 
             <th data-sort="games_played">GP</th>
             <th data-sorter="false">Comp</th>
@@ -151,13 +152,16 @@
     %>
     </tbody>
 </table>
+<% } %>
 
 <!--End render table-->
 <div style="text-align: center">
-    <% if(results.length === 0) {%>
-        No results
-    <% } else { %>
-        <a href="<%= download_url %>" class="x-download">download csv</a>
+    <% if(player && teammate) { %>
+        <% if(results.length === 0) {%>
+            No results
+        <% } else { %>
+            <a href="<%= download_url %>" class="x-download">download csv</a>
+        <% } %>
     <% } %>
 </div>
 
@@ -176,7 +180,7 @@
             <% } else { %>
             <td><%= pd['season']%></td>
             <% } %>
-            <% if(!team){ %><td><a href="/teams/<%= pd['team']%>"><%= pd['team']%></a></td><% } %>
+            <td><a href="/teams/<%= pd['team']%>"><%= pd['team']%></a></td>
             <td><%= pd['games_played']%></td>
             <td><%= pd['woodmoneytier']%></td>
             <td>All</td>
@@ -229,11 +233,31 @@
     //used by woodmoney
     //TODO change
     var wmState = {
-        request : <%- JSON.stringify(request) %>,
-        team : <%- JSON.stringify(team) %>
+        request : <%- JSON.stringify(request) %>
     };
+
+    $(document).ready(function() {
+        addAutoComplete($('#wowy-player-search'), $('.x-wowy-player-results'), {
+            url_function : function(player) {
+                return '/woodwowy?player=' + player.player_id;
+            }
+        });
+
+        <%if(player) { %>
+        var $teammate = $('#wowy-teammate-search');
+        console.log($teammate);
+        if($teammate.length){
+            console.log("adding teammate autocomplete");
+            addAutoComplete($teammate, $('.x-wowy-teammate-results'), {
+                url_function : function(player) {
+                    return '/woodwowy?player=<%= player.player_id %>&teammate=' + player.player_id;
+                }
+            });
+        }
+        <% } %>
+    });
 
 </script>
 
-<script src="/puckiq/js/woodmoney.js"></script>
+<script src="/puckiq/js/woodwowy.js"></script>
 

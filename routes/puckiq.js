@@ -8,6 +8,7 @@ const AppException = require('../common/app_exception');
 const csv_file_definition = require('../common/csv_file_definition');
 const WoodmoneyService = require('../services/woodmoney');
 const WoodwowyService = require('../services/woodwowy');
+const PlayerService = require('../services/player');
 
 function PuckIQHandler(app, locator) {
 
@@ -18,6 +19,7 @@ function PuckIQHandler(app, locator) {
 
     let wm = new WoodmoneyService(locator);
     let woodwowy = new WoodwowyService(locator);
+    let players = new PlayerService(locator);
 
     controller.getHome = function(req, res) {
         app.use(express.static('views/home/public'));
@@ -212,21 +214,73 @@ function PuckIQHandler(app, locator) {
         });
     };
 
-    controller.getWoodwowy = function(req, res) {
+    function getWoodmoneyPage(data, base_url) {
 
-        controller._getWoodmoney(req.query).then((data) => {
-            res.render('woodwowy/index', getWoodwowyPage(data, req.url));
-        }, (err) => {
-            return error_handler.handle(req, res, err);
+        let page = {};
+
+        let sub_title = '';
+        if (data.team) {
+            sub_title = data.team.name;
+        } else if (data.player) {
+            sub_title = data.player.name;
+        }
+
+        page.title = `PuckIQ | Woodmoney ${sub_title ? '| ' + sub_title : ''}`;
+        page.sub_title = `${sub_title || 'Woodmoney'}`;
+
+        if (!(data.request.from_date && data.request.to_date)) {
+            data.request.season = data.request.season || 'all';
+        } else {
+            page.is_date_range = true;
+            data.request.from_date_str = utils.dateString(data.request.from_date);
+            data.request.to_date_str = utils.dateString(data.request.to_date);
+        }
+
+        //delete selected_positions its not used by the backend
+        let _request = _.extend({}, data.request, {selected_positions: null});
+        delete _request._id;
+        _.each(_.keys(_request), key => {
+            if (_request[key] === null) delete _request[key];
         });
 
+        base_url = url.parse(base_url).pathname;
+
+        page.download_url = `${base_url}/download?${utils.encode_query(_request)}`;
+
+        //required for ejs
+        data.player = data.player || null;
+        data.team = data.team || null;
+
+        return _.extend(page, data);
+    }
+
+    controller.getWoodwowy = function(req, res) {
+
+        if (!req.query.player) {
+            return res.render('woodwowy/index', getWoodwowyPage({ request: {}}, req.url));
+        }
+
+        if (!req.query.teammate) {
+            //todo get player
+            players.getById(req.query.player).then((player) => {
+                res.render('woodwowy/index', getWoodwowyPage({player}, req.url));
+            }, (err) => {
+                return error_handler.handle(req, res, err);
+            });
+        } else {
+            controller._getWoodwowy(req.query).then((data) => {
+                res.render('woodwowy/index', getWoodwowyPage(data, req.url));
+            }, (err) => {
+                return error_handler.handle(req, res, err);
+            });
+        }
     };
 
     controller.downloadWoodwowy = function(req, res) {
 
         let options = _.extend({ }, req.query, { count: 10000});
 
-        controller._getWoodmoney(options).then((data) => {
+        controller._getWoodwowy(options).then((data) => {
 
             let records = [];
 
@@ -255,7 +309,6 @@ function PuckIQHandler(app, locator) {
 
             cache.init().then((iq) => {
 
-                //always do 50 for now...
                 options = _.extend({}, { count: constants.MAX_COUNT }, options);
 
                 woodwowy.query(options, iq).then((data) => {
@@ -278,55 +331,18 @@ function PuckIQHandler(app, locator) {
     };
 }
 
-function getWoodmoneyPage(data, base_url) {
-
-    let page = {};
-
-    let sub_title = '';
-    if (data.team) {
-        sub_title = data.team.name;
-    } else if (data.player) {
-        sub_title = data.player.name;
-    }
-
-    page.title = `PuckIQ | Woodmoney ${sub_title ? '| ' + sub_title : ''}`;
-    page.sub_title = `${sub_title || 'Woodmoney'}`;
-
-    if (!(data.request.from_date && data.request.to_date)) {
-        data.request.season = data.request.season || 'all';
-    } else {
-        page.is_date_range = true;
-        data.request.from_date_str = utils.dateString(data.request.from_date);
-        data.request.to_date_str = utils.dateString(data.request.to_date);
-    }
-
-    //delete selected_positions its not used by the backend
-    let _request = _.extend({}, data.request, {selected_positions: null});
-    delete _request._id;
-    _.each(_.keys(_request), key => {
-        if (_request[key] === null) delete _request[key];
-    });
-
-    base_url = url.parse(base_url).pathname;
-
-    page.download_url = `${base_url}/download?${utils.encode_query(_request)}`;
-
-    //required for ejs
-    data.player = data.player || null;
-    data.team = data.team || null;
-
-    return _.extend(page, data);
-}
-
 function getWoodwowyPage(data, base_url) {
 
+    data.request = data.request || {};
+
     let page = {};
 
     let sub_title = '';
-    if (data.team) {
-        sub_title = data.team.name;
-    } else if (data.player) {
+    if (data.player) {
         sub_title = data.player.name;
+        if(data.teammate) {
+            sub_title += " Woodwowy with" + data.teammate.name;
+        }
     }
 
     page.title = `PuckIQ | Wowy ${sub_title ? '| ' + sub_title : ''}`;
@@ -341,7 +357,7 @@ function getWoodwowyPage(data, base_url) {
     }
 
     //delete selected_positions its not used by the backend
-    let _request = _.extend({}, data.request, {selected_positions: null});
+    let _request = _.extend({}, data.request || {});
     delete _request._id;
     _.each(_.keys(_request), key => {
         if (_request[key] === null) delete _request[key];
@@ -351,9 +367,9 @@ function getWoodwowyPage(data, base_url) {
 
     page.download_url = `${base_url}/download?${utils.encode_query(_request)}`;
 
-    //required for ejs
     data.player = data.player || null;
-    data.team = data.team || null;
+    data.teammate = data.teammate || null;
+    data.results = data.results || [];
 
     return _.extend(page, data);
 }

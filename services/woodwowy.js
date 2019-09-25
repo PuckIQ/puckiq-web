@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const constants = require('../common/constants');
+const utils = require('../common/utils');
 const validator = require('../common/validator');
 const AppException = require('../common/app_exception');
 
@@ -9,7 +10,7 @@ class WoodwowyService {
         this.locator = locator;
     }
 
-    query(options, iq){
+    query(options, iq) {
 
         let config = this.locator.get('config');
         let request = this.locator.get('request');
@@ -29,12 +30,12 @@ class WoodwowyService {
 
             options = _.extend({}, defaults, options);
 
-            if(options.teammate){
+            if (options.teammate) {
                 options.teammates = [options.teammate];
                 delete options.teammate;
             }
 
-            if(options.season === 'custom') {
+            if (options.season === 'custom') {
                 console.log("todo cleanup season.custom");
                 delete options.season;
             }
@@ -50,13 +51,13 @@ class WoodwowyService {
 
             } else {
 
-                if(_.has(options, "season") && options.season) {
-                    if(options.season !== "all") {
+                if (_.has(options, "season") && options.season) {
+                    if (options.season !== "all") {
                         options.season = parseInt(options.season);
                         let err = validator.validateSeason(options.season, "season");
-                        if(err) return reject(err);
+                        if (err) return reject(err);
                     }
-                } else if(options.player) {
+                } else if (options.player) {
                     options.season = 'all';
                 } else {
                     let current_season = iq.current_woodmoney_season;
@@ -80,30 +81,32 @@ class WoodwowyService {
             options.teammates = _.map(options.teammates, x => parseInt(x));
             err = validator.validateArray(options.teammates, "teamates", {
                 nullable: false,
-                iterator : (x) => {
+                iterator: (x) => {
                     validator.validateInteger(x, 'teammate', {nullable: false, min: 1})
-                }});
+                }
+            });
             if (err) return reject(err);
 
             let url = `${baseUrl}/woodwowy`;
 
-            console.log('getting woodwowy', JSON.stringify(options));
+            console.log(`${url}?${utils.encode_query(options)}`);
             request.post({
                 url: url,
                 body: options,
                 json: true,
-                headers : { 'X-Requested-With' : 'XMLHttpRequest'} }, (err, response, data) => {
+                headers: {'X-Requested-With': 'XMLHttpRequest'}
+            }, (err, response, data) => {
 
                 if (err) {
                     return reject(new AppException(constants.exceptions.unhandled_error, "An unhandled error occurred", {err: err}));
                 }
 
                 //shouldnt really be possible as web should prevalidate but just in case
-                if(response.statusCode === 400) {
+                if (response.statusCode === 400) {
                     return reject(new AppException(constants.exceptions.invalid_request, "Invalid request. Please check your parameters and try again. If you think this is an error please report to slopitch@gmail.com"));
                 }
 
-                if(data.error) {
+                if (data.error) {
                     return reject(new AppException(data.error.type, data.error.message));
                 }
 
@@ -115,7 +118,7 @@ class WoodwowyService {
                 data.team = (options.team && iq.teams[options.team]) || null;
 
                 data.request.selected_positions = {};
-                if(data.request.positions === "all"){
+                if (data.request.positions === "all") {
                     _.each(_.keys(constants.positions), pos => data.request.selected_positions[pos] = true);
                     data.request.selected_positions.f = true;
                 } else {

@@ -121,6 +121,12 @@ $(function() {
 
     $( ".x-date-range" ).datepicker({});
 
+    $( ".x-change-player" ).click(function(e){
+        $('.x-player-info').hide();
+        $('.x-select-player').show();
+        return false;
+    });
+
     if(wmState.request && wmState.request.from_date && wmState.request.to_date) {
         console.log('setting from_date and to_date', wmState.request.from_date, wmState.request.to_date);
         $("#from_date").val(wmState.request.from_date);

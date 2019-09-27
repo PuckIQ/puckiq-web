@@ -337,16 +337,17 @@ function getWoodwowyPage(data, base_url) {
 
     let page = {};
 
-    let sub_title = '';
-    if (data.player) {
-        sub_title = data.player.name;
-        if(data.teammate) {
-            sub_title += " Woodwowy with" + data.teammate.name;
-        }
+    if(data.teammates && data.teammates.length){
+        data.teammate = data.teammates[0];
     }
 
-    page.title = `PuckIQ | Wowy ${sub_title ? '| ' + sub_title : ''}`;
-    page.sub_title = `${sub_title || 'Woodwowy'}`;
+    if(data.player && data.teammate){
+        page.title = `PuckIQ | Wowy | ${data.player.name}`;
+        page.sub_title = `with ${data.teammate.name}`;
+    } else {
+        page.title = `PuckIQ | Wowy`;
+        page.sub_title = `Woodwowy`;
+    }
 
     if (!(data.request.from_date && data.request.to_date)) {
         data.request.season = data.request.season || 'all';

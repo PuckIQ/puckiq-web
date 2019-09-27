@@ -1,44 +1,43 @@
 <div class="container-fluid" role="main">
     <div class="page-header">
 
-        <h2>
-            <%= sub_title %>
-            <% if(player && !teammate) {%>
-                <small>todo change</small>
-            <% } %>
-        </h2>
+        <h2>Woodwowy <small>See how one player does with and without a player</small></h2>
 
         <form class="x-wm-filters" method="get">
-            <div class="row" style="padding-top: 17px;">
-                <div class="col-padded">
-                    <% if(!player) { %>
-                    <span style="">Player to run wowy for:</span>
-                    <div style="display: inline-block; position: relative;">
+
+            <div class="row" style="display:flex; flex-direction: row; padding-top: 17px; padding-left: 17px;">
+                <div style="width: 400px;">
+                    <% if(player) { %>
+                        <div class="x-player-info">
+                            <span style="font-width: bold; font-size: 2rem;"><%= player.name %></span>
+                            <small><%= player.positions %></small>
+                            <a class="x-change-player" style="margin-left: 17px;">change</a>
+                        </div>
+                    <% } %>
+                    <div class="x-select-player" style="display: <%= player ? "none" : "inline-block"%>; position: relative;">
                         <input type="text" id="wowy-player-search" placeholder="Enter player name" class="autocomplete-search" style="width: 200px; margin-top: 8px;" />
                         <div class="autocomplete-results x-wowy-player-results" style="display:none; text-align: left;">
                         </div>
                     </div>
-                    <% } %>
                 </div>
-            </div>
-
-            <% if(player) { %>
-
-                <% if(!teammate) { %>
-                <div class="row" style="padding-top: 17px;">
-                    <div class="col-padded">
-                        <span style="">Teammate:</span>
-                        <div style="display: inline-block; position: relative;">
-                            <input type="text" id="wowy-teammate-search" placeholder="Enter player name" class="autocomplete-search" style="width: 200px; margin-top: 8px;" />
-                            <div class="autocomplete-results x-wowy-teammate-results" style="display:none; text-align: left;">
-                            </div>
+                <div style="width: 400px;">
+                    <% if(teammate) { %>
+                        <div class="x-teammate-info">
+                            <span style="font-width: bold; font-size: 2rem;"><%= teammate.name %></span>
+                            <small><%= teammate.positions %></small>
+                            <a class="x-change-teammate" style="margin-left: 17px;">change</a>
+                        </div>
+                    <% } %>
+                    <div class="x-select-teammate" style="display: <%= teammate ? "none" : "inline-block"%>; position: relative;">
+                        <input type="text" id="wowy-teammate-search" placeholder="Enter teammate name" class="autocomplete-search" style="width: 200px; margin-top: 8px;" />
+                        <div class="autocomplete-results x-wowy-teammate-results" style="display:none; text-align: left;">
                         </div>
                     </div>
                 </div>
+            </div>
 
-                <% } else { %>
+            <div class="x-filters" style="display: <%= (player && teammate) ? "block" : "none" %>">
 
-                todo chance
                 <div class="row" style="padding-top: 17px;">
                     <div class="col-padded">
                         Select date range:
@@ -71,22 +70,15 @@
                         <input type="hidden" id="from_date" name="from_date" value="" />
                         <input type="hidden" id="to_date" name="to_date" value="" />
                     </div>
-                </div>
 
-                <div class="row" style="padding-top: 17px;">
                     <div class="col-padded">
                         <button type="button" class="btn btn-xs btn-success x-woodmoney-submit"><strong>Go</strong></button>
                     </div>
                 </div>
-                <% } %>
 
-            <% } %>
-        </form>
-
-        <div class="row">
-            <div class="col-md-12">
             </div>
-        </div>
+
+        </form>
 
     </div>
 </div>
@@ -237,24 +229,30 @@
     };
 
     $(document).ready(function() {
-        addAutoComplete($('#wowy-player-search'), $('.x-wowy-player-results'), {
-            url_function : function(player) {
-                return '/woodwowy?player=' + player.player_id;
+
+        var player_id = <%= player ? player._id : 'null'%>;
+        var teammate_id = <%= teammate ? teammate._id : 'null'%>;
+
+        addAutoComplete('#wowy-player-search', '.x-wowy-player-results', {
+            url_function : function(p) {
+                if(teammate_id){
+                    return '/woodwowy?player=' + p.player_id + '&teammate=' + teammate_id;
+                } else {
+                    return '/woodwowy?player=' + p.player_id;
+                }
             }
         });
 
-        <%if(player) { %>
-        var $teammate = $('#wowy-teammate-search');
-        console.log($teammate);
-        if($teammate.length){
-            console.log("adding teammate autocomplete");
-            addAutoComplete($teammate, $('.x-wowy-teammate-results'), {
-                url_function : function(player) {
-                    return '/woodwowy?player=<%= player.player_id %>&teammate=' + player.player_id;
+        addAutoComplete('#wowy-teammate-search', '.x-wowy-teammate-results', {
+            url_function : function(p) {
+                if(player_id){
+                    return '/woodwowy?player=' + player_id + '&teammate=' + p.player_id;
+                } else {
+                    return '/woodwowy?teammate=' + p.player_id;
                 }
-            });
-        }
-        <% } %>
+            }
+        });
+
     });
 
 </script>

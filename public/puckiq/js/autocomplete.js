@@ -24,6 +24,7 @@ let Keys = {
 
 function addAutoComplete(input, results, options) {
 
+    console.log(input);
     options = options || {};
 
     let self = this;
@@ -83,6 +84,7 @@ function addAutoComplete(input, results, options) {
 
     self.triggerSearch = function() {
 
+        console.log("triggerSearch", input);
         self.showAutocomplete();
 
         if(self.search_timeout) {
@@ -117,6 +119,7 @@ function addAutoComplete(input, results, options) {
 
     self.showResults = function(criteria) {
 
+        console.log("show results", $input);
         if(self.criteriaEqual(criteria) && self.data) {
             return;
         }
@@ -124,6 +127,7 @@ function addAutoComplete(input, results, options) {
         self.criteria = criteria;
         if(!criteria) return;
 
+        console.log("getting results", $input, criteria);
         $.get('/ajax/player-player-search', criteria, function(data) {
 
             self.data = data;
@@ -229,10 +233,12 @@ function addAutoComplete(input, results, options) {
     };
 
     self.getCriteria = function() {
-        let criteria = {
+
+        var criteria = {
             q: $(input).val()
         };
 
+        console.log("get criteria", $(input).val());
         if(criteria.q.length < 3) {
             criteria = null;
         }
@@ -240,6 +246,8 @@ function addAutoComplete(input, results, options) {
     };
 
     self.criteriaEqual = function(criteria) {
+        console.log("criteria equal", criteria, self.criteria);
+        console.log((!self.criteria && !criteria) || (self.criteria && criteria && self.criteria.q === criteria.q));
         return (!self.criteria && !criteria) || (self.criteria && criteria && self.criteria.q === criteria.q);
     };
 }

@@ -22,15 +22,11 @@ let Keys = {
     del: 46
 };
 
-function addAutoComplete(input, results, options) {
+function addAutoComplete($input, $results, options) {
 
-    console.log(input);
     options = options || {};
 
     let self = this;
-
-    let $input = $(input);
-    let $results = $(results);
 
     self.focus = null;
 
@@ -84,7 +80,7 @@ function addAutoComplete(input, results, options) {
 
     self.triggerSearch = function() {
 
-        console.log("triggerSearch", input);
+        console.log("triggerSearch");
         self.showAutocomplete();
 
         if(self.search_timeout) {
@@ -99,7 +95,7 @@ function addAutoComplete(input, results, options) {
         }
 
         if(!criteria) {
-            $(results).empty();
+            $results.empty();
         } else {
             self.search_timeout = setTimeout(() => {
                 delete self.search_timeout;
@@ -119,7 +115,6 @@ function addAutoComplete(input, results, options) {
 
     self.showResults = function(criteria) {
 
-        console.log("show results", $input);
         if(self.criteriaEqual(criteria) && self.data) {
             return;
         }
@@ -127,7 +122,7 @@ function addAutoComplete(input, results, options) {
         self.criteria = criteria;
         if(!criteria) return;
 
-        console.log("getting results", $input, criteria);
+        console.log("getting results", criteria);
         $.get('/ajax/player-player-search', criteria, function(data) {
 
             self.data = data;
@@ -146,7 +141,7 @@ function addAutoComplete(input, results, options) {
                 }
                 html += '</div>';
             }
-            $(results).html(html);
+            $results.html(html);
 
             // $(results + ' div').on('click', function(e) {
             //
@@ -167,7 +162,7 @@ function addAutoComplete(input, results, options) {
             });
 
             $results.children('div').mouseup(function(e) {
-                $(input).focus();
+                $input.focus();
                 self.focus_lock = false;
             });
 
@@ -235,19 +230,18 @@ function addAutoComplete(input, results, options) {
     self.getCriteria = function() {
 
         var criteria = {
-            q: $(input).val()
+            q: $input.val()
         };
 
-        console.log("get criteria", $(input).val());
+        console.log("get criteria", $input, $input.val());
         if(criteria.q.length < 3) {
             criteria = null;
         }
+
         return criteria;
     };
 
     self.criteriaEqual = function(criteria) {
-        console.log("criteria equal", criteria, self.criteria);
-        console.log((!self.criteria && !criteria) || (self.criteria && criteria && self.criteria.q === criteria.q));
         return (!self.criteria && !criteria) || (self.criteria && criteria && self.criteria.q === criteria.q);
     };
 }

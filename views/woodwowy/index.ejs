@@ -233,7 +233,7 @@
         var player_id = <%= player ? player._id : 'null'%>;
         var teammate_id = <%= teammate ? teammate._id : 'null'%>;
 
-        addAutoComplete('#wowy-player-search', '.x-wowy-player-results', {
+        new addAutoComplete($('#wowy-player-search'), $('.x-wowy-player-results'), {
             url_function : function(p) {
                 if(teammate_id){
                     return '/woodwowy?player=' + p.player_id + '&teammate=' + teammate_id;
@@ -243,7 +243,7 @@
             }
         });
 
-        addAutoComplete('#wowy-teammate-search', '.x-wowy-teammate-results', {
+        new addAutoComplete($('#wowy-teammate-search'), $('.x-wowy-teammate-results'), {
             url_function : function(p) {
                 if(player_id){
                     return '/woodwowy?player=' + player_id + '&teammate=' + p.player_id;

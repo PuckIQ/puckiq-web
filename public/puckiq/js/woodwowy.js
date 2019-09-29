@@ -1,4 +1,4 @@
-function getFilters() {
+function getFilters(source) {
 
     var season = $('form.x-wm-filters [name=season]').val();
     var from_date = $('form.x-wm-filters #from_date').val();
@@ -7,6 +7,17 @@ function getFilters() {
     var filters = {
         season: season
     };
+
+    if(source === 'menu') {
+        console.log("filters (shortout)", filters);
+        return filters;
+    }
+
+    var player = parseInt($('form.x-wm-filters .x-player').val());
+    var teammate = parseInt($('form.x-wm-filters .x-teammate').val());
+
+    if(!isNaN(player)) filters.player = player;
+    if(!isNaN(teammate)) filters.teammate = teammate;
 
     if(isNaN(filters.min_toi)) delete filters.min_toi;
     if(isNaN(filters.max_toi)) delete filters.max_toi;
@@ -124,6 +135,12 @@ $(function() {
     $( ".x-change-player" ).click(function(e){
         $('.x-player-info').hide();
         $('.x-select-player').show();
+        return false;
+    });
+
+    $( ".x-change-teammate" ).click(function(e){
+        $('.x-teammate-info').hide();
+        $('.x-select-teammate').show();
         return false;
     });
 

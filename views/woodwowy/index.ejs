@@ -8,6 +8,7 @@
             <div class="row" style="display:flex; flex-direction: row; padding-top: 17px; padding-left: 17px;">
                 <div style="width: 400px;">
                     <% if(player) { %>
+                        <input class="x-player" name="player" type="hidden" value="<%= player._id%>" />
                         <div class="x-player-info">
                             <span style="font-width: bold; font-size: 2rem;"><%= player.name %></span>
                             <small><%= player.positions %></small>
@@ -22,7 +23,8 @@
                 </div>
                 <div style="width: 400px;">
                     <% if(teammate) { %>
-                        <div class="x-teammate-info">
+                    <input class="x-teammate" name="teammate" type="hidden" value="<%= teammate._id%>" />
+                    <div class="x-teammate-info">
                             <span style="font-width: bold; font-size: 2rem;"><%= teammate.name %></span>
                             <small><%= teammate.positions %></small>
                             <a class="x-change-teammate" style="margin-left: 17px;">change</a>
@@ -45,6 +47,7 @@
                             <% if(player) { %>
                             <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
                             <% } %>
+                            <option value="20192020" <% if(request.season === 20192020) { %> selected <% } %>>2019-20</option>
                             <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
                             <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
                             <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
@@ -89,12 +92,7 @@
 <table id="puckiq" class="table table-bordered table-condensed table-hover">
     <thead>
         <tr>
-            <% if(!player) { %>
-                <th>Player</th>
-                <th>Pos</th>
-            <% } else { %>
-                <th>Season</th>
-            <% } %>
+            <th>Season</th>
             <th>Team</th>
 
             <th data-sort="games_played">GP</th>
@@ -166,12 +164,7 @@
                 //var classname = 'pos-' + pd['position'].toLowerCase() + ' woodmoney-' + pd['woodmoneytier'].toLowerCase() + ' hidden';
             %>
         <tr class="<%= classname %>">
-            <% if(!player) { %>
-            <td style="white-space: nowrap;"><a href="/players/<%=pd['player_id']%>"><%= pd['name']%></a></td>
-            <td><%= pd['position']%></td>
-            <% } else { %>
             <td><%= pd['season']%></td>
-            <% } %>
             <td><a href="/teams/<%= pd['team']%>"><%= pd['team']%></a></td>
             <td><%= pd['games_played']%></td>
             <td><%= pd['woodmoneytier']%></td>

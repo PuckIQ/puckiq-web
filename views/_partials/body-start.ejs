@@ -97,7 +97,7 @@
 
       $(".x-teams-dropdown").click(function() {
 
-        let filters = getFilters();
+        let filters = (getFilters && getFilters('team-menu')) || {};
         if(!filters.positions) delete filters.positions;
         if(filters.season === 'all') delete filters.season;
 

@@ -5,10 +5,12 @@ const stringify = require('csv-stringify/lib/es5');
 const constants = require('../common/constants');
 const utils = require('../common/utils');
 const AppException = require('../common/app_exception');
-const csv_file_definition = require('../common/woodmoney_csv_file_definition');
 const WoodmoneyService = require('../services/woodmoney');
 const WoodwowyService = require('../services/woodwowy');
 const PlayerService = require('../services/player');
+
+const woodmoney_csv_file_definition = require('../common/woodmoney_csv_file_definition');
+const woodwowy_csv_file_definition = require('../common/woodwowy_csv_file_definition');
 
 function PuckIQHandler(app, locator) {
 
@@ -83,7 +85,7 @@ function PuckIQHandler(app, locator) {
             let records = [];
 
             if(data.results && data.results.length) {
-                records = csv_file_definition.build(data);
+                records = woodmoney_csv_file_definition.build(data);
             }
 
             let file_name = `woodmoney.csv`;
@@ -129,7 +131,7 @@ function PuckIQHandler(app, locator) {
             let records = [];
 
             if(data.results && data.results.length) {
-                records = csv_file_definition.build(data);
+                records = woodmoney_csv_file_definition.build(data);
             }
 
             let player_name = data.player.name.replace(/\s/g, "_");
@@ -177,7 +179,7 @@ function PuckIQHandler(app, locator) {
             let records = [];
 
             if(data.results && data.results.length) {
-                records = csv_file_definition.build(data);
+                records = woodmoney_csv_file_definition.build(data);
             }
 
             let team_name = data.team.name.replace(/\s/g, "_");
@@ -285,7 +287,7 @@ function PuckIQHandler(app, locator) {
             let records = [];
 
             if(data.results && data.results.length) {
-                records = csv_file_definition.build(data);
+                records = woodwowy_csv_file_definition.build(data);
             }
 
             let file_name = `woodmoney.csv`;

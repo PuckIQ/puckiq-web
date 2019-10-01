@@ -1,7 +1,7 @@
 <div class="container-fluid" role="main">
     <div class="page-header">
 
-        <h2>Woodwowy <small>See how one player does with and without a player</small></h2>
+        <h2>WoodWOWY <small>See how one player does with and without a player</small></h2>
 
         <form class="x-wm-filters" method="get">
 
@@ -53,7 +53,7 @@
                             <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
                             <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
                             <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
-                            <option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>
+                            <!--<option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>-->
                         </select>
                         <% if(request.from_date && request.to_date) { %>
                             <span style="padding-left: 10px">
@@ -97,10 +97,11 @@
 
             <th data-sort="games_played">GP</th>
             <th data-sorter="false">Comp</th>
-            <th data-sorter="false">GT</th>
+            <th data-sorter="false">On/Off</th>
+            <th data-sorter="false">RT</th>
             <th data-sort="evtoi">TOI</th>
 
-            <th data-sort="ctoipct">CTOI%</th>
+            <!--<th data-sort="ctoipct">CTOI%</th>-->
             <th data-sort="cf">CF</th>
             <th data-sort="ca">CA</th>
             <th data-sort="cfpct">CF%</th>
@@ -168,10 +169,11 @@
             <td><a href="/teams/<%= pd['team']%>"><%= pd['team']%></a></td>
             <td><%= pd['games_played']%></td>
             <td><%= pd['woodmoneytier']%></td>
-            <td>All</td>
+            <td><%= pd['onoff']%></td>
+            <td style="white-space: nowrap;"><%= pd['recordtype']%></td>
             <td><%= formatDecimal( pd['evtoi'], 2) %></td>
 
-            <td><%= formatDecimal( pd['ctoipct'], 1)%></td>
+            <!--<td><%= formatDecimal( pd['ctoipct'], 1)%></td>-->
             <td><%= formatDecimal( pd['cf'], 0 )%></td>
             <td><%= formatDecimal( pd['ca'], 0 )%></td>
             <td><%= formatDecimal( pd['cfpct'] )%></td>

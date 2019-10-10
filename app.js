@@ -1,5 +1,6 @@
 const env = process.env.NODE_ENV || 'staging'; //tmp checkin till Zsolt gets build setup
 const config = require('./config.js')[env];
+config.env = env;
 
 const express = require('express');
 const fs = require('fs');
@@ -9,7 +10,6 @@ const cookieParser = require('cookie-parser');
 const favicon = require('serve-favicon');
 const morgan = require('morgan');
 const rfs = require('rotating-file-stream');
-
 const app = express();
 
 app.set('views', [

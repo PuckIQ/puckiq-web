@@ -1,5 +1,6 @@
 const _ = require('lodash');
 const constants = require('../common/constants');
+const utils = require('../common/utils');
 const validator = require('../common/validator');
 const AppException = require('../common/app_exception');
 
@@ -150,6 +151,8 @@ class WoodmoneyService {
             let url = `${baseUrl}/woodmoney`;
 
             if(config.env === 'local') console.log('options', JSON.stringify(options, null, 2));
+            if(config.env === 'local') console.log(`${url}?${utils.encode_query(options)}`);
+
             request.post({
                 url: url,
                 body: options,

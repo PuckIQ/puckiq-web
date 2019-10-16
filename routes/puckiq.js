@@ -258,14 +258,19 @@ function PuckIQHandler(app, locator) {
 
     controller.getWoodwowy = function(req, res) {
 
-        if (!req.query.player) {
+        if (!req.query.player && !req.query.teammate) {
             return res.render('woodwowy/index', getWoodwowyPage({ request: {}}, req.url));
         }
 
-        if (!req.query.teammate) {
-            //todo get player
+        if (req.query.player && !req.query.teammate) {
             players.getById(req.query.player).then((player) => {
                 res.render('woodwowy/index', getWoodwowyPage({player}, req.url));
+            }, (err) => {
+                return error_handler.handle(req, res, err);
+            });
+        } else if (!req.query.player && req.query.teammate) {
+            players.getById(req.query.teammate).then((teammate) => {
+                res.render('woodwowy/index', getWoodwowyPage({teammate}, req.url));
             }, (err) => {
                 return error_handler.handle(req, res, err);
             });

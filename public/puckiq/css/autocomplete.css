@@ -1,5 +1,5 @@
 @media (max-width: 1000px) {
-    .autocomplete-search {
+    #player-search {
         display: none;
     }
 }

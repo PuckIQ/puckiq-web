@@ -44,6 +44,7 @@ module.exports = exports = function (app, request, config) {
     app.get('/_template', puckIQHandler.getTemplate);
 
     app.get('/error404', puckIQHandler.get404);
+    app.get('/version', (req, res) => res.send("1.0.1"));
 
     // Handle All AJAX Requests Here
     //app.get('/ajax/:pqreq?', ajaxHandler.getAjaxRequest);

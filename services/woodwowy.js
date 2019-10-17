@@ -110,23 +110,7 @@ class WoodwowyService {
                     return reject(new AppException(data.error.type, data.error.message));
                 }
 
-                data.results = _.map(data.results, x => {
-                    x.position = x.positions.length ? x.positions[0] : '';
-                    return x;
-                });
-
                 data.team = (options.team && iq.teams[options.team]) || null;
-
-                data.request.selected_positions = {};
-                if (data.request.positions === "all") {
-                    _.each(_.keys(constants.positions), pos => data.request.selected_positions[pos] = true);
-                    data.request.selected_positions.f = true;
-                } else {
-                    _.each(data.request.positions.split(''), pos => data.request.selected_positions[pos] = true);
-                    data.request.selected_positions.f = data.request.selected_positions.l &&
-                        data.request.selected_positions.c &&
-                        data.request.selected_positions.r;
-                }
 
                 return resolve(_.extend({request: options}, data));
 

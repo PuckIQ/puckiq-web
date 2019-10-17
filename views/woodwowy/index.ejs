@@ -92,13 +92,13 @@
 <table id="puckiq" class="table table-bordered table-condensed table-hover">
     <thead>
         <tr>
-            <th>Season</th>
-            <th>Team</th>
+            <% if(!request.season) { %>
+                <th>Season</th>
+            <% } %>
 
-            <th data-sort="games_played">GP</th>
+            <th>Team</th>
+            <th>Players</th>
             <th data-sorter="false">Comp</th>
-            <th data-sorter="false">On/Off</th>
-            <th data-sorter="false">RT</th>
             <th data-sort="evtoi">TOI</th>
 
             <!--<th data-sort="ctoipct">CTOI%</th>-->
@@ -165,12 +165,14 @@
                 //var classname = 'pos-' + pd['position'].toLowerCase() + ' woodmoney-' + pd['woodmoneytier'].toLowerCase() + ' hidden';
             %>
         <tr class="<%= classname %>">
+
+            <% if(!request.season) { %>
             <td><%= pd['season']%></td>
+            <% } %>
+
             <td><a href="/teams/<%= pd['team']%>"><%= pd['team']%></a></td>
-            <td><%= pd['games_played']%></td>
+            <td style="white-space: nowrap;"><%= pd['description'] %></td>
             <td><%= pd['woodmoneytier']%></td>
-            <td><%= pd['onoff']%></td>
-            <td style="white-space: nowrap;"><%= pd['recordtype']%></td>
             <td><%= formatDecimal( pd['evtoi'], 2) %></td>
 
             <!--<td><%= formatDecimal( pd['ctoipct'], 1)%></td>-->

@@ -3,9 +3,9 @@
 const _ = require("lodash");
 
 const definition = {
-    "name": "Name",
     "season": "Season",
     "team": "Team",
+    "description": "Players",
     "positions": "Positions",
     "games_played": "GP",
     "woodmoneytier": "WMTier",

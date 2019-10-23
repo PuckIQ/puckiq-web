@@ -53,7 +53,7 @@
                             <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
                             <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
                             <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
-                            <!--<option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>-->
+                            <option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>
                         </select>
                         <% if(request.from_date && request.to_date) { %>
                             <span style="padding-left: 10px">
@@ -92,9 +92,6 @@
 <table id="puckiq" class="table table-bordered table-condensed table-hover">
     <thead>
         <tr>
-            <% if(!request.season) { %>
-                <th>Season</th>
-            <% } %>
 
             <th>Team</th>
             <th>Players</th>
@@ -162,13 +159,8 @@
     function renderTableRow(playerData) {
                 var pd = playerData;
                 var classname = '';
-                //var classname = 'pos-' + pd['position'].toLowerCase() + ' woodmoney-' + pd['woodmoneytier'].toLowerCase() + ' hidden';
             %>
         <tr class="<%= classname %>">
-
-            <% if(!request.season) { %>
-            <td><%= pd['season']%></td>
-            <% } %>
 
             <td><a href="/teams/<%= pd['team']%>"><%= pd['team']%></a></td>
             <td style="white-space: nowrap;"><%= pd['description'] %></td>

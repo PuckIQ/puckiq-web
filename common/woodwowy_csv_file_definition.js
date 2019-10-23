@@ -3,16 +3,17 @@
 const _ = require("lodash");
 
 const definition = {
-    "season": "Season",
+    //"season": "Season",
     "team": "Team",
     "description": "Players",
-    "positions": "Positions",
+    //"positions": "Positions",
     "games_played": "GP",
     "woodmoneytier": "WMTier",
     "onoff": "OnOff",
     "recordtype": "RecordType",
+
     "evtoi": 'EVTOI',
-    "ctoipct": "CTOI%",
+    //"ctoipct": "CTOI%",
     "cf60": "CF/60",
     "ca60": "CA/60",
     "cfpct": "CF%",
@@ -67,19 +68,13 @@ const definition = {
 
 exports.build = (data) => {
 
-    let is_date_range = !!(data.request.from_date && data.request.to_date);
-
     let _definition = _.extend({}, definition);
-    if(is_date_range) delete _definition.season;
 
     let headers = _.values(_definition);
 
     let records = _.chain(data.results)
         .map(x => {
-            let row = { name: x.name };
-
-            if(!is_date_range) row.season = data.seasonId;
-
+            let row = {  };
             _.each(_.keys(_definition), field => {
                 if(!_.has(x, field)){
                     console.log("Missing field", field);

@@ -57,8 +57,6 @@ class WoodwowyService {
                         let err = validator.validateSeason(options.season, "season");
                         if (err) return reject(err);
                     }
-                } else if (options.player) {
-                    options.season = 'all';
                 } else {
                     let current_season = iq.current_woodmoney_season;
                     options.season = current_season && current_season._id;
@@ -79,7 +77,7 @@ class WoodwowyService {
             if (err) return reject(err);
 
             options.teammates = _.map(options.teammates, x => parseInt(x));
-            err = validator.validateArray(options.teammates, "teamates", {
+            err = validator.validateArray(options.teammates, "teammates", {
                 nullable: false,
                 iterator: (x) => {
                     validator.validateInteger(x, 'teammate', {nullable: false, min: 1})
@@ -89,7 +87,7 @@ class WoodwowyService {
 
             let url = `${baseUrl}/woodwowy`;
 
-            console.log(`${url}?${utils.encode_query(options)}`);
+            if(config === 'local') console.log(`${url}?${utils.encode_query(options)}`);
             request.post({
                 url: url,
                 body: options,

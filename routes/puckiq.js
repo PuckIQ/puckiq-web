@@ -295,7 +295,7 @@ function PuckIQHandler(app, locator) {
                 records = woodwowy_csv_file_definition.build(data);
             }
 
-            let file_name = `woodmoney.csv`;
+            let file_name = `woodwowy.csv`;
 
             res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
             res.setHeader('Content-Type', 'text/csv');
@@ -364,15 +364,12 @@ function getWoodwowyPage(data, base_url) {
         data.request.to_date_str = utils.dateString(data.request.to_date);
     }
 
-    //delete selected_positions its not used by the backend
-    let _request = _.extend({}, data.request || {});
-    delete _request._id;
-    _.each(_.keys(_request), key => {
-        if (_request[key] === null) delete _request[key];
-    });
-
     base_url = url.parse(base_url).pathname;
 
+    let _request = _.pick(data.request, ['season','from_date','to_date','player']);
+    if(data.request.teammates && data.request.teammates.length){
+        _request.teammate = data.request.teammates[0];
+    }
     page.download_url = `${base_url}/download?${utils.encode_query(_request)}`;
 
     data.player = data.player || null;

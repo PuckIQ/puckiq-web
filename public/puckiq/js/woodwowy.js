@@ -8,7 +8,7 @@ function getFilters(source) {
         season: season
     };
 
-    if(source === 'menu') {
+    if(source === 'team-menu') {
         console.log("filters (shortout)", filters);
         return filters;
     }

@@ -16,7 +16,7 @@
     "ejs": "2.5.7",
     "express": "4.16.2",
     "express-ejs-layouts": "2.5.0",
-    "lodash": "4.17.11",
+    "lodash": "4.17.13",
     "morgan": "1.9.1",
     "request": "2.83.0",
     "rotating-file-stream": "1.4.3",

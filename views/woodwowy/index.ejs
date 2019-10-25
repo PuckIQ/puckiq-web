@@ -1,0 +1,250 @@
+<div class="container-fluid" role="main">
+    <div class="page-header">
+
+        <h2>WoodWOWY <small>See how one player does with and without a player</small></h2>
+
+        <form class="x-wm-filters" method="get">
+
+            <div class="row" style="display:flex; flex-direction: row; padding-top: 17px; padding-left: 17px;">
+                <div style="width: 400px;">
+                    <% if(player) { %>
+                        <input class="x-player" name="player" type="hidden" value="<%= player._id%>" />
+                        <div class="x-player-info">
+                            <span style="font-width: bold; font-size: 2rem;"><%= player.name %></span>
+                            <small><%= player.positions %></small>
+                            <a class="x-change-player" style="margin-left: 17px;">change</a>
+                        </div>
+                    <% } %>
+                    <div class="x-select-player" style="display: <%= player ? "none" : "inline-block"%>; position: relative;">
+                        <input type="text" id="wowy-player-search" placeholder="Enter player name" class="autocomplete-search" style="width: 200px; margin-top: 8px;" />
+                        <div class="autocomplete-results x-wowy-player-results" style="display:none; text-align: left;">
+                        </div>
+                    </div>
+                </div>
+                <div style="width: 400px;">
+                    <% if(teammate) { %>
+                    <input class="x-teammate" name="teammate" type="hidden" value="<%= teammate._id%>" />
+                    <div class="x-teammate-info">
+                            <span style="font-width: bold; font-size: 2rem;"><%= teammate.name %></span>
+                            <small><%= teammate.positions %></small>
+                            <a class="x-change-teammate" style="margin-left: 17px;">change</a>
+                        </div>
+                    <% } %>
+                    <div class="x-select-teammate" style="display: <%= teammate ? "none" : "inline-block"%>; position: relative;">
+                        <input type="text" id="wowy-teammate-search" placeholder="Enter teammate name" class="autocomplete-search" style="width: 200px; margin-top: 8px;" />
+                        <div class="autocomplete-results x-wowy-teammate-results" style="display:none; text-align: left;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="x-filters" style="display: <%= (player && teammate) ? "block" : "none" %>">
+
+                <div class="row" style="padding-top: 17px;">
+                    <div class="col-padded">
+                        Select date range:
+                        <select id="season-input" name="season" class="" style="visibility:hidden">
+                            <% if(player) { %>
+                            <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
+                            <% } %>
+                            <!--<option value="20192020" <% if(request.season === 20192020) { %> selected <% } %>>2019-20</option>-->
+                            <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
+                            <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
+                            <!--<option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
+                            <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
+                            <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>-->
+                            <option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>
+                        </select>
+                        <% if(request.from_date && request.to_date) { %>
+                            <span style="padding-left: 10px">
+                            <%= request.from_date_str + " to " + request.to_date_str %>
+                            <a href="#change" class="x-change-date-range">change</a>
+                            </span>
+                        <% } %>
+                        <div id="date-range-modal" class="modal" style="height: 340px;">
+                            <h4>Select date range for games</h4>
+                            From: <input type="text" class="x-date-range" id="dp-from" data-target="from_date" />
+                            To: <input type="text" class="x-date-range" id="dp-to" data-target="to_date" />
+                            <button type="button" class="btn btn-xs btn-success x-date-range-submit"><strong>Go</strong></button>
+                            <div class="col-padded x-date-error" style="padding-top: 17px; color: Red; display:none;">
+                            </div>
+                        </div>
+                        <!--not sure why this has to be outside modal div -->
+                        <input type="hidden" id="from_date" name="from_date" value="" />
+                        <input type="hidden" id="to_date" name="to_date" value="" />
+                    </div>
+
+                    <div class="col-padded">
+                        <button type="button" class="btn btn-xs btn-success x-woodmoney-submit"><strong>Go</strong></button>
+                    </div>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+<% if(player && teammate) { %>
+
+<!--Begin render table-->
+<table id="puckiq" class="table table-bordered table-condensed table-hover">
+    <thead>
+        <tr>
+
+            <th>Team</th>
+            <th>Players</th>
+            <th data-sorter="false">Comp</th>
+            <th data-sort="evtoi">TOI</th>
+
+            <!--<th data-sort="ctoipct">CTOI%</th>-->
+            <th data-sort="cf">CF</th>
+            <th data-sort="ca">CA</th>
+            <th data-sort="cfpct">CF%</th>
+            <th data-sort="cf60">CF/60</th>
+
+            <th data-sort="ca60">CA/60</th>
+            <th data-sort="cf60rc">CF60RC</th>
+            <th data-sort="ca60rc">CA60RC</th>
+            <th data-sort="cfpctrc">CF%RC</th>
+            <th data-sort="dff">DFF</th>
+
+            <th data-sort="dfa">DFA</th>
+            <th data-sort="dffpct">DFF%</th>
+            <th data-sort="dff60">DFF/60</th>
+            <th data-sort="dfa60">DFA/60</th>
+            <th data-sort="dff60rc">DFF60RC</th>
+
+            <th data-sort="dfa60rc">DFA60RC</th>
+            <th data-sort="dffpctrc">DFF%RC</th>
+            <th data-sort="gf">GF</th>
+            <th data-sort="ga">GA</th>
+            <th data-sort="gfpct">GF%</th>
+
+            <th data-sort="gfpct">ONSH%</th>
+            <th data-sort="gfpct">ONSV%</th>
+            <th data-sort="gfpct">PDO</th>
+            <th data-sort="gf60">GF/60</th>
+            <th data-sort="ga60">GA/60</th>
+
+            <th data-sort="ozspct">OZS%</th>
+            <th data-sort="fo60">FO/60</th>
+        </tr>
+    </thead>
+    <tbody id="dataTable">
+    <%
+    for (var i = 0; i < results.length; i++) {
+        renderTableRow(results[i]);
+    }
+    %>
+    </tbody>
+</table>
+<% } %>
+
+<!--End render table-->
+<div style="text-align: center">
+    <% if(player && teammate) { %>
+        <% if(results.length === 0) {%>
+            No results
+        <% } else { %>
+            <a href="<%= download_url %>" class="x-download">download csv</a>
+        <% } %>
+    <% } %>
+</div>
+
+<script>
+    <%
+
+    function renderTableRow(playerData) {
+                var pd = playerData;
+                var classname = '';
+            %>
+        <tr class="<%= classname %>">
+
+            <td><a href="/teams/<%= pd['team']%>"><%= pd['team']%></a></td>
+            <td style="white-space: nowrap;"><%= pd['description'] %></td>
+            <td><%= pd['woodmoneytier']%></td>
+            <td><%= formatDecimal( pd['evtoi'], 2) %></td>
+
+            <!--<td><%= formatDecimal( pd['ctoipct'], 1)%></td>-->
+            <td><%= formatDecimal( pd['cf'], 0 )%></td>
+            <td><%= formatDecimal( pd['ca'], 0 )%></td>
+            <td><%= formatDecimal( pd['cfpct'] )%></td>
+            <td><%= formatDecimal( pd['cf60'], 1 )%></td>
+
+            <td><%= formatDecimal( pd['ca60'], 1 )%></td>
+            <td><%= formatDecimal( pd['cf60rc'] )%></td>
+            <td><%= formatDecimal( pd['ca60rc'] )%></td>
+            <td><%= formatDecimal( pd['cfpctrc'] )%></td>
+            <td><%= formatDecimal( pd['dff'] )%></td>
+
+            <td><%= formatDecimal( pd['dfa'] )%></td>
+            <td><%= formatDecimal( pd['dffpct'] )%></td>
+            <td><%= formatDecimal( pd['dff60'], 1 )%></td>
+            <td><%= formatDecimal( pd['dfa60'], 1 )%></td>
+            <td><%= formatDecimal( pd['dff60rc'] )%></td>
+
+            <td><%= formatDecimal( pd['dfa60rc'] )%></td>
+            <td><%= formatDecimal( pd['dffpctrc'] )%></td>
+            <td><%= pd['gf']%></td>
+            <td><%= pd['ga']%></td>
+            <td><%= formatDecimal( pd['gfpct'] )%></td>
+
+            <td><%= formatDecimal( pd['onshpct'], 1)%></td>
+            <td><%= formatDecimal( pd['onsvpct'], 1)%></td>
+            <td><%= formatDecimal( pd['pdo'], 0)%></td>
+            <td><%= formatDecimal( pd['gf60'] )%></td>
+            <td><%= formatDecimal( pd['ga60'] )%></td>
+
+            <td><%= formatDecimal( pd['ozspct'] )%></td>
+            <td><%= formatDecimal( pd['fo60'] )%></td>
+        </tr>
+
+    <%
+    }
+
+    function formatDecimal(val, no_decimals) {
+        if(isNaN(no_decimals)) no_decimals = 2;
+        return parseFloat("" + Math.round(val * 100) / 100).toFixed(no_decimals);
+    }
+
+    %>
+
+    //used by woodmoney
+    //TODO change
+    var wmState = {
+        request : <%- JSON.stringify(request) %>
+    };
+
+    $(document).ready(function() {
+
+        var player_id = <%= player ? player._id : 'null'%>;
+        var teammate_id = <%= teammate ? teammate._id : 'null'%>;
+
+        new addAutoComplete($('#wowy-player-search'), $('.x-wowy-player-results'), {
+            url_function : function(p) {
+                if(teammate_id){
+                    return '/woodwowy?player=' + p.player_id + '&teammate=' + teammate_id;
+                } else {
+                    return '/woodwowy?player=' + p.player_id;
+                }
+            }
+        });
+
+        new addAutoComplete($('#wowy-teammate-search'), $('.x-wowy-teammate-results'), {
+            url_function : function(p) {
+                if(player_id){
+                    return '/woodwowy?player=' + player_id + '&teammate=' + p.player_id;
+                } else {
+                    return '/woodwowy?teammate=' + p.player_id;
+                }
+            }
+        });
+
+    });
+
+</script>
+
+<script src="/puckiq/js/woodwowy.js"></script>
+

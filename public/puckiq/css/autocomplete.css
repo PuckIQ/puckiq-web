@@ -1,5 +1,5 @@
 @media (max-width: 1000px) {
-    .autocomplete-search {
+    #player-search {
         display: none;
     }
 }
@@ -86,7 +86,7 @@
 .autocomplete-results {
     overflow-y: auto;
     position: absolute;
-    top: 30px;
+    top: 38px;
     width: 100%;
     background: white;
     border: solid 1px lightgrey;

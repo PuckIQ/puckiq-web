@@ -88,7 +88,7 @@ class WoodwowyService {
 
             let url = `${baseUrl}/woodwowy`;
 
-            if(config === 'local') console.log(`${url}?${utils.encode_query(options)}`);
+            if(config.env === 'local') console.log(`${url}?${utils.encode_query(options)}`);
             request.post({
                 url: url,
                 body: options,

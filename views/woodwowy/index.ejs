@@ -47,11 +47,11 @@
                             <% if(player) { %>
                             <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
                             <% } %>
-                            <!--<option value="20192020" <% if(request.season === 20192020) { %> selected <% } %>>2019-20</option>-->
+                            <option value="20192020" <% if(request.season === 20192020) { %> selected <% } %>>2019-20</option>
                             <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
                             <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
-                            <!--<option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
-                            <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
+                            <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
+                            <!--<option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
                             <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>-->
                             <option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>
                         </select>

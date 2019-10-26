@@ -7,7 +7,7 @@ const definition = {
     "team": "Team",
     "description": "Players",
     //"positions": "Positions",
-    "games_played": "GP",
+    //"games_played": "GP",
     "woodmoneytier": "WMTier",
     "onoff": "OnOff",
     "recordtype": "RecordType",

@@ -1,3 +1,5 @@
+"use strict";
+
 const _ = require('lodash');
 const constants = require('../common/constants');
 const utils = require('../common/utils');
@@ -199,6 +201,52 @@ class WoodmoneyService {
         });
 
     }
+
+    formatChart(results) {
+
+        //assume single season and team for now...
+
+        let grouped = _.values(_.groupBy(results, x => x.player_id));
+
+        let forwards = _.filter(grouped, x => !~x[0].positions.indexOf('D') );
+        let defence = _.filter(grouped, x => !!~x[0].positions.indexOf('D') );
+
+        const player_formatter = (player_results) => {
+            let keyed = _.keyBy(player_results, 'woodmoneytier');
+            return {
+                x : keyed[constants.woodmoney_tier.all].gfpct,
+                y : keyed[constants.woodmoney_tier.elite].ctoipct - keyed[constants.woodmoney_tier.gritensity].ctoipct,
+                r: 10
+            };
+        };
+
+        let forward_data = _.map(forwards, player => player_formatter(player));
+        let defence_data = _.map(defence, player => player_formatter(player));
+
+        let forward_labels = _.map(forwards, player => player[0].name);
+        let defence_labels = _.map(defence, player => player[0].name);
+
+        let data = {
+            labels : 'Edmonton Oilers', //todo
+            datasets : [
+                {
+                    labels: forward_labels,
+                    backgroundColor: "rgba(51, 153, 51,0.8)",
+                    borderColor: "rgba(51, 153, 51,1)",
+                    data : forward_data
+                },
+                {
+                    labels: defence_labels,
+                    backgroundColor: "rgba(0, 102, 255,0.8)",
+                    borderColor: "rgba(0, 102, 255,1)",
+                    data : defence_data
+                },
+            ]
+        };
+
+        return data;
+    }
+
 
 }
 

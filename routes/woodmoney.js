@@ -5,7 +5,6 @@ const constants = require('../common/constants');
 const utils = require('../common/utils');
 const AppException = require('../common/app_exception');
 const WoodmoneyService = require('../services/woodmoney');
-const PlayerService = require('../services/player');
 
 const woodmoney_csv_file_definition = require('../common/woodmoney_csv_file_definition');
 
@@ -17,7 +16,6 @@ function WoodmoneyHandler(app, locator) {
     let error_handler = locator.get('error_handler');
 
     let wm = new WoodmoneyService(locator);
-    let players = new PlayerService(locator);
 
     controller.getWoodmoney = function(req, res) {
 
@@ -169,7 +167,7 @@ function WoodmoneyHandler(app, locator) {
         });
     };
 
-    function getWoodmoneyPage(data, base_url) {
+    function getWoodmoneyPage(data, base_url, teams) {
 
         let page = {};
 
@@ -205,6 +203,7 @@ function WoodmoneyHandler(app, locator) {
         //required for ejs
         data.player = data.player || null;
         data.team = data.team || null;
+        data.teams = _.values(data.teams || teams);
 
         return _.extend(page, data);
     }
@@ -220,16 +219,20 @@ function WoodmoneyHandler(app, locator) {
 
         cache.init().then((iq) => {
 
+            let team = req.params.team.toLowerCase();
+
             //default empty page... not much to do here...
             let data = _.extend({
                 season :  iq.current_woodmoney_season,
-                request: { selected_positions }
+                request: {
+                    selected_positions,
+                    team : team
+                }
             }, req.query);
 
-            let team = req.params.team.toLowerCase();
             data.team = (team && iq.teams[team]) || null;
 
-            let page = getWoodmoneyPage(data, req.url);
+            let page = getWoodmoneyPage(data, req.url, iq.teams);
 
             res.render('woodmoney/chart', page);
         });
@@ -238,11 +241,11 @@ function WoodmoneyHandler(app, locator) {
 
     controller.woodmoneyChartData = function(req, res) {
 
-        if(!_.has(req.body, 'team')) {
+        if (!_.has(req.body, 'team')) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: team"));
         }
 
-        let options = _.extend({ }, req.body);
+        let options = _.extend({}, req.body);
 
         controller._getWoodmoney(options).then((woodmoney) => {
             let data = wm.formatChart(woodmoney.results);

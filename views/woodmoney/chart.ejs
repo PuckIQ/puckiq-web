@@ -6,186 +6,49 @@
             <% if(player) { %><small><%= player.positions %></small><% } %>
         </h2>
 
-        <form class="x-wm-filters" method="get">
-            <div class="row" style="padding-top: 17px;">
-                <div class="col-padded">
-                    Select date range:
-                    <select id="season-input" name="season" class="">
-                        <% if(player) { %>
-                        <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
-                        <% } %>
-                        <option value="20192020" <% if(request.season === 20192020) { %> selected <% } %>>2019-20</option>
-                        <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
-                        <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
-                        <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
-                        <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
-                        <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
-                        <option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>
-                    </select>
-                    <% if(request.from_date && request.to_date) { %>
-                        <span style="padding-left: 10px">
-                        <%= request.from_date_str + " to " + request.to_date_str %>
-                        <a href="#change" class="x-change-date-range">change</a>
-                        </span>
-                    <% } %>
-                    <div id="date-range-modal" class="modal" style="height: 340px;">
-                        <h4>Select date range for games</h4>
-                        From: <input type="text" class="x-date-range" id="dp-from" data-target="from_date" />
-                        To: <input type="text" class="x-date-range" id="dp-to" data-target="to_date" />
-                        <button type="button" class="btn btn-xs btn-success x-date-range-submit"><strong>Go</strong></button>
-                        <div class="col-padded x-date-error" style="padding-top: 17px; color: Red; display:none;">
-                        </div>
-                    </div>
-                    <!--not sure why this has to be outside modal div -->
-                    <input type="hidden" id="from_date" name="from_date" value="" />
-                    <input type="hidden" id="to_date" name="to_date" value="" />
-                </div>
-            </div>
-            <div class="row" style="padding-top: 17px;">
-                <div class="col-padded">
-                    Filters:
-                    <select id="tier" name="tier">
-                        <option value="" <% if(!request.tier) { %>selected <% } %>>--Competition</option>
-                        <option value="All" <% if(request.tier === "All") { %>selected <% } %>>All</option>
-                        <option value="Elite" <% if(request.tier === "Elite") { %>selected <% } %>>Elite</option>
-                        <option value="Middle" <% if(request.tier === "Middle") { %>selected <% } %>>Middle</option>
-                        <option value="Gritensity" <% if(request.tier === "Gritensity") { %>selected <% } %>>Gritensity</option>
-                    </select>
-                </div>
-                <% if(!request.player){ %>
-                <div class="col-padded">
-                    <input type="hidden" id="positions" name="positions" value="<%= request.positions%>">
-                    Forwards <input type="checkbox" id="pos-f" value="clr" <% if(request.selected_positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
-                    Centres <input type="checkbox" id="pos-c" class="x-positions" value="c" <% if(request.selected_positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    LW <input type="checkbox" id="pos-l" class="x-positions" value="l" <% if(request.selected_positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    RW <input type="checkbox" id="pos-r" class="x-positions" value="r" <% if(request.selected_positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    Defence <input type="checkbox" id="pos-d" class="x-positions" value="d" <% if(request.selected_positions.d) { %>checked="checked" <% } %>  />
-                </div>
-                <div class="col-padded">
-                    Min TOI:
-                    <input type="text" id="min_toi" name="min_toi" placeholder="min" class="toi_minutes" maxlength="5"
-                           value="<% if(request.min_toi !== null){%><%= request.min_toi %><% } %>" />
-                    Max TOI:
-                    <input type="text" id="max_toi" name="max_toi" placeholder="max" class="toi_minutes" maxlength="5"
-                           value="<% if(request.max_toi !== null){%><%= request.max_toi %><% } %>" />
-                </div>
-                <% } %>
-                <div class="col-padded">
-                    <button type="button" class="btn btn-xs btn-success x-woodmoney-submit"><strong>Go</strong></button>
-                </div>
-            </div>
-        </form>
+        <%- include('_partials/filters') %>
 
-        <div style="height: 600px; width: 800px;">
-            <canvas id="bubble-chart" width="800" height="600"></canvas>
+        <div style="height: 600px; width: 950px; display: flex; flex-direction: row;">
+            <div>
+                <canvas id="bubble-chart" width="950" height="570"></canvas>
+                <div style="display: flex; justify-content: space-between">
+                    <div>
+                        <span>Chart Options: </span>
+                        <select>
+                            <option value="">TOI % Elite - TOI % Grit</option>
+                            <option value="">TOI % vs Elite</option>
+                        </select>
+                        <span> By </span>
+                        <select>
+                            <option value="">GF%</option>
+                            <option value="">CF%</option>
+                        </select>
+                    </div>
+                    <div>
+                        <a href="#">View Raw Data</a>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 
-        <script type="text/javascript">
-
-            var data = {
-                labels: "todo team name",
-                datasets: [
-                    {
-                        label: [],
-                        backgroundColor: "rgba(255,221,50,0.2)",
-                        borderColor: "rgba(255,221,50,1)",
-                        data: []
-                    }, {
-                        label: [],
-                        backgroundColor: "rgba(60,186,159,0.2)",
-                        borderColor: "rgba(60,186,159,1)",
-                        data: []
-                    }
-                ]
-            };
-
-            var ctx = document.getElementById('bubble-chart'); //.getContext('2d');
-            var chart = new Chart(ctx, {
-                type: 'bubble',
-                data: data,
-                options: {
-                    title: { display: false },
-                    legend : { display : false},
-                    tooltips: { enabled : false},
-                    scales: {
-                        yAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: "TOI Elite - TOI Grit"
-                            }
-                        }],
-                        xAxes: [{
-                            scaleLabel: {
-                                display: true,
-                                labelString: "GF%"
-                            }
-                        }]
-                    },
-                    plugins: {
-                        datalabels: {
-                            anchor: function(context) {
-                                var value = context.dataset.data[context.dataIndex];
-                                return value.v < 50 ? 'end' : 'center';
-                            },
-                            align: function(context) {
-                                var value = context.dataset.data[context.dataIndex];
-                                return value.v < 50 ? 'end' : 'center';
-                            },
-                            color: function(context) {
-                                return 'black';
-                                //return context.dataset.backgroundColor;
-                                // var value = context.dataset.data[context.dataIndex];
-                                // return value.v < 50 ? context.dataset.backgroundColor : 'white';
-                            },
-                            font: {
-                                weight: 'bold'
-                            },
-                            formatter: function(value, ctx) {
-                                return ctx.dataset.labels[ctx.dataIndex];
-                            },
-                            offset: 2,
-                            padding: 0
-                        }
-                    }
-                }
-            });
-
-        </script>
-
-        <div class="row">
-            <div class="col-md-12">
-            </div>
-        </div>
-
     </div>
 </div>
 
-<!--<script src="/puckiq/js/woodmoney.js"></script>-->
 <script type="text/javascript">
 
-    $(function() {
+    var wmState = {
+        is_chart : true,
+        request : <%- JSON.stringify(request) %>,
+        team : <%- JSON.stringify(team) %>
+    };
 
-        let request = {
-            <% if(team){ %> team : '<%= team._id %>' <% } %>
-        };
-
-        $.post( "/woodmoney/chart", request, function( data ) {
-
-            console.log(data);
-
-            chart.data.datasets.shift();
-            chart.data.datasets.shift();
-
-            chart.data.datasets.push(data.datasets[0]);
-            chart.data.datasets.push(data.datasets[1]);
-
-            chart.update();
-
-        });
-    });
+    console.log(wmState);
 
 </script>
+<script src="/puckiq/js/woodmoney_chart.js"></script>
+<script src="/puckiq/js/woodmoney.js"></script>
+
 

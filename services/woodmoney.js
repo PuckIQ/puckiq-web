@@ -180,6 +180,7 @@ class WoodmoneyService {
                 });
 
                 data.team = (options.team && iq.teams[options.team]) || null;
+                data.teams = iq.teams;
 
                 data.request.selected_positions = {};
                 if(data.request.positions === "all"){
@@ -214,9 +215,9 @@ class WoodmoneyService {
         const player_formatter = (player_results) => {
             let keyed = _.keyBy(player_results, 'woodmoneytier');
             return {
-                x : keyed[constants.woodmoney_tier.all].gfpct,
+                x : keyed[constants.woodmoney_tier.all].cfpct,
                 y : keyed[constants.woodmoney_tier.elite].ctoipct - keyed[constants.woodmoney_tier.gritensity].ctoipct,
-                r: 10
+                r: 5
             };
         };
 

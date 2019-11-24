@@ -19,11 +19,13 @@ function getFilters() {
     var max_toi = $('form.x-wm-filters #max_toi').val();
     var from_date = $('form.x-wm-filters #from_date').val();
     var to_date = $('form.x-wm-filters #to_date').val();
+    var team = $('form.x-wm-filters #team').val();
 
     var filters = {
         season: season,
         tier: tier,
         positions: positions,
+        team: team,
         min_toi: parseInt(min_toi),
         max_toi: parseInt(max_toi)
     };
@@ -55,37 +57,45 @@ function showModal(){
     $('#date-range-modal').modal({});
 }
 
-function updateSeasonOnPageRender(season) {
-
-    $('#season-input').change(function () {
-        var newSeason = $('#season-input').val();
-        if (newSeason === '') {
-            showModal();
-        } else {
-            $("#from_date").val('');
-            $("#to_date").val('');
-            submitForm();
-        }
-    });
-
-    $('#season-input').val(season);
-    $('#season-input').css('visibility', 'visible');
-
-    $('.x-change-date-range').click(function(e){
-        $('.x-date-error').hide();
-        showModal();
-        return false;
-    });
+function changeQueryString(val) {
+    if (history.pushState) {
+        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + val;
+        window.history.pushState({path: newurl}, '', newurl);
+    }
 }
 
-function submitForm(clearSeason){
-    console.log('submitting form...', clearSeason);
-    // console.log(getFilters());
-    // console.log($("input[name='to_date']").val());
-    // if(clearSeason) {
-    //     $("#season-input").val('');
-    // }
-    $('form.x-wm-filters').submit();
+function submitForm(){
+
+    var filters = getFilters();
+    var keys = Object.keys(filters);
+    var tmp = [];
+    for(var i=0; i < keys.length; i++){
+        var key = keys[i];
+        if(filters[key] !== null && filters[key] !== '') tmp.push(key + "=" + encodeURIComponent(filters[key]));
+    }
+    var query_string = tmp.join("&");
+    changeQueryString(query_string);
+
+    if(wmState.is_chart){
+
+        $.post( "/woodmoney/chart", filters, function( data ) {
+
+            console.log(data);
+
+            chart.data.datasets.shift();
+            chart.data.datasets.shift();
+
+            chart.data.datasets.push(data.datasets[0]);
+            chart.data.datasets.push(data.datasets[1]);
+
+            chart.update();
+
+        });
+
+    } else {
+
+    }
+
 }
 
 function onPositionsChange() {
@@ -129,6 +139,17 @@ $(function() {
         $("#puckiq tbody tr td:nth-child(" + (cell_index + 1) + ")").addClass("primary");
     }
 
+    $('#season-input').change(function () {
+        var newSeason = $('#season-input').val();
+        if (newSeason === '') {
+            showModal();
+        } else {
+            $("#from_date").val('');
+            $("#to_date").val('');
+            submitForm();
+        }
+    });
+
     $(".x-positions").change(onPositionsChange);
     $("#pos-f").change(onForwardChange);
     $(".x-date-range").change(function(e) {
@@ -164,7 +185,14 @@ $(function() {
         }
     });
 
-    updateSeasonOnPageRender(wmState.request.season);
+    $('.x-change-date-range').click(function(e){
+        $('.x-date-error').hide();
+        showModal();
+        return false;
+    });
+
+    $('#season-input').val(wmState.request.season);
+    $('#season-input').css('visibility', 'visible');
 
     $( ".x-date-range" ).datepicker({});
 

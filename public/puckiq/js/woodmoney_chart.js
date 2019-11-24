@@ -36,9 +36,32 @@ var chart = new Chart(ctx, {
                     labelString: "CF%"
                 },
                 ticks: {
-                    suggestedMin: 20,
-                    suggestedMax: 80
-                }
+                    suggestedMin: 30,
+                    suggestedMax: 70
+                },
+                // beforeFit: function (scale) {
+                //
+                //     // See what you can set in scale parameter
+                //     console.log(scale);
+                //
+                //     // Find max value in your dataset
+                //     let maxValue = 0;
+                //     let maxValue = 0;
+                //     if (scale.chart.config && scale.chart.config.data && scale.chart.config.data.datasets) {
+                //         scale.chart.config.data.datasets.forEach(dataset => {
+                //             if (dataset && dataset.data) {
+                //                 dataset.data.forEach(value => {
+                //                     if (value > maxValue) {
+                //                         maxValue = value
+                //                     }
+                //                 })
+                //             }
+                //         })
+                //     }
+                //
+                //     // After, set max option !!!
+                //     scale.options.ticks.max = maxValue
+                // }
             }]
         },
         plugins: {
@@ -69,6 +92,40 @@ var chart = new Chart(ctx, {
         }
     }
 });
+
+function getData(filters){
+
+    let chart_options = {
+        filters,
+        options : {
+            x_axis : '',
+            y_axis : '',
+        }
+    };
+
+    $.post( "/woodmoney/chart", chart_options, function( data ) {
+        updateChart(data);
+    });
+
+}
+
+function updateChart(data){
+
+    console.log(data);
+
+    chart.data.datasets.shift();
+    chart.data.datasets.shift();
+
+    chart.data.datasets.push(data.datasets[0]);
+    chart.data.datasets.push(data.datasets[1]);
+
+    // //todo calculate these
+    // chart.config.options.scales.yAxes[0].ticks.min = 30;
+    // chart.config.options.scales.yAxes[0].ticks.max = 70;
+
+    chart.update();
+
+}
 
 setTimeout(function(){
     submitForm();

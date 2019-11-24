@@ -223,8 +223,8 @@ function WoodmoneyHandler(app, locator) {
 
             //default empty page... not much to do here...
             let data = _.extend({
-                season :  iq.current_woodmoney_season,
                 request: {
+                    season :  iq.current_woodmoney_season._id,
                     selected_positions,
                     team : team
                 }

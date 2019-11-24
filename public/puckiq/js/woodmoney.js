@@ -75,27 +75,8 @@ function submitForm(){
     }
     var query_string = tmp.join("&");
     changeQueryString(query_string);
-
-    if(wmState.is_chart){
-
-        $.post( "/woodmoney/chart", filters, function( data ) {
-
-            console.log(data);
-
-            chart.data.datasets.shift();
-            chart.data.datasets.shift();
-
-            chart.data.datasets.push(data.datasets[0]);
-            chart.data.datasets.push(data.datasets[1]);
-
-            chart.update();
-
-        });
-
-    } else {
-
-    }
-
+    getData(filters)
+    ;
 }
 
 function onPositionsChange() {

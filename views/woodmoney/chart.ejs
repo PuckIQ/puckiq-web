@@ -14,14 +14,14 @@
                 <div style="display: flex; justify-content: space-between">
                     <div>
                         <span>Chart Options: </span>
-                        <select>
-                            <option value="">TOI % Elite - TOI % Grit</option>
-                            <option value="">TOI % vs Elite</option>
+                        <select id="y-axis">
+                            <option value="toipct_diff">TOI % Elite - TOI % Grit</option>
+                            <option value="toipct_elite">TOI % vs Elite</option>
                         </select>
                         <span> By </span>
-                        <select>
-                            <option value="">GF%</option>
-                            <option value="">CF%</option>
+                        <select id="x-axis">
+                            <option value="gfpct">GF%</option>
+                            <option value="cfpct">CF%</option>
                         </select>
                     </div>
                     <div>
@@ -41,8 +41,7 @@
 
     var wmState = {
         is_chart : true, //todo
-        request : <%- JSON.stringify(request) %>,
-        team : <%- JSON.stringify(team) %>
+        request : <%- JSON.stringify(request) %>
     };
 
     console.log(wmState);

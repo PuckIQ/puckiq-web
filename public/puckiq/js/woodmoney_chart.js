@@ -1,5 +1,5 @@
 var data = {
-    labels: "todo team name",
+    labels: "todo",
     datasets: [
         {
             label: [],
@@ -93,18 +93,28 @@ var chart = new Chart(ctx, {
     }
 });
 
-function getData(filters){
+function getData(filters) {
 
     let chart_options = {
         filters,
-        options : {
-            x_axis : '',
-            y_axis : '',
+        options: {
+            x_axis: $('#x-axis').val(),
+            y_axis: $('#y-axis').val(),
         }
     };
 
-    $.post( "/woodmoney/chart", chart_options, function( data ) {
-        updateChart(data);
+    console.log("chart_options", chart_options);
+    $.ajax({
+        url: "/woodmoney/chart",
+        type: 'POST',
+        data : JSON.stringify(chart_options),
+        contentType: 'application/json',
+        success: function (data) {
+            updateChart(data);
+        },
+        error: function() {
+            //todo
+        }
     });
 
 }
@@ -120,12 +130,26 @@ function updateChart(data){
     chart.data.datasets.push(data.datasets[1]);
 
     // //todo calculate these
-    // chart.config.options.scales.yAxes[0].ticks.min = 30;
-    // chart.config.options.scales.yAxes[0].ticks.max = 70;
+    chart.config.options.scales.yAxes[0].ticks.suggestedMin = 30;
+    chart.config.options.scales.yAxes[0].ticks.suggestedMax = 70;
+    // console.log(chart.config.options.scales);
 
     chart.update();
 
 }
+
+$(function() {
+
+    console.log("init chart events");
+
+    $('#x-axis').change(function () {
+        submitForm();
+    });
+
+    $('#x-axis').change(function (e) {
+        submitForm();
+    });
+});
 
 setTimeout(function(){
     submitForm();

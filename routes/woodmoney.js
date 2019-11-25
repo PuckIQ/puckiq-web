@@ -1,3 +1,5 @@
+"use strict";
+
 const _ = require('lodash');
 const url = require('url');
 const stringify = require('csv-stringify/lib/es5');
@@ -12,19 +14,31 @@ function WoodmoneyHandler(app, locator) {
 
     const controller = this;
 
-    let cache = locator.get('cache');
-    let error_handler = locator.get('error_handler');
+    const cache = locator.get('cache');
+    const error_handler = locator.get('error_handler');
 
-    let wm = new WoodmoneyService(locator);
+    const wm = new WoodmoneyService(locator);
 
-    controller.getWoodmoney = function(req, res) {
+    controller.getWoodmoney = function(view) {
+        return function(req, res) {
 
-        controller._getWoodmoney(req.query).then((data) => {
-            res.render('woodmoney/index', getWoodmoneyPage(data, req.url));
-        }, (err) => {
-            return error_handler.handle(req, res, err);
-        });
+            let selected_positions = {f: true};
+            _.each(_.keys(constants.positions), pos => selected_positions[pos] = true);
 
+            cache.init().then((iq) => {
+
+                let request = _.extend({
+                    season: iq.current_woodmoney_season._id,
+                    selected_positions
+                }, req.query);
+
+                let data = { request};
+
+                let page = getWoodmoneyPage(data, req.url, iq.teams);
+
+                res.render('woodmoney/' + view, page);
+            });
+        };
     };
 
     controller.downloadWoodmoney = function(req, res) {
@@ -101,54 +115,6 @@ function WoodmoneyHandler(app, locator) {
 
     };
 
-    controller.getTeamWoodmoney = function(req, res) {
-
-        if(!_.has(req.params, 'team')) {
-            return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: team"));
-        }
-
-        let options = _.extend({ team: req.params.team }, req.query);
-
-        controller._getWoodmoney(options).then((data) => {
-            res.render('woodmoney/index', getWoodmoneyPage(data, req.url));
-        }, (err) => {
-            return error_handler.handle(req, res, err);
-        });
-
-    };
-
-    controller.downloadTeamWoodmoney = function(req, res) {
-
-        if(!_.has(req.params, 'team')) {
-            return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: team"));
-        }
-
-        let options = _.extend({ team: req.params.team }, req.query, {count : 1000});
-
-        controller._getWoodmoney(options).then((data) => {
-
-            let records = [];
-
-            if(data.results && data.results.length) {
-                records = woodmoney_csv_file_definition.build(data);
-            }
-
-            let team_name = data.team.name.replace(/\s/g, "_");
-            let file_name = `${team_name}_woodmoney.csv`;
-
-            res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
-            res.setHeader('Content-Type', 'text/csv');
-
-            stringify(records, { quoted_string: true }, (err, content) => {
-                res.send(content);
-            });
-
-        }, (err) => {
-            return error_handler.handle(req, res, err);
-        });
-
-    };
-
     controller._getWoodmoney = function(options) {
 
         return new Promise((resolve, reject) => {
@@ -208,48 +174,26 @@ function WoodmoneyHandler(app, locator) {
         return _.extend(page, data);
     }
 
-    controller.getTeamWoodmoneyChart = function(req, res) {
-
-        if (!_.has(req.params, 'team')) {
-            return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: team"));
-        }
-
-        let selected_positions = { f : true};
-        _.each(_.keys(constants.positions), pos => selected_positions[pos] = true);
-
-        cache.init().then((iq) => {
-
-            let team = req.params.team.toLowerCase();
-
-            //default empty page... not much to do here...
-            let data = _.extend({
-                request: {
-                    season :  iq.current_woodmoney_season._id,
-                    selected_positions,
-                    team : team
-                }
-            }, req.query);
-
-            data.team = (team && iq.teams[team]) || null;
-
-            let page = getWoodmoneyPage(data, req.url, iq.teams);
-
-            res.render('woodmoney/chart', page);
-        });
-
-    };
-
-    controller.woodmoneyChartData = function(req, res) {
-
-        if (!_.has(req.body, 'team')) {
-            return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: team"));
-        }
+    controller.xhrWoodmoneyData = function(req, res) {
 
         let options = _.extend({}, req.body);
 
         controller._getWoodmoney(options).then((woodmoney) => {
             let data = wm.formatChart(woodmoney.results);
             console.log(JSON.stringify(data));
+            res.jsonp(data);
+        }, (err) => {
+            return error_handler.handle(req, res, err);
+        });
+
+    };
+
+    controller.xhrWoodmoneyChartData = function(req, res) {
+
+        let chart_options = _.extend({}, req.body);
+
+        controller._getWoodmoney(chart_options.filters).then((woodmoney) => {
+            let data = wm.formatChart(woodmoney.results, chart_options.options);
             res.jsonp(data);
         }, (err) => {
             return error_handler.handle(req, res, err);

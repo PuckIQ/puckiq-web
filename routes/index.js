@@ -31,13 +31,12 @@ module.exports = function (app, request, config) {
     app.get('/about', puckIQHandler.getAbout);
     app.get('/glossary', puckIQHandler.getGlossary);
 
-    app.get('/woodmoney', woodmoneyHandler.getWoodmoney);
+    app.get('/woodmoney', woodmoneyHandler.getWoodmoney('chart'));
+    app.get('/woodmoney/data', woodmoneyHandler.getWoodmoney('data'));
     app.get('/woodmoney/download', woodmoneyHandler.downloadWoodmoney);
-    app.post('/woodmoney/chart', woodmoneyHandler.woodmoneyChartData);
+    app.post('/woodmoney/data', woodmoneyHandler.xhrWoodmoneyData);
+    app.post('/woodmoney/chart', woodmoneyHandler.xhrWoodmoneyChartData);
 
-    app.get('/teams/:team', woodmoneyHandler.getTeamWoodmoney);
-    app.get('/teams/:team/chart', woodmoneyHandler.getTeamWoodmoneyChart);
-    app.get('/teams/:team/download', woodmoneyHandler.downloadTeamWoodmoney);
     app.get('/players/:player', woodmoneyHandler.getPlayerWoodmoney);
     app.get('/players/:player/download', woodmoneyHandler.downloadPlayerWoodmoney);
 

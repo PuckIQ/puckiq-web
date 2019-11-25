@@ -203,7 +203,7 @@ class WoodmoneyService {
 
     }
 
-    formatChart(results) {
+    formatChart(results, chart_options) {
 
         //assume single season and team for now...
 
@@ -212,11 +212,19 @@ class WoodmoneyService {
         let forwards = _.filter(grouped, x => !~x[0].positions.indexOf('D') );
         let defence = _.filter(grouped, x => !!~x[0].positions.indexOf('D') );
 
+        const y_axis_formatter = (player, result_type) => {
+            if(result_type === 'toipct_diff') {
+                return player[constants.woodmoney_tier.elite].ctoipct - player[constants.woodmoney_tier.gritensity].ctoipct;
+            } else if(result_type === 'toipct_elite'){
+                return player[constants.woodmoney_tier.elite].ctoipct;
+            }
+        };
+
         const player_formatter = (player_results) => {
             let keyed = _.keyBy(player_results, 'woodmoneytier');
             return {
-                x : keyed[constants.woodmoney_tier.all].cfpct,
-                y : keyed[constants.woodmoney_tier.elite].ctoipct - keyed[constants.woodmoney_tier.gritensity].ctoipct,
+                x : keyed[constants.woodmoney_tier.all][chart_options['x_axis']],
+                y : y_axis_formatter(keyed, chart_options['y_axis']),
                 r: 5
             };
         };
@@ -228,7 +236,7 @@ class WoodmoneyService {
         let defence_labels = _.map(defence, player => player[0].name);
 
         let data = {
-            labels : 'Edmonton Oilers', //todo
+            labels : 'Woodmoney Data', // todo
             datasets : [
                 {
                     labels: forward_labels,

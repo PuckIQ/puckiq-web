@@ -22,6 +22,7 @@ function getFilters() {
     var team = $('form.x-wm-filters #team').val();
 
     var filters = {
+        player : $("form.x-wm-filters #player-id").val(),
         season: season,
         tier: tier,
         positions: positions,
@@ -32,6 +33,8 @@ function getFilters() {
 
     if(isNaN(filters.min_toi)) delete filters.min_toi;
     if(isNaN(filters.max_toi)) delete filters.max_toi;
+    if(!filters.positions) delete filters.positions;
+    if(!filters.player) delete filters.player;
 
     if(!season && from_date && to_date) {
         filters.from_date = new Date(parseInt(from_date)).getTime();
@@ -64,7 +67,7 @@ function changeQueryString(val) {
     }
 }
 
-function submitForm(){
+function submitForm(initial_load){
 
     var filters = getFilters();
     var keys = Object.keys(filters);
@@ -73,10 +76,13 @@ function submitForm(){
         var key = keys[i];
         if(filters[key] !== null && filters[key] !== '') tmp.push(key + "=" + encodeURIComponent(filters[key]));
     }
-    var query_string = tmp.join("&");
-    changeQueryString(query_string);
-    getData(filters)
-    ;
+
+    if(!initial_load){
+        var query_string = tmp.join("&");
+        changeQueryString(query_string);
+    }
+
+    getData(filters);
 }
 
 function onPositionsChange() {
@@ -96,29 +102,6 @@ function onForwardChange() {
 }
 
 $(function() {
-
-    var options = {
-        //sortInitialOrder  : 'desc',
-        widgets           : ['zebra','columns','stickyHeaders'],
-        widgetOptions: {
-            stickyHeaders_attachTo : null
-        }
-    };
-
-    var $sort = $("#puckiq thead tr th[data-sort='" + wmState.request.sort + "']");
-    // if($sort && $sort.length) {
-    //     options.sortList = [[$sort[0].cellIndex, 1]];
-    // }
-
-    //sorting done server side atm (SS)
-    $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
-
-    // this is a to highlight the sortable column since the sort order is grouped by player its not
-    // supported (moved server side)
-    if($sort && $sort.length){
-        let cell_index = $sort[0].cellIndex;
-        $("#puckiq tbody tr td:nth-child(" + (cell_index + 1) + ")").addClass("primary");
-    }
 
     $('#season-input').change(function () {
         var newSeason = $('#season-input').val();
@@ -172,16 +155,15 @@ $(function() {
         return false;
     });
 
-    $('#season-input').val(wmState.request.season);
-    $('#season-input').css('visibility', 'visible');
-
     $( ".x-date-range" ).datepicker({});
 
-    if(wmState.request && wmState.request.from_date && wmState.request.to_date) {
+
+    if($("#show-date-range").is(":visible")) {
         console.log('setting from_date and to_date', wmState.request.from_date, wmState.request.to_date);
         $("#from_date").val(wmState.request.from_date);
         $("#to_date").val(wmState.request.to_date);
         $("#dp-from").datepicker("setDate", new Date(wmState.request.from_date));
         $("#dp-to").datepicker("setDate", new Date(wmState.request.to_date));
     }
+
 });

@@ -40,3 +40,10 @@ tr.hidden {
 .toi_minutes {
     width: 40px;
 }
+
+#chart-container {
+    height: 600px;
+    width: 950px;
+    display: flex;
+    flex-direction: row;
+}

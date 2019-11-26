@@ -1,6 +1,7 @@
 <form class="x-wm-filters" method="get">
     <div class="row" style="padding-top: 17px;">
         <div class="col-padded">
+            <input id="player-id" type="hidden" value="<%= request.player || '' %>" />
             Select date range:
             <select id="season-input" name="season" class="">
                 <% if(player) { %>
@@ -14,12 +15,12 @@
                 <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
                 <option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>
             </select>
-            <% if(request.from_date && request.to_date) { %>
-                <span style="padding-left: 10px">
-                    <%= request.from_date_str + " to " + request.to_date_str %>
-                    <a href="#change" class="x-change-date-range">change</a>
-                </span>
-            <% } %>
+
+            <span id="show-date-range" style="padding-left: 10px; <% if(!request.from_date && !request.to_date) { %> display: none;<% } %>" >
+                <%= request.from_date_str + " to " + request.to_date_str %>
+                <a href="#change" class="x-change-date-range">change</a>
+            </span>
+
             <div id="date-range-modal" class="modal" style="height: 340px;">
                 <h4>Select date range for games</h4>
                 From: <input type="text" class="x-date-range" id="dp-from" data-target="from_date" />

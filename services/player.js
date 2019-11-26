@@ -27,7 +27,7 @@ class WoodwowyService {
 
             let url = `${baseUrl}/players/${player_id}`;
 
-            // console.log('options', JSON.stringify(options));
+            if(config.env === 'local') console.log('getting player', url);
             request.get({
                 url: url,
                 json: true,

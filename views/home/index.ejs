@@ -31,7 +31,7 @@
           <div style="flex: 1;">
             <h4><%= division.name %></h4>
             <% division.teams.forEach(function(team){ %>
-              <p><a href="/teams/<%= team._id %>"><%= team.name %></a></p>
+              <p><a href="/woodmoney?team=<%= team._id %>"><%= team.name %></a></p>
             <% }); %>
           </div>
         <% }); %>

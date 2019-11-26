@@ -100,11 +100,12 @@
         let filters = (getFilters && getFilters('team-menu')) || {};
         if(!filters.positions) delete filters.positions;
         if(filters.season === 'all') delete filters.season;
+        if(filters.team) delete filters.team;
 
         $('.x-teams-dropdown-options a').each(function (index, e) {
           let $target = $(e);
-          let href = '/teams/' + $target.attr('data-team');
-          href += '?' + $.param(filters);
+          let href = '/woodmoney?team=' + $target.attr('data-team')  + '&' + $.param(filters);
+          console.log("setting url", '/woodmoney?team=' + $target.attr('data-team')  + '&' + $.param(filters));
           $target.attr("href", href);
         });
 

@@ -1,0 +1,21 @@
+<div class="container-fluid" role="main">
+    <div class="page-header">
+        <h2>
+            <%= sub_title %>
+            <% if(player) { %><small><%= player.positions %></small><% } %>
+        </h2>
+        <%- include('_partials/filters') %>
+    </div>
+</div>
+
+<!--Begin render table-->
+<table id="puckiq" class="table table-bordered table-condensed table-hover">
+</table>
+<!--End render table-->
+
+<div id="table-footer" style="text-align: center">
+</div>
+
+<script src="/puckiq/js/woodmoney_data.js"></script>
+<script src="/puckiq/js/woodmoney.js"></script>
+

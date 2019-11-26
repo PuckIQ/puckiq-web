@@ -1,0 +1,43 @@
+<div class="container-fluid" role="main">
+    <div class="page-header">
+
+        <h2>
+            <%= sub_title %>
+            <% if(player) { %><small><%= player.positions %></small><% } %>
+        </h2>
+
+        <%- include('_partials/filters') %>
+
+        <div id="chart-container">
+            <div>
+                <canvas id="bubble-chart" width="950" height="570"></canvas>
+                <div style="display: flex; justify-content: space-between">
+                    <div>
+                        <span>Chart Options: </span>
+                        <select id="y-axis">
+                            <option value="toipct_diff">TOI % Elite - TOI % Grit</option>
+                            <option value="toipct_elite">TOI % vs Elite</option>
+                        </select>
+                        <span> By </span>
+                        <select id="x-axis">
+                            <option value="gfpct">GF%</option>
+                            <option value="cfpct">CF%</option>
+                        </select>
+                    </div>
+                    <div>
+                        <a href="/woodmoney/data" id="view-raw-data">View Raw Data</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
+
+    </div>
+</div>
+
+<script src="/puckiq/js/woodmoney_chart.js"></script>
+<script src="/puckiq/js/woodmoney.js"></script>
+
+

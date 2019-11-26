@@ -4,7 +4,7 @@ let _ = require('lodash');
 let should = require('should');
 let constants = require('../../../common/constants');
 let ServiceLocator = require('../../../common/service_locator');
-let WoodmoneyProxy = require('../../../services/woodmoney');
+let WoodmoneyService = require('../../../services/woodmoney');
 
 describe('woodmoney service tests', function() {
 
@@ -35,7 +35,7 @@ describe('woodmoney service tests', function() {
             tier: constants.woodmoney_tier.elite
         };
 
-        let proxy = new WoodmoneyProxy(locator);
+        let proxy = new WoodmoneyService(locator);
         proxy.query(options, iq).then((results) => {
             return done();
         }, (err) => {
@@ -56,7 +56,7 @@ describe('woodmoney service tests', function() {
             tier: constants.woodmoney_tier.elite
         };
 
-        let proxy = new WoodmoneyProxy(locator);
+        let proxy = new WoodmoneyService(locator);
         proxy.query(options, iq).then((results) => {
             should.fail('this should not be called');
             return done();
@@ -78,7 +78,7 @@ describe('woodmoney service tests', function() {
             tier: constants.woodmoney_tier.elite
         };
 
-        let proxy = new WoodmoneyProxy(locator);
+        let proxy = new WoodmoneyService(locator);
         proxy.query(options, iq).then((results) => {
             return done();
         }, (err) => {

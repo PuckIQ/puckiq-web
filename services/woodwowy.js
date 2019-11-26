@@ -58,8 +58,9 @@ class WoodwowyService {
                         if (err) return reject(err);
                     }
                 } else {
-                    let current_season = iq.current_woodmoney_season;
-                    options.season = current_season && current_season._id;
+                    //let current_season = iq.current_woodmoney_season;
+                    // options.season = current_season && current_season._id;
+                    options.season = 20182019;
                 }
 
             }
@@ -87,7 +88,7 @@ class WoodwowyService {
 
             let url = `${baseUrl}/woodwowy`;
 
-            if(config === 'local') console.log(`${url}?${utils.encode_query(options)}`);
+            if(config.env === 'local') console.log(`${url}?${utils.encode_query(options)}`);
             request.post({
                 url: url,
                 body: options,

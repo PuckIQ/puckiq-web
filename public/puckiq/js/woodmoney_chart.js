@@ -30,37 +30,8 @@ var chart = new Chart(ctx, {
                     display: false,
                     labelString: "TOI Elite - TOI Grit"
                 },
-                beforeFit: function (scale) {
-                    console.log("y-axis", scale);
-                    // // See what you can set in scale parameter
-                    // console.log("scale", scale.options.ticks);
-                    //
-                    // // Find max value in your dataset
-                    // let maxValue = NaN;
-                    // let minValue = NaN;
-                    // if (scale.chart.config && scale.chart.config.data && scale.chart.config.data.datasets) {
-                    //     scale.chart.config.data.datasets.forEach(dataset => {
-                    //         if (dataset && dataset.data) {
-                    //             dataset.data.forEach(value => {
-                    //                 if (isNaN(maxValue) || value > maxValue) {
-                    //                     maxValue = value;
-                    //                 }
-                    //                 if(isNaN(minValue) || value < minValue){
-                    //                     minValue = value;
-                    //                 }
-                    //             })
-                    //         }
-                    //     })
-                    // }
-                    //
-                    // console.log("max value", maxValue);
-                    // console.log("min value", minValue);
-                    // if(isNaN(maxValue)){
-                    //     scale.options.ticks.suggestedMax = maxValue;
-                    // }
-                    // if(isNaN(minValue)){
-                    //     scale.options.ticks.suggestedMin = minValue;
-                    // }
+                ticks: {
+                    stepSize : 20,
                 }
             }],
             xAxes: [{
@@ -69,23 +40,38 @@ var chart = new Chart(ctx, {
                     labelString: "CF%"
                 },
                 ticks: {
+                    stepSize : 50,
                     suggestedMin: 30,
                     suggestedMax: 70
                 }
             }]
         },
+        onClick: function(e) {
+
+            var element = this.getElementAtEvent(e);
+
+            if (element.length > 0) {
+                let arr = _idMap[element[0]._datasetIndex.toString()];
+                let index = element[0]._index;
+                if(arr.length >= index){
+                    var player_data = arr[index];
+                    loadPlayerInfo(player_data);
+                }
+            }
+        },
         plugins: {
             datalabels: {
                 anchor: function(context) {
-                    var value = context.dataset.data[context.dataIndex];
-                    return value.v < 50 ? 'end' : 'center';
+                    return 'end';
+                    // var value = context.dataset.data[context.dataIndex];
+                    // return value.v < 50 ? 'end' : 'center';
                 },
                 align: function(context) {
                     var value = context.dataset.data[context.dataIndex];
                     return value.v < 50 ? 'end' : 'center';
                 },
                 color: function(context) {
-                    return 'black';
+                    return '#4a5f6d';
                     //return context.dataset.backgroundColor;
                     // var value = context.dataset.data[context.dataIndex];
                     // return value.v < 50 ? context.dataset.backgroundColor : 'white';
@@ -103,6 +89,8 @@ var chart = new Chart(ctx, {
     }
 });
 
+var _idMap = { '0' : [], '1' : []};
+
 function getData(filters) {
 
     let chart_options = {
@@ -116,14 +104,14 @@ function getData(filters) {
     let href = '/woodmoney/data?' + $.param(filters);
     $("#view-raw-data").attr("href", href);
 
-    console.log(`chart_options ${chart_options}`);
     $.ajax({
         url: "/woodmoney/chart",
         type: 'POST',
         data : JSON.stringify(chart_options),
         contentType: 'application/json',
         success: function (data) {
-            updateChart(data.chart);
+            _idMap = data.chart.id_map;
+            updateChart(data.chart, chart_options.options);
         },
         error: function() {
             //todo
@@ -132,9 +120,7 @@ function getData(filters) {
 
 }
 
-function updateChart(data){
-
-    console.log(data);
+function updateChart(data, chart_options) {
 
     chart.data.datasets.shift();
     chart.data.datasets.shift();
@@ -142,13 +128,66 @@ function updateChart(data){
     chart.data.datasets.push(data.datasets[0]);
     chart.data.datasets.push(data.datasets[1]);
 
-    // //todo calculate these
-    //chart.config.options.scales.yAxes[0].ticks.suggestedMin = 30;
-    //chart.config.options.scales.yAxes[0].ticks.suggestedMax = 70;
-    //console.log(chart.config.options.scales);
+    if (chart_options['y-axis'] === 'toipct_diff') {
+        chart.config.options.scales.yAxes[0].ticks.suggestedMin = -50;
+        chart.config.options.scales.yAxes[0].ticks.suggestedMax = 50;
+    } else if (chart_options['y-axis'] === ' toipct_elite') {
+        chart.config.options.scales.yAxes[0].ticks.suggestedMin = 10;
+        chart.config.options.scales.yAxes[0].ticks.suggestedMax = 70;
+    }
 
-    console.log("chart.update");
     chart.update();
+
+}
+
+function loadPlayerInfo(player_data) {
+
+    let hi = $('#x-axis').val() === 'gfpct' ? 7 : 4;
+
+    let $playerInfo = $("#player-info");
+    $playerInfo.hide();
+
+    let all = player_data[0];
+
+    let toi_game = (x) => {
+      if(!x.games_played) return 0;
+      return formatDecimal(x.evtoi/x.games_played);
+    };
+
+    let html = `<h4>${all.name} <small>${all.position}</small></h4>
+        <div style="">Games Played: ${all.games_played}</div>
+        <div style="">Total Min: ${formatDecimal(all.evtoi, 2)}</div>
+        <div style="padding-bottom: 10px;">TOI/Game: ${toi_game(all)}</div>
+        <table>
+    <thead>
+    <tr>
+    <th>Comp</th>
+    <th>TOI%</th>
+    <th>CF</th>
+    <th>CA</th>
+    <th class="${4 === hi ? 'highlight' : ''}">CF%</th>
+    <th>GF</th>
+    <th>GA</th>
+    <th class="${7 === hi ? 'highlight' : ''}">GF%</th>
+    </tr>
+    </thead>
+    <tbody>`;
+
+    _.each(player_data, (pd) => {
+        html += `<tr><td>${pd.woodmoneytier}</td>
+        <td>${formatDecimal(pd.ctoipct, 1)}</td>
+        <td>${formatDecimal(pd.cf, 0)}</td>
+        <td>${formatDecimal(pd.ca, 0)}</td>
+        <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.cfpct)}</td>
+        <td>${pd.gf}</td>
+        <td>${pd.ga}</td>
+        <td class="${7 === hi ? 'highlight' : ''}">${formatDecimal(pd.gfpct)}</td></tr>`;
+    });
+
+    html += '</tbody></table>';
+
+    $playerInfo.html(html);
+    $playerInfo.fadeIn();
 
 }
 

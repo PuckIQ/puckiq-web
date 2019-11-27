@@ -235,21 +235,25 @@ class WoodmoneyService {
         let defence_labels = _.map(defence, player => player[0].name);
 
         let data = {
-            labels : 'Woodmoney Data', // todo
-            datasets : [
+            labels: 'Woodmoney Data', // todo
+            datasets: [
                 {
                     labels: forward_labels,
                     backgroundColor: "rgba(51, 153, 51,0.8)",
                     borderColor: "rgba(51, 153, 51,1)",
-                    data : forward_data
+                    data: forward_data
                 },
                 {
                     labels: defence_labels,
                     backgroundColor: "rgba(0, 102, 255,0.8)",
                     borderColor: "rgba(0, 102, 255,1)",
-                    data : defence_data
+                    data: defence_data
                 },
-            ]
+            ],
+            id_map: {
+                '0': forwards,
+                '1': defence
+            }
         };
 
         return data;

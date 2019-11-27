@@ -41,9 +41,30 @@ tr.hidden {
     width: 40px;
 }
 
-#chart-container {
-    height: 600px;
-    width: 950px;
+#woodmoney-visual {
+    width: 1000px;
     display: flex;
     flex-direction: row;
 }
+
+#chart-container {
+    height: 400px;
+    width: 700px;
+    display: flex;
+    flex-direction: row;
+}
+
+#player-info {
+    width: 300px;
+    padding-top: 15px;
+}
+
+#player-info table{
+    width: 100%;
+    margin: 0;
+}
+
+#player-info table th.highlight, #player-info table td.highlight{
+    background-color: #84c9f7;
+}
+

@@ -24,7 +24,7 @@ function getData(filters) {
                 } else {
                     href = `/woodmoney/download?${filter_str}`;
                 }
-                $("#table-footer").html(`<a href="${href}" class="x-download">download csv</a>`);
+                $("#table-footer").html(`<a href="${href}" class="x-download">download csv</a> - <a href="/woodmoney?${filter_str}">Back to Chart</a>`);
             }
 
             if(filters.player){

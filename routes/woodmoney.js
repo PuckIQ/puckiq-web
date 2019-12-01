@@ -22,6 +22,7 @@ function WoodmoneyHandler(app, locator) {
     const playerService = new PlayerService(locator);
 
     controller.getWoodmoney = function (view) {
+
         return function (req, res) {
 
             let selected_positions = {f: true};
@@ -34,6 +35,8 @@ function WoodmoneyHandler(app, locator) {
                     selected_positions
                 }, req.query);
 
+                if(request.team) request.team = request.team.toLowerCase();
+
                 let data = {request};
 
                 let page = getWoodmoneyPage(data, req.url, iq.teams);
@@ -43,6 +46,7 @@ function WoodmoneyHandler(app, locator) {
                 return error_handler.handle(req, res, err);
             });
         };
+
     };
 
     controller.downloadWoodmoney = function (req, res) {
@@ -158,9 +162,7 @@ function WoodmoneyHandler(app, locator) {
         let page = {};
 
         let sub_title = '';
-        if (data.team) {
-            sub_title = data.team.name;
-        } else if (data.player) {
+        if (data.player) {
             sub_title = data.player.name;
         }
 
@@ -188,7 +190,6 @@ function WoodmoneyHandler(app, locator) {
 
         //required for ejs
         data.player = data.player || null;
-        data.team = data.team || null;
         data.teams = _.values(data.teams || teams);
 
         return _.extend(page, data);
@@ -214,8 +215,12 @@ function WoodmoneyHandler(app, locator) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing chart_options.options"));
         }
 
+        chart_options.options['y_axis'] = chart_options.filters.tier ?
+            `toipct_${chart_options.filters.tier.toLowerCase()}` :
+            'toipct_diff';
+
         controller._getWoodmoney(chart_options.filters).then((woodmoney) => {
-            let chart = wm.formatChart(woodmoney.results, chart_options.options);
+            let chart = wm.formatChart(woodmoney, chart_options.options);
             res.jsonp(_.extend(woodmoney, {chart}));
         }, (err) => {
             return error_handler.handle(req, res, err);

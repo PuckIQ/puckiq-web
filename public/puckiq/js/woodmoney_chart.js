@@ -27,8 +27,8 @@ var chart = new Chart(ctx, {
         scales: {
             yAxes: [{
                 scaleLabel: {
-                    display: false,
-                    labelString: "TOI Elite - TOI Grit"
+                    display: true,
+                    labelString: "TODO"
                 },
                 ticks: {
                     stepSize : 20,
@@ -128,10 +128,12 @@ function updateChart(data, chart_options) {
     chart.data.datasets.push(data.datasets[0]);
     chart.data.datasets.push(data.datasets[1]);
 
+    chart.config.options.scales.yAxes[0].scaleLabel.labelString = data.y_axis;
+
     if (chart_options['y-axis'] === 'toipct_diff') {
         chart.config.options.scales.yAxes[0].ticks.suggestedMin = -50;
         chart.config.options.scales.yAxes[0].ticks.suggestedMax = 50;
-    } else if (chart_options['y-axis'] === ' toipct_elite') {
+    } else { //} if (chart_options['y-axis'] === ' toipct_elite') {
         chart.config.options.scales.yAxes[0].ticks.suggestedMin = 10;
         chart.config.options.scales.yAxes[0].ticks.suggestedMax = 70;
     }
@@ -142,7 +144,20 @@ function updateChart(data, chart_options) {
 
 function loadPlayerInfo(player_data) {
 
-    let hi = $('#x-axis').val() === 'gfpct' ? 7 : 4;
+    let x_axis = $('#x-axis').val();
+
+    let hi = -1;
+    switch (x_axis) {
+        case 'cfpct':
+            hi = 2;
+            break;
+        case 'dffpct':
+            hi = 4;
+            break;
+        case 'gfpct':
+            hi = 6;
+            break;
+    }
 
     let $playerInfo = $("#player-info");
     $playerInfo.hide();
@@ -163,12 +178,11 @@ function loadPlayerInfo(player_data) {
     <tr>
     <th>Comp</th>
     <th>TOI%</th>
-    <th>CF</th>
-    <th>CA</th>
-    <th class="${4 === hi ? 'highlight' : ''}">CF%</th>
-    <th>GF</th>
-    <th>GA</th>
-    <th class="${7 === hi ? 'highlight' : ''}">GF%</th>
+    <th class="${2 === hi ? 'highlight' : ''}">CF%</th>
+    <th>CF60RC</th>
+    <th class="${4 === hi ? 'highlight' : ''}">DFF%</th>
+    <th>DFF60RC</th>
+    <th class="${6 === hi ? 'highlight' : ''}">GF%</th>
     </tr>
     </thead>
     <tbody>`;
@@ -176,12 +190,11 @@ function loadPlayerInfo(player_data) {
     _.each(player_data, (pd) => {
         html += `<tr><td>${pd.woodmoneytier}</td>
         <td>${formatDecimal(pd.ctoipct, 1)}</td>
-        <td>${formatDecimal(pd.cf, 0)}</td>
-        <td>${formatDecimal(pd.ca, 0)}</td>
-        <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.cfpct)}</td>
-        <td>${pd.gf}</td>
-        <td>${pd.ga}</td>
-        <td class="${7 === hi ? 'highlight' : ''}">${formatDecimal(pd.gfpct)}</td></tr>`;
+        <td class="${2 === hi ? 'highlight' : ''}">${formatDecimal(pd.cfpct, 2)}</td>
+        <td>${formatDecimal(pd.cf60rc, 2)}</td>
+        <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.dffpct, 2)}</td>
+        <td>${formatDecimal(pd.dff60rc, 2)}</td>
+        <td class="${6 === hi ? 'highlight' : ''}">${formatDecimal(pd.gfpct, 2)}</td></tr>`;
     });
 
     html += '</tbody></table>';
@@ -196,10 +209,6 @@ $(function() {
     console.log("init chart events");
 
     $('#x-axis').change(function () {
-        submitForm();
-    });
-
-    $('#y-axis').change(function (e) {
         submitForm();
     });
 

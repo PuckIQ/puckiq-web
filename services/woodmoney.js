@@ -202,28 +202,50 @@ class WoodmoneyService {
 
     }
 
-    formatChart(results, chart_options) {
+    formatChart(woodmoney, chart_options) {
 
         //assume single season and team for now...
+
+        let results = woodmoney.results;
+
+        const y_axises = {
+            'toipct_diff': 'TOI % Elite - TOI % Grit',
+            'toipct_elite': 'TOI % Elite',
+            'toipct_middle': 'TOI % Middle',
+            'toipct_gritensity': 'TOI % Grit'
+        };
 
         let grouped = _.values(_.groupBy(results, x => x.player_id));
 
         let forwards = _.filter(grouped, x => !~x[0].positions.indexOf('D') );
         let defence = _.filter(grouped, x => !!~x[0].positions.indexOf('D') );
 
+        const x_axis_formatter = (player, result_type) => {
+            if(woodmoney.request.tier){
+                return player[woodmoney.request.tier][result_type]
+            } else {
+                return player[constants.woodmoney_tier.all][result_type]
+            }
+        };
+
         const y_axis_formatter = (player, result_type) => {
-            if(result_type === 'toipct_diff') {
-                return player[constants.woodmoney_tier.elite].ctoipct - player[constants.woodmoney_tier.gritensity].ctoipct;
-            } else if(result_type === 'toipct_elite'){
-                return player[constants.woodmoney_tier.elite].ctoipct;
+            switch(result_type){
+                case 'toipct_diff':
+                    return player[constants.woodmoney_tier.elite].ctoipct - player[constants.woodmoney_tier.gritensity].ctoipct;
+                case 'toipct_elite':
+                    return player[constants.woodmoney_tier.elite].ctoipct;
+                case 'toipct_middle':
+                    return player[constants.woodmoney_tier.middle].ctoipct;
+                case 'toipct_gritensity':
+                    return player[constants.woodmoney_tier.gritensity].ctoipct;
             }
         };
 
         const player_formatter = (player_results) => {
             let keyed = _.keyBy(player_results, 'woodmoneytier');
             return {
-                x : keyed[constants.woodmoney_tier.all][chart_options['x_axis']],
-                y : y_axis_formatter(keyed, chart_options['y_axis']),
+                x : x_axis_formatter(keyed, chart_options.x_axis),
+                y : y_axis_formatter(keyed, chart_options.y_axis),
                 r: 5
             };
         };
@@ -235,7 +257,7 @@ class WoodmoneyService {
         let defence_labels = _.map(defence, player => player[0].name);
 
         let data = {
-            labels: 'Woodmoney Data', // todo
+            y_axis: y_axises[chart_options['y_axis']],
             datasets: [
                 {
                     labels: forward_labels,

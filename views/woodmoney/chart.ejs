@@ -14,13 +14,9 @@
                     <canvas id="bubble-chart"></canvas>
                     <div style="display: flex; justify-content: space-between">
                         <div>
-                            <span>Chart Options: </span>
-                            <select id="y-axis">
-                                <option value="toipct_diff">TOI % Elite - TOI % Grit</option>
-                                <option value="toipct_elite">TOI % vs Elite</option>
-                            </select>
-                            <span> By </span>
+                            <span>X Axis: </span>
                             <select id="x-axis">
+                                <option value="dffpct">DFF%</option>
                                 <option value="gfpct">GF%</option>
                                 <option value="cfpct">CF%</option>
                             </select>
@@ -32,9 +28,9 @@
                 </div>
             </div>
             <div id="player-info">
+                <div style="padding: 17px; text-align: center;">Tip: Click on a player bubble to the summary here</div>
             </div>
         </div>
-
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>

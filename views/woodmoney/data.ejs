@@ -8,14 +8,44 @@
     </div>
 </div>
 
-<!--Begin render table-->
-<table id="puckiq" class="table table-bordered table-condensed table-hover">
-</table>
-<!--End render table-->
+<div style="padding-left: 17px;">
+    <div id="woodmoney-visual" style="display:none;">
+        <div id="chart-container">
+            <div style="width: 100%; height: 100%;">
+                <canvas id="bubble-chart"></canvas>
+                <div style="display:flex;">
+                    <div style="flex:1"></div>
+                    <div style="flex:1">
+                        <span>X Axis: </span>
+                        <select id="x-axis">
+                            <option value="dffpct">DFF%</option>
+                            <option value="gfpct">GF%</option>
+                            <option value="cfpct">CF%</option>
+                        </select>
+                    </div>
+                    <div style="flex:1">
+                        <input type="checkbox" id="chart-preference" /> Show chart on page load
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="player-info">
+            <div style="padding: 17px; text-align: center;">Tip: Click on a player bubble to the summary here</div>
+        </div>
+    </div>
 
-<div id="table-footer" style="text-align: center">
+
+    <table id="puckiq" class="table table-bordered table-condensed table-hover">
+    </table>
+
+    <div id="table-footer" style="text-align: center">
+    </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
+
+<script src="/puckiq/js/woodmoney_chart.js"></script>
 <script src="/puckiq/js/woodmoney_data.js"></script>
 <script src="/puckiq/js/woodmoney.js"></script>
 

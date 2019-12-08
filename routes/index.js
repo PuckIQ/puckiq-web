@@ -31,8 +31,7 @@ module.exports = function (app, request, config) {
     app.get('/about', puckIQHandler.getAbout);
     app.get('/glossary', puckIQHandler.getGlossary);
 
-    app.get('/woodmoney', woodmoneyHandler.getWoodmoney('chart'));
-    app.get('/woodmoney/data', woodmoneyHandler.getWoodmoney('data'));
+    app.get('/woodmoney', woodmoneyHandler.getWoodmoney('data'));
     app.get('/woodmoney/download', woodmoneyHandler.downloadWoodmoney);
     app.post('/woodmoney/data', woodmoneyHandler.xhrWoodmoneyData);
     app.post('/woodmoney/chart', woodmoneyHandler.xhrWoodmoneyChartData);

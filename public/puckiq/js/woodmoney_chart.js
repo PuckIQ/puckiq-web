@@ -91,7 +91,7 @@ var chart = new Chart(ctx, {
 
 var _idMap = { '0' : [], '1' : []};
 
-function getData(filters) {
+function loadChart(filters) {
 
     let chart_options = {
         filters,
@@ -212,7 +212,44 @@ $(function() {
         submitForm();
     });
 
-    setTimeout(function(){
+    let show_chart = localStorage.getItem("puckiq-show-chart");
+
+    console.log("show_chart", show_chart);
+    if (show_chart === null) {
+        show_chart = "true";
+        localStorage.setItem('puckiq-show-chart', show_chart);
+    }
+
+    if (show_chart === 'true') {
+        $('.x-toggle-chart').html("Hide Chart");
+        $("#woodmoney-visual").show();
+        $("#chart-preference").attr("checked","checked");
+    } else {
+        $('.x-toggle-chart').html("Show Chart");
+    }
+
+    $('.x-toggle-chart').click(function (e) {
+        var $target = $(e.target);
+        if ($target.html() === 'Show Chart') {
+            $("#woodmoney-visual").show();
+            $target.html("Hide Chart");
+        } else {
+            $("#woodmoney-visual").hide();
+            $target.html("Show Chart");
+        }
+    });
+
+    $("#chart-preference").change(function (e) {
+        if ($("#chart-preference").is(":checked")) {
+            console.log("updating chart preference", true);
+            localStorage.setItem('puckiq-show-chart', "true");
+        } else {
+            console.log("updating chart preference", false);
+            localStorage.setItem('puckiq-show-chart', "false");
+        }
+    });
+
+    setTimeout(function () {
         submitForm(true);
     }, 10);
 });

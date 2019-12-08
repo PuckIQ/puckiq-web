@@ -47,7 +47,6 @@ function getFilters() {
 
 function showModal(){
 
-    console.log("showing modal");
     let filters = getFilters();
     if(!filters.season && !filters.from_date && !filters.to_date) {
         console.log('defaulting from_date and to_date');
@@ -82,7 +81,8 @@ function submitForm(initial_load){
         changeQueryString(query_string);
     }
 
-    getData(filters);
+    loadChart(filters);
+    loadDataTable(filters);
 }
 
 function onPositionsChange() {
@@ -90,8 +90,6 @@ function onPositionsChange() {
     $('#pos-f').prop('checked', forwardPosSelected == 3);
 
     var filters = getFilters();
-    console.log("positions changed", filters);
-    console.log("updating positions to", filters.positions);
     $('form.x-wm-filters [name=positions]').val(filters.positions);
 }
 
@@ -139,12 +137,14 @@ $(function() {
         let dt_from = $("#from_date").val();
         let dt_to = $("#to_date").val();
 
-        console.log(new Date(parseInt(dt_from)), new Date(parseInt(dt_to)));
+        // console.log(new Date(parseInt(dt_from)), new Date(parseInt(dt_to)));
         if(new Date(parseInt(dt_from)) >= new Date(parseInt(dt_to))){
             $('.x-date-error').html("From date cannot be greater than to date");
             $('.x-date-error').show();
         } else {
             $('.x-date-error').hide();
+            // $('#date-range-modal').modal('hide');
+            $.modal.close();
             submitForm(true);
         }
     });

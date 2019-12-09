@@ -166,4 +166,8 @@ $(function() {
         $("#dp-to").datepicker("setDate", new Date(wmState.request.to_date));
     }
 
+    setTimeout(function () {
+        submitForm(true);
+    }, 10);
+
 });

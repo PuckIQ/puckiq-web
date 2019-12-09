@@ -205,8 +205,8 @@ function renderTableRow(playerData, filters) {
 
 $(function() {
 
-    setTimeout(function(){
-        submitForm(true);
-    }, 10);
+    // setTimeout(function(){
+    //     submitForm(true);
+    // }, 10);
 
 });

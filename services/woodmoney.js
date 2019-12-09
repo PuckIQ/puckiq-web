@@ -257,7 +257,8 @@ class WoodmoneyService {
         let defence_labels = _.map(defence, player => player[0].name);
 
         let data = {
-            y_axis: y_axises[chart_options['y_axis']],
+            y_axis: chart_options['y_axis'],
+            y_axis_name: y_axises[chart_options['y_axis']],
             datasets: [
                 {
                     labels: forward_labels,

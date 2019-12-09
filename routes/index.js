@@ -36,6 +36,7 @@ module.exports = function (app, request, config) {
     app.post('/woodmoney/data', woodmoneyHandler.xhrWoodmoneyData);
     app.post('/woodmoney/chart', woodmoneyHandler.xhrWoodmoneyChartData);
 
+    app.get('/players/search', puckIQHandler.searchPlayers);
     app.get('/players/:player', woodmoneyHandler.getPlayerWoodmoney);
     app.get('/players/:player/download', woodmoneyHandler.downloadPlayerWoodmoney);
 

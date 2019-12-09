@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 const express = require('express');
-const url = require('url');
+const rq = require('request');
 const constants = require('../common/constants');
 const utils = require('../common/utils');
 const AppException = require('../common/app_exception');
@@ -11,6 +11,7 @@ function PuckIQHandler(app, locator) {
 
     const controller = this;
 
+    let config = locator.get('config');
     let cache = locator.get('cache');
     let error_handler = locator.get('error_handler');
 
@@ -55,6 +56,24 @@ function PuckIQHandler(app, locator) {
         app.use(express.static('views/error404/public'));
         res.render('error404/index');
     };
+
+    controller.searchPlayers = (req, res) => {
+
+        // res.jsonp([
+        //     {id: '8470638', name: "Connor McDavid", position : "C", team: 'EDM'},
+        //     {id: '8470638', name: "Connor Brown", position : "LW", team: 'TBL'},
+        //     {id: '8470638', name: "Leon Draisatl", position : "C", team: 'EDM'},
+        //     {id: '8470638', name: "Ryan Nugent-Hopkins", position : "C", team: 'EDM'},
+        //     {id: '8470638', name: "Oscar Klefbom", position : "LD", team: 'EDM'}
+        // ])
+
+        let baseUrl = config.api.host;
+        let url = `${baseUrl}/players/search?${utils.encode_query(req.query)}`;
+
+        rq.get({url: url, json: true}, (err, response, data) => {
+            res.jsonp(data);
+        });
+    }
 }
 
 module.exports = PuckIQHandler;

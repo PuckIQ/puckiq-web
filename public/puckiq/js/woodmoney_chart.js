@@ -28,10 +28,10 @@ var chart = new Chart(ctx, {
             yAxes: [{
                 scaleLabel: {
                     display: true,
-                    labelString: "TODO"
+                    labelString: ""
                 },
                 ticks: {
-                    stepSize : 20,
+                    stepSize : 10,
                 }
             }],
             xAxes: [{
@@ -111,7 +111,7 @@ function loadChart(filters) {
         contentType: 'application/json',
         success: function (data) {
             _idMap = data.chart.id_map;
-            updateChart(data.chart, chart_options.options);
+            updateChart(data.chart);
         },
         error: function() {
             //todo
@@ -120,7 +120,7 @@ function loadChart(filters) {
 
 }
 
-function updateChart(data, chart_options) {
+function updateChart(data) {
 
     chart.data.datasets.shift();
     chart.data.datasets.shift();
@@ -128,13 +128,13 @@ function updateChart(data, chart_options) {
     chart.data.datasets.push(data.datasets[0]);
     chart.data.datasets.push(data.datasets[1]);
 
-    chart.config.options.scales.yAxes[0].scaleLabel.labelString = data.y_axis;
+    chart.config.options.scales.yAxes[0].scaleLabel.labelString = data.y_axis_name;
 
-    if (chart_options['y-axis'] === 'toipct_diff') {
-        chart.config.options.scales.yAxes[0].ticks.suggestedMin = -50;
-        chart.config.options.scales.yAxes[0].ticks.suggestedMax = 50;
-    } else { //} if (chart_options['y-axis'] === ' toipct_elite') {
-        chart.config.options.scales.yAxes[0].ticks.suggestedMin = 10;
+    if (data.y_axis === 'toipct_diff') {
+        chart.config.options.scales.yAxes[0].ticks.suggestedMin = -30;
+        chart.config.options.scales.yAxes[0].ticks.suggestedMax = 30;
+    } else {
+        chart.config.options.scales.yAxes[0].ticks.suggestedMin = 20;
         chart.config.options.scales.yAxes[0].ticks.suggestedMax = 70;
     }
 
@@ -206,15 +206,12 @@ function loadPlayerInfo(player_data) {
 
 $(function() {
 
-    console.log("init chart events");
-
     $('#x-axis').change(function () {
         submitForm();
     });
 
     let show_chart = localStorage.getItem("puckiq-show-chart");
 
-    console.log("show_chart", show_chart);
     if (show_chart === null) {
         show_chart = "true";
         localStorage.setItem('puckiq-show-chart', show_chart);
@@ -249,7 +246,7 @@ $(function() {
         }
     });
 
-    setTimeout(function () {
-        submitForm(true);
-    }, 10);
+    // setTimeout(function () {
+    //     submitForm(true);
+    // }, 10);
 });

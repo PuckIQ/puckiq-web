@@ -123,7 +123,7 @@ function addAutoComplete($input, $results, options) {
         if(!criteria) return;
 
         console.log("getting results", criteria);
-        $.get('/ajax/player-player-search', criteria, function(data) {
+        $.get('/players/search', criteria, function(data) {
 
             self.data = data;
             self.focus = null;

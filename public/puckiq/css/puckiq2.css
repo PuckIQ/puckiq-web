@@ -42,7 +42,7 @@ tr.hidden {
 }
 
 #woodmoney-visual {
-    width: 1000px;
+    width: 1030px;
     display: flex;
     flex-direction: row;
 }
@@ -55,7 +55,7 @@ tr.hidden {
 }
 
 #player-info {
-    width: 300px;
+    width: 330px;
     padding-top: 15px;
 }
 

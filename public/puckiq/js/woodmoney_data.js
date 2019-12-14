@@ -156,8 +156,8 @@ function renderTableRow(playerData, filters) {
         html += `<td>${pd.season}</td>`
     }
 
-    if(!filters.team){
-        html += `<td><a href="/teams/${pd.team}>${pd.team}</a></td>`;
+    if(!filters.team) {
+        html += `<td><a href="/teams/${pd.team}">${pd.team}</a></td>`;
     }
 
     html += `<td>${pd.games_played}</td>

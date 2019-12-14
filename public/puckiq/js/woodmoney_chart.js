@@ -138,6 +138,14 @@ function updateChart(data) {
         chart.config.options.scales.yAxes[0].ticks.suggestedMax = 70;
     }
 
+    if (data.x_axis === 'fo60') {
+        chart.config.options.scales.xAxes[0].ticks.suggestedMin = 0;
+        chart.config.options.scales.xAxes[0].ticks.suggestedMax = 70;
+    } else {
+        chart.config.options.scales.xAxes[0].ticks.suggestedMin = 30;
+        chart.config.options.scales.xAxes[0].ticks.suggestedMax = 70;
+    }
+
     chart.update();
 
 }
@@ -157,6 +165,9 @@ function loadPlayerInfo(player_data) {
         case 'gfpct':
             hi = 6;
             break;
+        case 'fo60':
+            hi = 7;
+            break;
     }
 
     let $playerInfo = $("#player-info");
@@ -169,7 +180,13 @@ function loadPlayerInfo(player_data) {
       return formatDecimal(x.evtoi/x.games_played);
     };
 
-    let html = `<h4>${all.name} <small>${all.position}</small></h4>
+    let html = `<h4>${all.name} <small>${all.position}`;
+
+    if (all.team) {
+        html += `, ${all.team}`;
+    }
+
+    html += `</small></h4>
         <div style="">Games Played: ${all.games_played}</div>
         <div style="">Total Min: ${formatDecimal(all.evtoi, 2)}</div>
         <div style="padding-bottom: 10px;">TOI/Game: ${toi_game(all)}</div>
@@ -179,10 +196,11 @@ function loadPlayerInfo(player_data) {
     <th>Comp</th>
     <th>TOI%</th>
     <th class="${2 === hi ? 'highlight' : ''}">CF%</th>
-    <th>CF60RC</th>
+    <th>CF%RC</th>
     <th class="${4 === hi ? 'highlight' : ''}">DFF%</th>
-    <th>DFF60RC</th>
+    <th>DFF%RC</th>
     <th class="${6 === hi ? 'highlight' : ''}">GF%</th>
+    <th class="${7 === hi ? 'highlight' : ''}">FO/60</th>
     </tr>
     </thead>
     <tbody>`;
@@ -190,11 +208,13 @@ function loadPlayerInfo(player_data) {
     _.each(player_data, (pd) => {
         html += `<tr><td>${pd.woodmoneytier}</td>
         <td>${formatDecimal(pd.ctoipct, 1)}</td>
-        <td class="${2 === hi ? 'highlight' : ''}">${formatDecimal(pd.cfpct, 2)}</td>
+        <td class="${2 === hi ? 'highlight' : ''}">${formatDecimal(pd.cfpct, 1)}</td>
         <td>${formatDecimal(pd.cf60rc, 2)}</td>
-        <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.dffpct, 2)}</td>
+        <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.dffpct, 1)}</td>
         <td>${formatDecimal(pd.dff60rc, 2)}</td>
-        <td class="${6 === hi ? 'highlight' : ''}">${formatDecimal(pd.gfpct, 2)}</td></tr>`;
+        <td class="${6 === hi ? 'highlight' : ''}">${formatDecimal(pd.gfpct, 1)}</td>
+        <td class="${7 === hi ? 'highlight' : ''}">${formatDecimal(pd.fo60, 1)}</td>
+        </tr>`;
     });
 
     html += '</tbody></table>';

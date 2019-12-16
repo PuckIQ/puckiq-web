@@ -60,7 +60,7 @@ class WoodwowyService {
                 } else {
                     //let current_season = iq.current_woodmoney_season;
                     // options.season = current_season && current_season._id;
-                    options.season = 20182019;
+                    options.season = 20192020;
                 }
 
             }

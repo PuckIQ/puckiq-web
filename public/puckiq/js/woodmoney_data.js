@@ -59,7 +59,7 @@ function initDatatable(request){
 
     //sorting done server side atm (SS)
     $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
-    $("#puckiq").trigger('update', [true]);
+    $("#puckiq").trigger('updateCell');
 
     // this is a to highlight the sortable column since the sort order is grouped by player its not
     // supported (moved server side)

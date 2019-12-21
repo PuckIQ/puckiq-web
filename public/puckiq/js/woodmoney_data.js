@@ -53,21 +53,18 @@ function initDatatable(request){
     };
 
     var $sort = $("#puckiq thead tr th[data-sort='" + request.sort + "']");
-    // if($sort && $sort.length) {
-    //     options.sortList = [[$sort[0].cellIndex, 1]];
-    // }
-
-    //sorting done server side atm (SS)
-    $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
-    $("#puckiq").trigger('updateCell');
-
-    // this is a to highlight the sortable column since the sort order is grouped by player its not
-    // supported (moved server side)
-    if ($sort && $sort.length) {
-        let cell_index = $sort[0].cellIndex;
-        $("#puckiq tbody tr td:nth-child(" + (cell_index + 1) + ")").addClass("primary");
+    if($sort && $sort.length) {
+        options.sortList = [[$sort[0].cellIndex, 1]];
     }
 
+    $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
+
+    var resort = true;
+    var callback = function() {
+        //nothing required
+    };
+
+    $("#puckiq").trigger("updateAll", [ resort, callback ]);
 }
 
 function renderTable(results, filters) {

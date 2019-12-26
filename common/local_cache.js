@@ -75,7 +75,7 @@ class SeasonCache {
             "bos": { "_id" : "bos", "name": "Boston Bruins", division : "Atlantic"},
             "buf": { "_id" : "buf", "name": "Buffalo Sabres", division : "Atlantic"},
             "car": { "_id" : "car", "name": "Carolina Hurricanes", division : "Metropolitan"},
-            "cbj": { "_id" : "cbj", "name": "Columbus Blue Jackets", division : "Central"},
+            "cbj": { "_id" : "cbj", "name": "Columbus Blue Jackets", division : "Metropolitan"},
             "cgy": { "_id" : "cgy", "name": "Calgary Flames", division : "Pacific"},
             "chi": { "_id" : "chi", "name": "Chicago Blackhawks", division : "Central"},
             "col": { "_id" : "col", "name": "Colorado Avalanche", division : "Central"},

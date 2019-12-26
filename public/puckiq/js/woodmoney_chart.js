@@ -209,9 +209,9 @@ function loadPlayerInfo(player_data) {
         html += `<tr><td>${pd.woodmoneytier}</td>
         <td>${formatDecimal(pd.ctoipct, 1)}</td>
         <td class="${2 === hi ? 'highlight' : ''}">${formatDecimal(pd.cfpct, 1)}</td>
-        <td>${formatDecimal(pd.cf60rc, 2)}</td>
+        <td>${formatDecimal(pd.cfpctrc, 2)}</td>
         <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.dffpct, 1)}</td>
-        <td>${formatDecimal(pd.dff60rc, 2)}</td>
+        <td>${formatDecimal(pd.dffpctrc, 2)}</td>
         <td class="${6 === hi ? 'highlight' : ''}">${formatDecimal(pd.gfpct, 1)}</td>
         <td class="${7 === hi ? 'highlight' : ''}">${formatDecimal(pd.fo60, 1)}</td>
         </tr>`;

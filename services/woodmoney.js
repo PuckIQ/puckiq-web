@@ -30,6 +30,7 @@ class WoodmoneyService {
                 min_toi: null,
                 max_toi: null,
                 positions: 'all',
+                group_by : constants.group_by.player_season_team,
                 offset: 0,
                 sort: 'evtoi',
                 sort_direction: 'desc',
@@ -135,6 +136,14 @@ class WoodmoneyService {
                 ));
             }
 
+            if (options.group_by && !~_.values(constants.group_by).indexOf(options.group_by)) {
+                return reject(new AppException(
+                    constants.exceptions.invalid_argument,
+                    `Invalid value for parameter: group_by`,
+                    {param: 'group_by', value: options.group_by}
+                ));
+            }
+
             //TODO sort
             // if(options.sort && !~constants.sortable_columns).indexOf(options.sort)){
             //     return new AppException(
@@ -166,23 +175,22 @@ class WoodmoneyService {
                 }
 
                 //shouldnt really be possible as web should prevalidate but just in case
-                if(response.statusCode === 400) {
+                if (response.statusCode === 400) {
                     return reject(new AppException(constants.exceptions.invalid_request, "Invalid request. Please check your parameters and try again. If you think this is an error please report to slopitch@gmail.com"));
                 }
 
-                if(data.error) {
+                if (data.error) {
                     return reject(new AppException(data.error.type, data.error.message));
                 }
 
-                data.results = _.map(data.results, x => {
+                _.each(data.results, x => {
                     x.position = x.positions.length ? x.positions[0] : '';
-                    return x;
                 });
 
                 data.team = (options.team && iq.teams[options.team]) || null;
 
                 data.request.selected_positions = {};
-                if(data.request.positions === "all"){
+                if (data.request.positions === "all") {
                     _.each(_.keys(constants.positions), pos => data.request.selected_positions[pos] = true);
                     data.request.selected_positions.f = true;
                 } else {

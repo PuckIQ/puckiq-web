@@ -65,7 +65,6 @@
                 <option value="Gritensity" <% if(request.tier === "Gritensity") { %>selected <% } %>>Gritensity</option>
             </select>
         </div>
-
         <% if(!request.player){ %>
         <div class="col-padded">
                 Min TOI:
@@ -76,6 +75,15 @@
                        value="<% if(request.max_toi !== null){%><%= request.max_toi %><% } %>" />
             </div>
         <% } %>
+        <div class="col-padded">
+            Group By:
+            <select id="group_by" name="group_by">
+                <option value="player_season_team" <% if(!request.group_by) { %>selected <% } %>>Player/Season/Team</option>
+                <option value="player_season" <% if(request.group_by === "player_season") { %>selected <% } %>>Player/Season</option>
+                <option value="player_team" <% if(request.group_by === "player_team") { %>selected <% } %>>Player/Team</option>
+                <option value="player" <% if(request.group_by === "player") { %>selected <% } %>>Player</option>
+            </select>
+        </div>
         <div class="col-padded">
             <button type="button" class="btn btn-xs btn-success x-woodmoney-submit"><strong>Go</strong></button>
         </div>

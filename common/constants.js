@@ -17,6 +17,12 @@ module.exports = {
         unhandled_error: 'unhandled_error', // 500
         service_unavailable: 'service_unavailable', // 503
     },
+    group_by : {
+        player_season_team : 'player_season_team',
+        player_season : 'player_season',
+        player_team : 'player_team',
+        player : 'player'
+    },
     log_levels: {
         fatal: 0,
         error: 1,

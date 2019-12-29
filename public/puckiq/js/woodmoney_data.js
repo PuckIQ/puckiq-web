@@ -42,7 +42,7 @@ function loadDataTable(filters) {
 
 }
 
-function initDatatable(request){
+function initDatatable(request) {
 
     var options = {
         //sortInitialOrder  : 'desc',
@@ -53,9 +53,10 @@ function initDatatable(request){
     };
 
     var $sort = $("#puckiq thead tr th[data-sort='" + request.sort + "']");
-    if($sort && $sort.length) {
-        options.sortList = [[$sort[0].cellIndex, 1]];
-    }
+    // if($sort && $sort.length) {
+    //     base_sort.push($sort[0].cellIndex);
+    //     options.sortList = [[$sort[0].cellIndex, 1]];
+    // }
 
     $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
 
@@ -65,6 +66,11 @@ function initDatatable(request){
     };
 
     $("#puckiq").trigger("updateAll", [ resort, callback ]);
+
+    if ($sort && $sort.length) {
+        let cell_index = $sort[0].cellIndex;
+        $("#puckiq tbody tr td:nth-child(" + (cell_index + 1) + ")").addClass("primary");
+    }
 }
 
 function renderTable(results, filters) {
@@ -93,7 +99,7 @@ function renderTableHeader(filters){
         html += "<th>Season</th>";
     }
 
-    if(!filters.team){
+    if(!filters.team) {
         html += `<th>Team</th>`;
     }
 
@@ -151,11 +157,15 @@ function renderTableRow(playerData, filters) {
         html += `<td style="white-space: nowrap;"><a href="/players/${pd.player_id}">${pd.name}</a></td>
             <td>${pd.position}</td>`;
     } else {
-        html += `<td>${pd.season}</td>`
+        html += `<td>${pd.season || 'all'}</td>`
     }
 
     if(!filters.team) {
-        html += `<td><a href="/teams/${pd.team}">${pd.team}</a></td>`;
+        if (pd.team) {
+            html += `<td><a href="/teams/${pd.team}">${pd.team}</a></td>`;
+        } else {
+            html += `<td>all</td>`;
+        }
     }
 
     html += `<td>${pd.games_played}</td>
@@ -200,11 +210,3 @@ function renderTableRow(playerData, filters) {
     return html;
 
 }
-
-$(function() {
-
-    // setTimeout(function(){
-    //     submitForm(true);
-    // }, 10);
-
-});

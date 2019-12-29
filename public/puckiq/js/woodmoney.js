@@ -2,6 +2,7 @@ function getFilters() {
 
     var season = $('form.x-wm-filters [name=season]').val();
     var tier = $('form.x-wm-filters #tier').val();
+    var group_by = $('form.x-wm-filters #group_by').val();
 
     var positions = null;
     if ($('form.x-wm-filters .x-positions').length) {
@@ -27,6 +28,7 @@ function getFilters() {
         tier: tier,
         positions: positions,
         team: team,
+        group_by: group_by,
         min_toi: parseInt(min_toi),
         max_toi: parseInt(max_toi)
     };

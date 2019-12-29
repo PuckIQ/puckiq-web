@@ -90,7 +90,7 @@ function WoodmoneyHandler(app, locator) {
             let iq = promise_results[1];
 
             let request = _.extend({
-                season: iq.current_woodmoney_season._id,
+                season: 'all', //iq.current_woodmoney_season._id,
                 selected_positions: null,
                 player: req.params.player
             }, req.query);

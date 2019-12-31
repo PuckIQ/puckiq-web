@@ -98,7 +98,6 @@
       $(".x-teams-dropdown").click(function() {
 
         let filters = (getFilters && getFilters('team-menu')) || {};
-        console.log("filters bitch", filters);
         if(!filters.positions) delete filters.positions;
         if(filters.season === 'all') delete filters.season;
         if(filters.team || filters.team === '') delete filters.team;

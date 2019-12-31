@@ -37,7 +37,7 @@ function WoodmoneyHandler(app, locator) {
 
                 if(request.team) request.team = request.team.toLowerCase();
 
-                let data = {request};
+                let data = { request };
 
                 let page = getWoodmoneyPage(data, req.url, iq.teams);
 

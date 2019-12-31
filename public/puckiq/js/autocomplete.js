@@ -80,7 +80,6 @@ function addAutoComplete($input, $results, options) {
 
     self.triggerSearch = function() {
 
-        console.log("triggerSearch");
         self.showAutocomplete();
 
         if(self.search_timeout) {
@@ -122,7 +121,6 @@ function addAutoComplete($input, $results, options) {
         self.criteria = criteria;
         if(!criteria) return;
 
-        console.log("getting results", criteria);
         $.get('/players/search', criteria, function(data) {
 
             self.data = data;
@@ -131,7 +129,6 @@ function addAutoComplete($input, $results, options) {
             let html = '';
             for(let i = 0; i < data.length; i++) {
                 let player = data[i];
-                console.log(JSON.stringify(player));
                 let position = player.positions.join("/");
                 html += '<div data-id="' + player.player_id + '">'; //'" class="team-icon team-' + player.team.toLowerCase() + '">';
                 if(options.url_function){
@@ -233,7 +230,6 @@ function addAutoComplete($input, $results, options) {
             q: $input.val()
         };
 
-        console.log("get criteria", $input, $input.val());
         if(criteria.q.length < 3) {
             criteria = null;
         }

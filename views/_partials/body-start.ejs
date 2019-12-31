@@ -98,9 +98,11 @@
       $(".x-teams-dropdown").click(function() {
 
         let filters = (getFilters && getFilters('team-menu')) || {};
+        console.log("filters", filters);
         if(!filters.positions) delete filters.positions;
         if(filters.season === 'all') delete filters.season;
-        if(filters.team) delete filters.team;
+        if(filters.team || filters.team === '') delete filters.team;
+        if(filters.player || filters.player === '') delete filters.player;
 
         $('.x-teams-dropdown-options a').each(function (index, e) {
           let $target = $(e);

@@ -25,8 +25,20 @@ function WoodmoneyHandler(app, locator) {
 
         return function (req, res) {
 
-            let selected_positions = {f: true};
-            _.each(_.keys(constants.positions), pos => selected_positions[pos] = true);
+            let selected_positions = {};
+            if(req.query.positions) {
+                _.each(_.keys(constants.positions), pos => {
+                    selected_positions[pos] = false;
+                });
+                //this works for array or string
+                _.each(req.query.positions, pos => {
+                    selected_positions[pos] = true;
+                });
+                selected_positions.f = !!(selected_positions.c && selected_positions.l && selected_positions.r);
+            } else {
+                selected_positions.f = true;
+                _.each(_.keys(constants.positions), pos => selected_positions[pos] = true);
+            }
 
             cache.init().then((iq) => {
 

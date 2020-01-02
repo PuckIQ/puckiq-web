@@ -234,7 +234,7 @@ function WoodmoneyHandler(app, locator) {
             'toipct_diff';
 
         controller._getWoodmoney(chart_options.filters).then((woodmoney) => {
-            let chart = wm.formatChart(woodmoney, chart_options.options);
+            let chart = wm.formatChart(woodmoney, chart_options);
             res.jsonp(_.extend(woodmoney, {chart}));
         }, (err) => {
             return error_handler.handle(req, res, err);

@@ -90,6 +90,7 @@ var chart = new Chart(ctx, {
 });
 
 var _idMap = { '0' : [], '1' : []};
+var _filters = {};
 
 function loadChart(filters) {
 
@@ -111,6 +112,7 @@ function loadChart(filters) {
         contentType: 'application/json',
         success: function (data) {
             _idMap = data.chart.id_map;
+            _filters = filters;
             updateChart(data.chart);
         },
         error: function() {
@@ -185,6 +187,11 @@ function loadPlayerInfo(player_data) {
     if (all.team) {
         html += `, ${all.team}`;
     }
+
+    //if(_filters.season === '' || _filters.season === 'all' && all.season) {
+        var seas = all.season.toString();
+        html += ` (${seas.substr(2,2) + "-" + seas.substr(6,2)})`;
+    //}
 
     html += `</small></h4>
         <div style="">Games Played: ${all.games_played}</div>
@@ -266,7 +273,4 @@ $(function() {
         }
     });
 
-    // setTimeout(function () {
-    //     submitForm(true);
-    // }, 10);
 });

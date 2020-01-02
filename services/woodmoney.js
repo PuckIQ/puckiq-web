@@ -210,10 +210,10 @@ class WoodmoneyService {
 
     }
 
-    formatChart(woodmoney, chart_options) {
+    formatChart(woodmoney, options) {
 
-        //assume single season and team for now...
-
+        let filters = options.filters;
+        let chart_options = options.options;
         let results = woodmoney.results;
 
         const y_axises = {
@@ -223,7 +223,22 @@ class WoodmoneyService {
             'toipct_gritensity': 'TOI % Grit'
         };
 
-        let grouped = _.values(_.groupBy(results, x => x.player_id));
+        const key_function = (rec) => {
+            switch (filters.group_by) {
+                case constants.group_by.player_season_team:
+                    return `${rec.season}-${rec.player_id}-${rec.team}`;
+                case constants.group_by.player_season:
+                    return `${rec.season}-${rec.player_id}`;
+                case constants.group_by.player_team:
+                    return `${rec.player_id}-${rec.team}`;
+                case constants.group_by.player:
+                    return `${rec.player_id}`;
+                default:
+                    return 'something_wrong';
+            }
+        };
+
+        let grouped = _.values(_.groupBy(results, x => key_function(x)));
 
         let forwards = _.filter(grouped, x => !~x[0].positions.indexOf('D') );
         let defence = _.filter(grouped, x => !!~x[0].positions.indexOf('D') );
@@ -261,8 +276,25 @@ class WoodmoneyService {
         let forward_data = _.map(forwards, player => player_formatter(player));
         let defence_data = _.map(defence, player => player_formatter(player));
 
-        let forward_labels = _.map(forwards, player => player[0].name);
-        let defence_labels = _.map(defence, player => player[0].name);
+        const include_player = !filters.player;
+        const include_team = !filters.team && !!~filters.group_by.indexOf('team');
+        const include_season = (filters.season === 'all' || (filters.from_date && filters.to_date))
+            && !!~filters.group_by.indexOf('season');
+
+        const format_label = (player) => {
+            let lbl = include_player ? player.name : "";
+            if(include_team && player.team && player.team !== 'all') {
+                lbl += include_player ? ` (${player.team})` : `${player.team}`;
+            }
+            if(include_season && player.season && player.season !== 'all') {
+                let seas = player.season.toString();
+                lbl += ` ${seas.substr(2,2) + "-" + seas.substr(6,2)}`;
+            }
+            return lbl;
+        };
+
+        let forward_labels = _.map(forwards, player => format_label(player[0]));
+        let defence_labels = _.map(defence, player => format_label(player[0]));
 
         let data = {
             y_axis: chart_options['y_axis'],

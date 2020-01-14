@@ -147,7 +147,7 @@ $(function() {
             $('.x-date-error').hide();
             // $('#date-range-modal').modal('hide');
             $.modal.close();
-            submitForm(true);
+            submitForm(false);
         }
     });
 

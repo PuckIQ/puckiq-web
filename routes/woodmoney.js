@@ -26,7 +26,7 @@ function WoodmoneyHandler(app, locator) {
         return function (req, res) {
 
             let selected_positions = {};
-            if(req.query.positions) {
+            if(req.query.positions && req.query.positions !== 'all') {
                 _.each(_.keys(constants.positions), pos => {
                     selected_positions[pos] = false;
                 });

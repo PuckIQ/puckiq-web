@@ -18,7 +18,7 @@
             </select>
 
             <span id="show-date-range" style="padding-left: 10px; <% if(!request.from_date && !request.to_date) { %> display: none;<% } %>" >
-                <%= request.from_date_str + " to " + request.to_date_str %>
+                <span><%= request.from_date_str + " to " + request.to_date_str %></span>
                 <a href="#change" class="x-change-date-range">change</a>
             </span>
 

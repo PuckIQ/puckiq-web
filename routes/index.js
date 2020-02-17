@@ -7,6 +7,7 @@ const ErrorHandler = require('../common/error_handler');
 const PuckIQHandler = require('./puckiq');
 const WoodmoneyHandler = require('./woodmoney');
 const WoodwowyHandler = require('./woodwowy');
+const ShiftsHandler = require('./shifts');
 
 module.exports = function (app, request, config) {
 
@@ -25,6 +26,7 @@ module.exports = function (app, request, config) {
     let puckIQHandler = new PuckIQHandler(app, locator);
     let woodmoneyHandler = new WoodmoneyHandler(app, locator);
     let woodwowyHandler = new WoodwowyHandler(app, locator);
+    let shiftHandler = new ShiftsHandler(app, locator);
 
     // Handle Primary Requests Here
     app.get('/', puckIQHandler.getHome);
@@ -42,6 +44,10 @@ module.exports = function (app, request, config) {
 
     app.get('/woodwowy', woodwowyHandler.getWoodwowy);
     app.get('/woodwowy/download', woodwowyHandler.downloadWoodwowy);
+
+    app.get('/shifts', shiftHandler.getShifts);
+    app.get('/shifts/download', shiftHandler.downloadShifts);
+    app.post('/shifts/data', shiftHandler.xhrShifts);
 
     app.get('/_template', puckIQHandler.getTemplate);
 

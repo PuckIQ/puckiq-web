@@ -1,0 +1,31 @@
+<div class="container-fluid" role="main">
+    <div class="page-header">
+        <h2>
+            <%= sub_title %>
+            <% if(player) { %><small><%= player.positions %></small><% } %>
+        </h2>
+        <%- include('_partials/filters') %>
+    </div>
+</div>
+
+<div style="padding-left: 17px;">
+
+    <table id="puckiq" class="table table-bordered table-condensed table-hover">
+    </table>
+
+    <div id="table-footer" style="text-align: center">
+    </div>
+</div>
+
+<script type="text/javascript">
+    //used by date range only...
+    var wmState = {
+        request : <%- JSON.stringify(request) %>,
+    };
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
+
+<script src="/puckiq/js/shifts.js"></script>
+

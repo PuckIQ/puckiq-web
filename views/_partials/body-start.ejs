@@ -73,16 +73,10 @@
               <!--<li><a href="#search">Players</a></li>-->
               <li><a href="/woodmoney">Players</a></li>
               <li><a href="/woodwowy">WoodWOWY</a></li>
+              <li><a href="/shifts">Shifts</a></li>
               <li><a href="/glossary">Glossary</a></li>
               <li><a href="/about">About</a></li>
             </ul>
-            <div style="text-align: right; height: 40px; display: inline-block; padding-left: 25px;">
-              <div style="display: block; position: relative;">
-                <input type="text" id="player-search" placeholder="Enter player name" class="autocomplete-search" style="width: 200px; margin-top: 8px;" />
-                <div class="autocomplete-results x-player-results" style="display:none; text-align: left;">
-                </div>
-              </div>
-            </div>
           </div>
         </div><!--/.nav-collapse -->
       </div>
@@ -91,9 +85,6 @@
     <script src="/puckiq/js/autocomplete.js"></script>
     <script>
 
-      $(document).ready(function() {
-        new addAutoComplete($('#player-search'), $('.x-player-results'));
-      });
 
       $(".x-teams-dropdown").click(function() {
 

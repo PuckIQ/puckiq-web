@@ -32,7 +32,7 @@ class ShiftsService {
                 positions: 'all',
                 group_by : constants.group_by.player_season_team,
                 offset: 0,
-                sort: 'evtoi',
+                sort: 'total_shifts',
                 sort_direction: 'desc',
                 count: constants.MAX_COUNT
             };

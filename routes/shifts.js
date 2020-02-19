@@ -9,7 +9,7 @@ const AppException = require('../common/app_exception');
 const ShiftService = require('../services/shifts');
 const PlayerService = require('../services/player');
 
-//const shift_csv_file_definition = require('../common/shift_csv_file_definition');
+const shifts_csv_file_definition = require('../common/shifts_csv_file_definition');
 
 function ShiftHandler(app, locator) {
 
@@ -51,7 +51,7 @@ function ShiftHandler(app, locator) {
 
             let page = getShiftsPage(data, req.url, iq.teams);
 
-            res.render('woodmoney/' + view, page);
+            res.render('shifts/data', page);
         }, (err) => {
             return error_handler.handle(req, res, err);
         });
@@ -62,15 +62,15 @@ function ShiftHandler(app, locator) {
 
         let options = _.extend({}, req.query, {count: 10000});
 
-        controller._getWoodmoney(options).then((data) => {
+        controller._getShifts(options).then((data) => {
 
             let records = [];
 
             if (data.results && data.results.length) {
-                records = woodmoney_csv_file_definition.build(data);
+                records = shifts_csv_file_definition.build(data);
             }
 
-            let file_name = `woodmoney.csv`;
+            let file_name = `shifts.csv`;
 
             res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
             res.setHeader('Content-Type', 'text/csv');
@@ -108,7 +108,7 @@ function ShiftHandler(app, locator) {
 
             let page = getShiftsPage(data, req.url, iq.teams);
 
-            res.render('woodmoney/data', page);
+            res.render('shifts/data', page);
 
         }, (err) => {
             return error_handler.handle(req, res, err);
@@ -124,16 +124,16 @@ function ShiftHandler(app, locator) {
 
         let options = _.extend({player: req.params.player}, req.query);
 
-        controller._getWoodmoney(options).then((data) => {
+        controller._getShifts(options).then((data) => {
 
             let records = [];
 
             if (data.results && data.results.length) {
-                records = woodmoney_csv_file_definition.build(data);
+                records = shifts_csv_file_definition.build(data);
             }
 
             let player_name = data.player.name.replace(/\s/g, "_");
-            let file_name = `${player_name}_woodmoney.csv`;
+            let file_name = `${player_name}_shifts.csv`;
 
             res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
             res.setHeader('Content-Type', 'text/csv');
@@ -168,15 +168,15 @@ function ShiftHandler(app, locator) {
 
     function getShiftsPage(data, base_url, teams) {
 
-        let page = {};
+        let page = { hide_competition : true};
 
         let sub_title = '';
         if (data.player) {
             sub_title = data.player.name;
         }
 
-        page.title = `PuckIQ | Woodmoney ${sub_title ? '| ' + sub_title : ''}`;
-        page.sub_title = `${sub_title || 'Woodmoney'}`;
+        page.title = `PuckIQ | Shifts ${sub_title ? '| ' + sub_title : ''}`;
+        page.sub_title = `${sub_title || 'Shifts'}`;
 
         if (!(data.request.from_date && data.request.to_date)) {
             data.request.season = data.request.season || 'all';

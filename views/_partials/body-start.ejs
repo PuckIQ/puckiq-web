@@ -19,15 +19,15 @@
           <div>
             <ul class="nav navbar-nav">
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle x-teams-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">WoodMoney <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle x-teams-dropdown" data-type="woodmoney" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">WoodMoney <span class="caret"></span></a>
                 <%- include('_partials/team-dropdown', {page_type : 'woodmoney'}) %>
               </li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle x-teams-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">WoodWOWY <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle x-teams-dropdown" data-type="woodwowy" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">WoodWOWY <span class="caret"></span></a>
                 <%- include('_partials/team-dropdown', {page_type : 'woodwowy'}) %>
               </li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle x-teams-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shifts <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle x-teams-dropdown" data-type="shifts" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shifts <span class="caret"></span></a>
                 <%- include('_partials/team-dropdown', {page_type : 'shifts'}) %>
               </li>
               <li><a href="/glossary">Glossary</a></li>
@@ -41,7 +41,7 @@
     <script src="/puckiq/js/autocomplete.js"></script>
     <script>
 
-      $(".x-teams-dropdown").click(function() {
+      $(".x-teams-dropdown").click(function(e) {
 
         let filters = (getFilters && getFilters('team-menu')) || {};
         if(!filters.positions) delete filters.positions;
@@ -49,9 +49,11 @@
         if(filters.team || filters.team === '') delete filters.team;
         if(filters.player || filters.player === '') delete filters.player;
 
+        var page_type = $(e.target).attr('data-type');
+
         $('.x-teams-dropdown-options a').each(function (index, e) {
           let $target = $(e);
-          let href = '/woodmoney?team=' + $target.attr('data-team')  + '&' + $.param(filters);
+          let href = '/' + page_type + '?team=' + $target.attr('data-team')  + '&' + $.param(filters);
           $target.attr("href", href);
         });
 

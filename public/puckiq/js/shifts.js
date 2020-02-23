@@ -266,58 +266,22 @@ function renderTableHeader(filters){
     <tr>`;
 
     if(!filters.player) {
-        html += `<th rowspan="2"  data-sorter="false">Player</th><th rowspan="2" data-sorter="false" >Pos</th>`;
+        html += `<th data-sorter="false">Player</th><th data-sorter="false" >Pos</th>`;
     } else {
-        html += `<th rowspan="2"  data-sorter="false">Season</th>`;
+        html += `<th data-sorter="false">Season</th>`;
     }
 
     if(!filters.team) {
         html += `<th rowspan="2"  data-sorter="false">Team</th>`;
     }
 
-    html += `<th rowspan="2"  data-sorter="true">Total Shifts</th>`;
-    html += `<th colspan="6" data-sorter="false" style="text-align: center;">OStart</th>`;
-    html += `<th colspan="6" data-sorter="false" style="text-align: center;">NStart</th>`;
-    html += `<th colspan="6" data-sorter="false" style="text-align: center;">DStart</th>`;
-    html += `<th colspan="6" data-sorter="false" style="text-align: center;">OTF</th>`;
-    html += `<th colspan="6" data-sorter="false" style="text-align: center;">Pure OTF</th>`;
-    html += `</tr><tr>`;
-
-    html += `<th data-sort="ostart_shifts">Shifts</th>
-        <th data-sort="ostart_gf">GF</th>
-        <th data-sort="ostart_ga">GA</th>
-        <th data-sort="ostart_cf">CF</th>
-        <th data-sort="ostart_ca">CA</th>
-        <th data-sort="ostart_avgshift">AVG Shift</th>`;
-
-    html += `<th data-sort="nstart_shifts">Shifts</th>
-        <th data-sort="nstart_gf">GF</th>
-        <th data-sort="nstart_ga">GA</th>
-        <th data-sort="nstart_cf">CF</th>
-        <th data-sort="nstart_ca">CA</th>
-        <th data-sort="nstart_avgshift">AVG Shift</th>`;
-
-    html += `<th data-sort="dstart_shifts">Shifts</th>
-        <th data-sort="dstart_gf">GF</th>
-        <th data-sort="dstart_ga">GA</th>
-        <th data-sort="dstart_cf">CF</th>
-        <th data-sort="dstart_ca">CA</th>
-        <th data-sort="dstart_avgshift">AVG Shift</th>`;
-
-    html += `<th data-sort="otf_shifts">Shifts</th>
-        <th data-sort="otf_gf">GF</th>
-        <th data-sort="otf_ga">GA</th>
-        <th data-sort="otf_cf">CF</th>
-        <th data-sort="otf_ca">CA</th>
-        <th data-sort="otf_avgshift">AVG Shift</th>`;
-
-    html += `<th data-sort="pureotf_shifts">Shifts</th>
-        <th data-sort="pureotf_gf">GF</th>
-        <th data-sort="pureotf_ga">GA</th>
-        <th data-sort="pureotf_cf">CF</th>
-        <th data-sort="pureotf_ca">CA</th>
-        <th data-sort="pureotf_avgshift">AVG Shift</th>`;
-
+    html += `<th data-sorter="true" style="text-align: center;">Shift Type</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">Shifts</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">GF</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">GA</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">CF</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">CA</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">AVG Shift (s)</th>`;
     html += `</tr></thead>`;
 
     return html;
@@ -345,42 +309,13 @@ function renderTableRow(playerData, filters) {
         }
     }
 
-    html += `<td>${formatDecimal(pd.total_shifts, 0)}</td>`;
-
-    html += `<td>${formatDecimal(pd.ostart_shifts, 0)}</td>
-<td>${formatDecimal(pd.ostart_gf, 0)}</td>
-<td>${formatDecimal(pd.ostart_ga, 0)}</td>
-<td>${formatDecimal(pd.ostart_cf, 0)}</td>
-<td>${formatDecimal(pd.ostart_ca, 0)}</td>
-<td>${formatDecimal(pd.ostart_avgshift, 2)}</td>`;
-
-    html += `<td>${formatDecimal(pd.nstart_shifts, 0)}</td>
-<td>${formatDecimal(pd.nstart_gf, 0)}</td>
-<td>${formatDecimal(pd.nstart_ga, 0)}</td>
-<td>${formatDecimal(pd.nstart_cf, 0)}</td>
-<td>${formatDecimal(pd.nstart_ca, 0)}</td>
-<td>${formatDecimal(pd.nstart_avgshift, 2)}</td>`;
-
-    html += `<td>${formatDecimal(pd.dstart_shifts, 0)}</td>
-<td>${formatDecimal(pd.dstart_gf, 0)}</td>
-<td>${formatDecimal(pd.dstart_ga, 0)}</td>
-<td>${formatDecimal(pd.dstart_cf, 0)}</td>
-<td>${formatDecimal(pd.dstart_ca, 0)}</td>
-<td>${formatDecimal(pd.dstart_avgshift, 2)}</td>`;
-
-    html += `<td>${formatDecimal(pd.otf_shifts, 0)}</td>
-<td>${formatDecimal(pd.otf_gf, 0)}</td>
-<td>${formatDecimal(pd.otf_ga, 0)}</td>
-<td>${formatDecimal(pd.otf_cf, 0)}</td>
-<td>${formatDecimal(pd.otf_ca, 0)}</td>
-<td>${formatDecimal(pd.otf_avgshift, 2)}</td>`;
-
-    html += `<td>${formatDecimal(pd.pureotf_shifts, 0)}</td>
-<td>${formatDecimal(pd.pureotf_gf, 0)}</td>
-<td>${formatDecimal(pd.pureotf_ga, 0)}</td>
-<td>${formatDecimal(pd.pureotf_cf, 0)}</td>
-<td>${formatDecimal(pd.pureotf_ca, 0)}</td>
-<td>${formatDecimal(pd.pureotf_avgshift, 2)}</td>`;
+    html += `<td>${pd.shift_type}</td>`;
+    html += `<td>${formatDecimal(pd.shifts, 0)}</td>
+<td>${formatDecimal(pd.gf, 0)}</td>
+<td>${formatDecimal(pd.ga, 0)}</td>
+<td>${formatDecimal(pd.cf, 0)}</td>
+<td>${formatDecimal(pd.ca, 0)}</td>
+<td>${formatDecimal(pd.avgshift, 2)}</td>`;
 
     html += `</tr>`;
 

@@ -31,6 +31,17 @@
             <input type="hidden" id="to_date" name="to_date" value="" />
         </div>
 
+        <div class="col-padded">
+            <select id="tier" name="shift_type">
+                <option value="" <% if(!request.shift_type) { %>selected <% } %>>--shift type</option>
+                <option value="Elite" <% if(request.shift_type === "ostart") { %>selected <% } %>>Offensive Zone Start</option>
+                <option value="Elite" <% if(request.shift_type === "nstart") { %>selected <% } %>>Neutral Zone Start</option>
+                <option value="Elite" <% if(request.shift_type === "dstart") { %>selected <% } %>>Defensive Zone Start</option>
+                <option value="Elite" <% if(request.shift_type === "otf") { %>selected <% } %>>On the Fly</option>
+                <option value="Elite" <% if(request.shift_type === "pureotf") { %>selected <% } %>>Pure OTF</option>
+            </select>
+        </div>
+
         <% if(!request.player){ %>
             <div class="col-padded">
                 <input type="hidden" id="positions" name="positions" value="<%= request.positions%>">

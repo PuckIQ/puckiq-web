@@ -37,6 +37,13 @@ module.exports = {
         c : 'C',
         d : 'D'
     },
+    shift_type : {
+        "ostart": "ostart",
+        "nstart":"nstart",
+        "dstart":"dstart",
+        "otf":"otf",
+        "pureotf":"pureotf"
+    },
     sort : {
         ascending: 'asc',
         descending: 'desc',

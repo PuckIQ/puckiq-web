@@ -1,7 +1,7 @@
 function getFilters() {
 
     var season = $('form.x-wm-filters [name=season]').val();
-    // var tier = $('form.x-wm-filters #tier').val();
+    var shift_type = $('form.x-wm-filters #shift_type').val();
     var group_by = $('form.x-wm-filters #group_by').val();
 
     var positions = null;
@@ -25,7 +25,7 @@ function getFilters() {
     var filters = {
         player : $("form.x-wm-filters #player-id").val(),
         season: season,
-        // tier: tier,
+        shift_type: shift_type,
         positions: positions,
         team: team,
         group_by: group_by,

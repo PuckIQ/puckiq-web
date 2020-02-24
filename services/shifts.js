@@ -22,17 +22,13 @@ class ShiftsService {
 
             let defaults = {
                 season: null,
-                //from_date : null,
-                //to_date : null,
-                //player: null,
-                //team: null,
-                //tier: null,
+                shift_type: null,
                 min_toi: null,
                 max_toi: null,
                 positions: 'all',
                 group_by : constants.group_by.player_season_team,
                 offset: 0,
-                sort: 'total_shifts',
+                sort: 'shifts',
                 sort_direction: 'desc',
                 count: constants.MAX_COUNT
             };
@@ -128,11 +124,11 @@ class ShiftsService {
                 }
             }
 
-            if (options.tier && !~_.values(constants.woodmoney_tier).indexOf(options.tier)) {
+            if (options.shift_type && !~_.values(constants.shift_type).indexOf(options.shift_type)) {
                 return reject(new AppException(
                     constants.exceptions.invalid_argument,
-                    `Invalid value for parameter: tier`,
-                    {param: 'tier', value: options.tier}
+                    `Invalid value for parameter: shift_type`,
+                    {param: 'shift_type', value: options.shift_type}
                 ));
             }
 

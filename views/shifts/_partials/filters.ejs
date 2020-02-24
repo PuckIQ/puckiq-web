@@ -32,13 +32,13 @@
         </div>
 
         <div class="col-padded">
-            <select id="tier" name="shift_type">
+            <select id="shift_type" name="shift_type">
                 <option value="" <% if(!request.shift_type) { %>selected <% } %>>--shift type</option>
-                <option value="Elite" <% if(request.shift_type === "ostart") { %>selected <% } %>>Offensive Zone Start</option>
-                <option value="Elite" <% if(request.shift_type === "nstart") { %>selected <% } %>>Neutral Zone Start</option>
-                <option value="Elite" <% if(request.shift_type === "dstart") { %>selected <% } %>>Defensive Zone Start</option>
-                <option value="Elite" <% if(request.shift_type === "otf") { %>selected <% } %>>On the Fly</option>
-                <option value="Elite" <% if(request.shift_type === "pureotf") { %>selected <% } %>>Pure OTF</option>
+                <option value="ostart" <% if(request.shift_type === "ostart") { %>selected <% } %>>Offensive Zone Start</option>
+                <option value="nstart" <% if(request.shift_type === "nstart") { %>selected <% } %>>Neutral Zone Start</option>
+                <option value="dstart" <% if(request.shift_type === "dstart") { %>selected <% } %>>Defensive Zone Start</option>
+                <option value="otf" <% if(request.shift_type === "otf") { %>selected <% } %>>On the Fly</option>
+                <option value="pureotf" <% if(request.shift_type === "pureotf") { %>selected <% } %>>Pure OTF</option>
             </select>
         </div>
 

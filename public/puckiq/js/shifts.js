@@ -47,20 +47,6 @@ function getFilters() {
     return filters;
 }
 
-/*function showModal(){
-
-    let filters = getFilters();
-    if(!filters.season && !filters.from_date && !filters.to_date) {
-        console.log('defaulting from_date and to_date');
-        let today = new Date();
-        today.setHours(0, 0, 0, 0);
-        $("#dp-to").datepicker("setDate", today);
-        $("#to_date").val(today.getTime());
-    }
-
-    $('#date-range-modal').modal({});
-}*/
-
 function changeQueryString(val) {
     if (history.pushState) {
         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + val;
@@ -87,38 +73,6 @@ function submitForm(initial_load) {
     //loadChart(filters);
     loadDataTable(filters);
 }
-
-/*
-function updateDateRange(filters) {
-
-    var dateString = function (dt) {
-        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-        if (!_.isDate(dt)) {
-            dt = new Date(dt);
-        }
-
-        return `${months[dt.getMonth()]} ${dt.getDate()}, ${dt.getFullYear()}`;
-    };
-
-    var $ctl = $("#show-date-range");
-
-    if (!(filters.from_date && filters.to_date)) {
-        $ctl.hide();
-        return;
-    } else {
-
-        var from_date_str = dateString(filters.from_date);
-        var to_date_str = dateString(filters.to_date);
-        var content = from_date_str + " " + to_date_str;
-        $ctl.find("span").html(content);
-        if(!$ctl.is(":visible")){
-            $ctl.show();
-        }
-    }
-
-}
-*/
 
 function onPositionsChange() {
     var forwardPosSelected = $('#pos-c:checked, #pos-l:checked, #pos-r:checked').length;
@@ -279,9 +233,12 @@ function renderTableHeader(filters){
     html += `<th data-sorter="true" style="text-align: center;">Shifts</th>`;
     html += `<th data-sorter="true" style="text-align: center;">GF</th>`;
     html += `<th data-sorter="true" style="text-align: center;">GA</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">GF%</th>`;
     html += `<th data-sorter="true" style="text-align: center;">CF</th>`;
     html += `<th data-sorter="true" style="text-align: center;">CA</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">CF%</th>`;
     html += `<th data-sorter="true" style="text-align: center;">AVG Shift (s)</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">Shift %</th>`;
     html += `</tr></thead>`;
 
     return html;
@@ -295,7 +252,7 @@ function renderTableRow(playerData, filters) {
     var html = `<tr>`;
 
     if(!filters.player) {
-        html += `<td style="white-space: nowrap;"><a href="/players/${pd.player_id}">${pd.name}</a></td>
+        html += `<td style="white-space: nowrap;"><a href="/players/${pd._id.player_id}">${pd.name}</a></td>
             <td>${pd.position}</td>`;
     } else {
         html += `<td>${pd.season || 'all'}</td>`
@@ -313,9 +270,12 @@ function renderTableRow(playerData, filters) {
     html += `<td>${formatDecimal(pd.shifts, 0)}</td>
 <td>${formatDecimal(pd.gf, 0)}</td>
 <td>${formatDecimal(pd.ga, 0)}</td>
+<td>${formatDecimal(pd.gf_pct, 2)}</td>
 <td>${formatDecimal(pd.cf, 0)}</td>
 <td>${formatDecimal(pd.ca, 0)}</td>
-<td>${formatDecimal(pd.avgshift, 2)}</td>`;
+<td>${formatDecimal(pd.cf_pct, 2)}</td>
+<td>${formatDecimal(pd.avgshift, 2)}</td>;
+<td>${formatDecimal(pd.shift_pct, 2)}</td>`;
 
     html += `</tr>`;
 

@@ -70,7 +70,7 @@ function submitForm(initial_load) {
         //updateDateRange(filters);
     }
 
-    //loadChart(filters);
+    loadChart(filters);
     loadDataTable(filters);
 }
 

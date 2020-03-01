@@ -48,6 +48,7 @@ module.exports = function (app, request, config) {
     app.get('/shifts', shiftHandler.getShifts);
     app.get('/shifts/download', shiftHandler.downloadShifts);
     app.post('/shifts/data', shiftHandler.xhrShifts);
+    app.post('/shifts/chart', shiftHandler.xhrShiftsChartData);
 
     app.get('/_template', puckIQHandler.getTemplate);
 

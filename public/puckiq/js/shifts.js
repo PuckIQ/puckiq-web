@@ -143,14 +143,16 @@ function loadDataTable(filters) {
             if(data.results.length === 0){
                 $("#table-footer").html("No results");
             } else {
+                /*
                 let filter_str = $.param(filters);
                 let href = "";
                 if (filters.player) {
                     href += `/players/${filters.player}/download?${filter_str}`;
                 } else {
-                    href = `/woodmoney/download?${filter_str}`;
+                    href = `/shifts/download?${filter_str}`;
                 }
                 $("#table-footer").html(`<a href="${href}" class="x-download">download csv</a>`);
+                */
             }
 
             if(filters.player){

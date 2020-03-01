@@ -206,6 +206,110 @@ class ShiftsService {
 
     }
 
+    formatChart(shifts, options) {
+
+        let filters = options.filters;
+        let chart_options = options.options;
+        let results = shifts.results;
+
+        const y_axises = {
+            'ostart': 'Offensive Zone Start',
+            'nstart': 'Neutral Zone Start',
+            'dstart': 'Defensive Zone Start',
+            'otf': 'On the Fly'
+        };
+
+        const key_function = (rec) => {
+            let key = rec._id;
+            switch (filters.group_by) {
+                case constants.group_by.player_season_team:
+                    return `${key.season}-${key.player_id}-${key.team}`;
+                case constants.group_by.player_season:
+                    return `${key.season}-${key.player_id}`;
+                case constants.group_by.player_team:
+                    return `${key.player_id}-${key.team}`;
+                case constants.group_by.player:
+                    return `${key.player_id}`;
+                default:
+                    return 'something_wrong';
+            }
+        };
+
+        let grouped = _.values(_.groupBy(results, x => key_function(x)));
+
+        let forwards = _.filter(grouped, x => !~x[0].positions.indexOf('D') );
+        let defence = _.filter(grouped, x => !!~x[0].positions.indexOf('D') );
+
+        const x_axis_formatter = (player, result_type) => {
+            if(shifts.request.shift_type) {
+                return player[shifts.request.shift_type][result_type];
+            } else {
+                return player.all[result_type];
+            }
+        };
+
+        const y_axis_formatter = (player, result_type) => {
+            return player[result_type].shift_pct; //todo
+        };
+
+        const player_formatter = (player_results) => {
+            let keyed = _.keyBy(player_results, 'shift_type');
+            return {
+                x : x_axis_formatter(keyed, chart_options.x_axis),
+                y : y_axis_formatter(keyed, chart_options.y_axis),
+                r: 5
+            };
+        };
+
+        let forward_data = _.map(forwards, player => player_formatter(player));
+        let defence_data = _.map(defence, player => player_formatter(player));
+
+        const include_player = !filters.player;
+        const include_team = !filters.team && !!~filters.group_by.indexOf('team');
+        const include_season = (filters.season === 'all' || (filters.from_date && filters.to_date))
+            && !!~filters.group_by.indexOf('season');
+
+        const format_label = (player) => {
+            let lbl = include_player ? player.name : "";
+            if(include_team && player.team && player.team !== 'all') {
+                lbl += include_player ? ` (${player.team})` : `${player.team}`;
+            }
+            if(include_season && player.season && player.season !== 'all') {
+                let seas = player.season.toString();
+                lbl += ` ${seas.substr(2,2) + "-" + seas.substr(6,2)}`;
+            }
+            return lbl;
+        };
+
+        let forward_labels = _.map(forwards, player => format_label(player[0]));
+        let defence_labels = _.map(defence, player => format_label(player[0]));
+
+        let data = {
+            y_axis: chart_options['y_axis'],
+            y_axis_name: y_axises[chart_options['y_axis']],
+            datasets: [
+                {
+                    labels: forward_labels,
+                    backgroundColor: "rgba(51, 153, 51,0.8)",
+                    borderColor: "rgba(51, 153, 51,1)",
+                    data: forward_data
+                },
+                {
+                    labels: defence_labels,
+                    backgroundColor: "rgba(0, 102, 255,0.8)",
+                    borderColor: "rgba(0, 102, 255,1)",
+                    data: defence_data
+                },
+            ],
+            id_map: {
+                '0': forwards,
+                '1': defence
+            }
+        };
+
+        return data;
+    }
+
 }
 
 module.exports = ShiftsService;

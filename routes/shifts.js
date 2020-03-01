@@ -218,6 +218,27 @@ function ShiftHandler(app, locator) {
 
     };
 
+    controller.xhrShiftsChartData = function (req, res) {
+
+        let chart_options = _.extend({}, req.body);
+
+        if (!chart_options.options) {
+            return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing chart_options.options"));
+        }
+
+        // chart_options.options['y_axis'] = chart_options.filters.tier ?
+        //     `toipct_${chart_options.filters.tier.toLowerCase()}` :
+        //     'toipct_diff';
+
+        controller._getShifts(chart_options.filters).then((shifts_data) => {
+            let chart = shifts.formatChart(shifts_data, chart_options);
+            res.jsonp(_.extend(shifts_data, {chart}));
+        }, (err) => {
+            return error_handler.handle(req, res, err);
+        });
+
+    };
+
 }
 
 module.exports = ShiftHandler;

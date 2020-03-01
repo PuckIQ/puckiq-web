@@ -32,6 +32,8 @@ var chart = new Chart(ctx, {
                 },
                 ticks: {
                     stepSize : 10,
+                    suggestedMin: 0,
+                    suggestedMax: 50
                 }
             }],
             xAxes: [{
@@ -102,8 +104,8 @@ function loadChart(filters) {
         }
     };
 
-    let href = '/woodmoney/data?' + $.param(filters);
-    $("#view-raw-data").attr("href", href);
+    //let href = '/shifts/data?' + $.param(filters);
+    //$("#view-raw-data").attr("href", href);
 
     $.ajax({
         url: "/shifts/chart",
@@ -111,6 +113,7 @@ function loadChart(filters) {
         data : JSON.stringify(chart_options),
         contentType: 'application/json',
         success: function (data) {
+            console.log('CHART DATA', data);
             _idMap = data.chart.id_map;
             _filters = filters;
             updateChart(data.chart);
@@ -132,21 +135,17 @@ function updateChart(data) {
 
     chart.config.options.scales.yAxes[0].scaleLabel.labelString = data.y_axis_name;
 
-    if (data.y_axis === 'toipct_diff') {
-        chart.config.options.scales.yAxes[0].ticks.suggestedMin = -30;
-        chart.config.options.scales.yAxes[0].ticks.suggestedMax = 30;
+
+    if (data.y_axis === 'otf') {
+        chart.config.options.scales.yAxes[0].ticks.suggestedMin = 30;
+        chart.config.options.scales.yAxes[0].ticks.suggestedMax = 80;
     } else {
-        chart.config.options.scales.yAxes[0].ticks.suggestedMin = 20;
-        chart.config.options.scales.yAxes[0].ticks.suggestedMax = 70;
+        chart.config.options.scales.yAxes[0].ticks.suggestedMin = 0;
+        chart.config.options.scales.yAxes[0].ticks.suggestedMax = 50;
     }
 
-    if (data.x_axis === 'fo60') {
-        chart.config.options.scales.xAxes[0].ticks.suggestedMin = 0;
-        chart.config.options.scales.xAxes[0].ticks.suggestedMax = 70;
-    } else {
-        chart.config.options.scales.xAxes[0].ticks.suggestedMin = 30;
-        chart.config.options.scales.xAxes[0].ticks.suggestedMax = 70;
-    }
+    chart.config.options.scales.xAxes[0].ticks.suggestedMin = 30;
+    chart.config.options.scales.xAxes[0].ticks.suggestedMax = 70;
 
     chart.update();
 
@@ -154,23 +153,18 @@ function updateChart(data) {
 
 function loadPlayerInfo(player_data) {
 
-    return console.log("todo");
-
     let x_axis = $('#x-axis').val();
 
     let hi = -1;
     switch (x_axis) {
-        case 'cfpct':
+        case 'cf_pct':
             hi = 2;
             break;
-        case 'dffpct':
+        case 'dff_pct':
+            hi = 3;
+            break;
+        case 'gf_pct':
             hi = 4;
-            break;
-        case 'gfpct':
-            hi = 6;
-            break;
-        case 'fo60':
-            hi = 7;
             break;
     }
 
@@ -179,50 +173,35 @@ function loadPlayerInfo(player_data) {
 
     let all = player_data[0];
 
-    let toi_game = (x) => {
-        if(!x.games_played) return 0;
-        return formatDecimal(x.evtoi/x.games_played);
-    };
-
     let html = `<h4>${all.name} <small>${all.position}`;
 
     if (all.team) {
         html += `, ${all.team}`;
     }
 
-    //if(_filters.season === '' || _filters.season === 'all' && all.season) {
-    var seas = all.season.toString();
+    var seas = all._id.season.toString();
     html += ` (${seas.substr(2,2) + "-" + seas.substr(6,2)})`;
-    //}
 
     html += `</small></h4>
-        <div style="">Games Played: ${all.games_played}</div>
-        <div style="">Total Min: ${formatDecimal(all.evtoi, 2)}</div>
-        <div style="padding-bottom: 10px;">TOI/Game: ${toi_game(all)}</div>
         <table>
     <thead>
     <tr>
-    <th>Comp</th>
-    <th>TOI%</th>
+    <th>Shift Type</th>
+    <th>Shift %</th>
     <th class="${2 === hi ? 'highlight' : ''}">CF%</th>
-    <th>CF%RC</th>
-    <th class="${4 === hi ? 'highlight' : ''}">DFF%</th>
-    <th>DFF%RC</th>
-    <th class="${6 === hi ? 'highlight' : ''}">GF%</th>
-    <th class="${7 === hi ? 'highlight' : ''}">FO/60</th>
+    <th class="${3 === hi ? 'highlight' : ''}">DFF%</th>
+    <th class="${4 === hi ? 'highlight' : ''}">GF%</th>
     </tr>
     </thead>
     <tbody>`;
 
     _.each(player_data, (pd) => {
-        html += `<tr><td>${pd.woodmoneytier}</td>
-        <td>${formatDecimal(pd.ctoipct, 1)}</td>
-        <td class="${2 === hi ? 'highlight' : ''}">${formatDecimal(pd.cfpct, 1)}</td>
-        <td>${formatDecimal(pd.cfpctrc, 2)}</td>
-        <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.dffpct, 1)}</td>
-        <td>${formatDecimal(pd.dffpctrc, 2)}</td>
-        <td class="${6 === hi ? 'highlight' : ''}">${formatDecimal(pd.gfpct, 1)}</td>
-        <td class="${7 === hi ? 'highlight' : ''}">${formatDecimal(pd.fo60, 1)}</td>
+        html += `<tr>
+        <td>${pd.shift_type}</td>
+        <td>${formatDecimal(pd.shift_pct, 1)}</td>
+        <td class="${2 === hi ? 'highlight' : ''}">${formatDecimal(pd.cf_pct, 1)}</td>
+        <td class="${3 === hi ? 'highlight' : ''}">todo</td>
+        <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.gf_pct, 1)}</td>
         </tr>`;
     });
 
@@ -236,6 +215,10 @@ function loadPlayerInfo(player_data) {
 $(function() {
 
     $('#x-axis').change(function () {
+        submitForm();
+    });
+
+    $('#y-axis').change(function () {
         submitForm();
     });
 

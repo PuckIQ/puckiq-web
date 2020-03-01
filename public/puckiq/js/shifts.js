@@ -270,12 +270,12 @@ function renderTableRow(playerData, filters) {
     html += `<td>${formatDecimal(pd.shifts, 0)}</td>
 <td>${formatDecimal(pd.gf, 0)}</td>
 <td>${formatDecimal(pd.ga, 0)}</td>
-<td>${formatDecimal(pd.gf_pct, 2)}</td>
+<td>${formatDecimal(pd.gf_pct, 1)}</td>
 <td>${formatDecimal(pd.cf, 0)}</td>
 <td>${formatDecimal(pd.ca, 0)}</td>
-<td>${formatDecimal(pd.cf_pct, 2)}</td>
+<td>${formatDecimal(pd.cf_pct, 1)}</td>
 <td>${formatDecimal(pd.avgshift, 2)}</td>;
-<td>${formatDecimal(pd.shift_pct, 2)}</td>`;
+<td>${formatDecimal(pd.shift_pct, 1)}</td>`;
 
     html += `</tr>`;
 

@@ -201,7 +201,7 @@ function loadPlayerInfo(player_data) {
         <td>${formatDecimal(pd.toi/60, 0)}</td>
         <td>${formatDecimal(pd.shift_pct, 0)}</td>
         <td class="${3 === hi ? 'highlight' : ''}">${formatDecimal(pd.cf_pct, 1)}</td>
-        <td class="${4 === hi ? 'highlight' : ''}">todo</td>
+        <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.dff_pct || 0, 1)}</td>
         <td class="${5 === hi ? 'highlight' : ''}">${formatDecimal(pd.gf_pct, 1)}</td>
         </tr>`;
     });

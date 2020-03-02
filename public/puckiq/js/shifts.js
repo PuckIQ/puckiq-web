@@ -241,6 +241,9 @@ function renderTableHeader(filters){
     html += `<th data-sorter="true" style="text-align: center;">CF</th>`;
     html += `<th data-sorter="true" style="text-align: center;">CA</th>`;
     html += `<th data-sorter="true" style="text-align: center;">CF%</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">DFF</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">DFA</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">DFF%</th>`;
     html += `<th data-sorter="true" style="text-align: center;">AVG Shift (s)</th>`;
     html += `</tr></thead>`;
 
@@ -279,6 +282,9 @@ function renderTableRow(playerData, filters) {
 <td>${formatDecimal(pd.cf, 0)}</td>
 <td>${formatDecimal(pd.ca, 0)}</td>
 <td>${formatDecimal(pd.cf_pct, 1)}</td>
+<td>${formatDecimal(pd.dff, 0)}</td>
+<td>${formatDecimal(pd.dfa, 0)}</td>
+<td>${formatDecimal(pd.dff_pct, 1)}</td>
 <td>${formatDecimal(pd.avgshift, 2)}</td>`;
 
     html += `</tr>`;

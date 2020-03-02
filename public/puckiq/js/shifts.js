@@ -233,6 +233,8 @@ function renderTableHeader(filters){
 
     html += `<th data-sorter="true" style="text-align: center;">Shift Type</th>`;
     html += `<th data-sorter="true" style="text-align: center;">Shifts</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">TOI (min)</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">Shift Start %</th>`;
     html += `<th data-sorter="true" style="text-align: center;">GF</th>`;
     html += `<th data-sorter="true" style="text-align: center;">GA</th>`;
     html += `<th data-sorter="true" style="text-align: center;">GF%</th>`;
@@ -240,7 +242,6 @@ function renderTableHeader(filters){
     html += `<th data-sorter="true" style="text-align: center;">CA</th>`;
     html += `<th data-sorter="true" style="text-align: center;">CF%</th>`;
     html += `<th data-sorter="true" style="text-align: center;">AVG Shift (s)</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">Shift %</th>`;
     html += `</tr></thead>`;
 
     return html;
@@ -268,16 +269,17 @@ function renderTableRow(playerData, filters) {
         }
     }
 
-    html += `<td>${pd.shift_type}</td>`;
-    html += `<td>${formatDecimal(pd.shifts, 0)}</td>
+    html += `<td>${pd.shift_type}</td>
+<td>${formatDecimal(pd.shifts, 0)}</td>
+<td>${formatDecimal(pd.toi/60, 0)}</td>
+<td>${formatDecimal(pd.shift_pct, 1)}</td>
 <td>${formatDecimal(pd.gf, 0)}</td>
 <td>${formatDecimal(pd.ga, 0)}</td>
 <td>${formatDecimal(pd.gf_pct, 1)}</td>
 <td>${formatDecimal(pd.cf, 0)}</td>
 <td>${formatDecimal(pd.ca, 0)}</td>
 <td>${formatDecimal(pd.cf_pct, 1)}</td>
-<td>${formatDecimal(pd.avgshift, 2)}</td>;
-<td>${formatDecimal(pd.shift_pct, 1)}</td>`;
+<td>${formatDecimal(pd.avgshift, 2)}</td>`;
 
     html += `</tr>`;
 

@@ -113,7 +113,6 @@ function loadChart(filters) {
         data : JSON.stringify(chart_options),
         contentType: 'application/json',
         success: function (data) {
-            console.log('CHART DATA', data);
             _idMap = data.chart.id_map;
             _filters = filters;
             updateChart(data.chart);
@@ -158,13 +157,13 @@ function loadPlayerInfo(player_data) {
     let hi = -1;
     switch (x_axis) {
         case 'cf_pct':
-            hi = 2;
-            break;
-        case 'dff_pct':
             hi = 3;
             break;
-        case 'gf_pct':
+        case 'dff_pct':
             hi = 4;
+            break;
+        case 'gf_pct':
+            hi = 5;
             break;
     }
 
@@ -187,10 +186,11 @@ function loadPlayerInfo(player_data) {
     <thead>
     <tr>
     <th>Shift Type</th>
-    <th>Shift %</th>
-    <th class="${2 === hi ? 'highlight' : ''}">CF%</th>
-    <th class="${3 === hi ? 'highlight' : ''}">DFF%</th>
-    <th class="${4 === hi ? 'highlight' : ''}">GF%</th>
+    <th>TOI (min)</th>
+    <th>Shift Start %</th>
+    <th class="${3 === hi ? 'highlight' : ''}">CF%</th>
+    <th class="${4 === hi ? 'highlight' : ''}">DFF%</th>
+    <th class="${5 === hi ? 'highlight' : ''}">GF%</th>
     </tr>
     </thead>
     <tbody>`;
@@ -198,10 +198,11 @@ function loadPlayerInfo(player_data) {
     _.each(player_data, (pd) => {
         html += `<tr>
         <td>${pd.shift_type}</td>
-        <td>${formatDecimal(pd.shift_pct, 1)}</td>
-        <td class="${2 === hi ? 'highlight' : ''}">${formatDecimal(pd.cf_pct, 1)}</td>
-        <td class="${3 === hi ? 'highlight' : ''}">todo</td>
-        <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.gf_pct, 1)}</td>
+        <td>${formatDecimal(pd.toi/60, 0)}</td>
+        <td>${formatDecimal(pd.shift_pct, 0)}</td>
+        <td class="${3 === hi ? 'highlight' : ''}">${formatDecimal(pd.cf_pct, 1)}</td>
+        <td class="${4 === hi ? 'highlight' : ''}">todo</td>
+        <td class="${5 === hi ? 'highlight' : ''}">${formatDecimal(pd.gf_pct, 1)}</td>
         </tr>`;
     });
 

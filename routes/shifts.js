@@ -41,7 +41,7 @@ function ShiftHandler(app, locator) {
         cache.init().then((iq) => {
 
             let request = _.extend({
-                season: iq.current_woodmoney_season._id,
+                seasons: [iq.current_woodmoney_season._id],
                 selected_positions
             }, req.query);
 
@@ -99,7 +99,7 @@ function ShiftHandler(app, locator) {
             let iq = promise_results[1];
 
             let request = _.extend({
-                season: 'all', //iq.current_woodmoney_season._id,
+                seasons: 'all', //iq.current_woodmoney_season._id,
                 selected_positions: null,
                 player: req.params.player
             }, req.query);
@@ -177,6 +177,8 @@ function ShiftHandler(app, locator) {
 
         page.title = `PuckIQ | Shifts ${sub_title ? '| ' + sub_title : ''}`;
         page.sub_title = `${sub_title || 'Shifts'}`;
+
+        data.request.seasons = data.request.seasons || [20192020]; //todo
 
         if (!(data.request.from_date && data.request.to_date)) {
             data.request.season = data.request.season || 'all';

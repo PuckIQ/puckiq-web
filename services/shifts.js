@@ -21,7 +21,7 @@ class ShiftsService {
         return new Promise((resolve, reject) => {
 
             let defaults = {
-                season: null,
+                seasons: null,
                 shift_type: null,
                 min_toi: null,
                 max_toi: null,
@@ -34,11 +34,6 @@ class ShiftsService {
             };
 
             options = _.extend({}, defaults, options);
-
-            if(options.season === 'custom') {
-                console.log("todo cleanup season.custom");
-                delete options.season;
-            }
 
             if (_.has(options, "from_date") && _.has(options, "to_date") && options.from_date && options.to_date) {
 
@@ -54,17 +49,19 @@ class ShiftsService {
                 delete options.from_date;
                 delete options.to_date;
 
-                if(_.has(options, "season") && options.season) {
-                    if(options.season !== "all") {
-                        options.season = parseInt(options.season);
-                        let err = validator.validateSeason(options.season, "season");
+                if(_.has(options, "seasons") && options.seasons) {
+                    if(options.seasons !== "all") {
+                        options.seasons = _.map(options.seasons, x => parseInt(x));
+                        let err = _.find(options.seasons, x => {
+                            return validator.validateSeason(x, "season")
+                        });
                         if(err) return reject(err);
                     }
                 } else if(options.player) {
-                    options.season = 'all';
+                    options.seasons = 'all';
                 } else {
                     let current_season = iq.current_woodmoney_season;
-                    options.season = current_season && current_season._id;
+                    options.seasons = [current_season && current_season._id];
                 }
 
             }
@@ -157,8 +154,10 @@ class ShiftsService {
 
             let url = `${baseUrl}/shifts`;
 
-            if(config.env === 'local') console.log('options', JSON.stringify(options, null, 2));
-            if(config.env === 'local') console.log(`${url}?${utils.encode_query(options)}`);
+            if(config.env === 'local') {
+                console.log('options', JSON.stringify(options, null, 2));
+                console.log(`${url}?${utils.encode_query(options)}`);
+            }
 
             request.post({
                 url: url,

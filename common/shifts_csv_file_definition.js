@@ -9,7 +9,7 @@ const definition = {
     "positions": "Positions",
     "shift_type": "Shift Type",
     "shifts": "Shifts",
-    "toi": "TOI (s)",
+    "toi": "TOI (min)",
     "shift_pct": "Shift Start %",
     "gf": "GF",
     "ga": "GA",
@@ -34,14 +34,17 @@ exports.build = (data) => {
 
     let records = _.chain(data.results)
         .map(x => {
-            let row = { name: x.name, team: data.request.team, season: data.request.season };
+            let row = { };
 
             _.each(_.keys(_definition), field => {
-                if (_.has(row, field)) return;
-                if (!_.has(x, field)) {
-                    console.log("Missing field", field);
+                if (_.has(x._id, field)) {
+                    row[field] = x._id[field];
                 } else {
-                    row[field] = x[field];
+                    if (!_.has(x, field)) {
+                        console.log("Missing field", field);
+                    } else {
+                        row[field] = x[field];
+                    }
                 }
             });
             return _.values(row);

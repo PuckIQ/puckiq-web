@@ -1,6 +1,14 @@
 function getFilters() {
 
-    var season = $('form.x-wm-filters [name=season]').val();
+    var seasons = 'all';
+    var $seas = $('#selected-seasons');
+
+    if($seas.length) {
+        seasons = $.map($seas.find("div.selected"), function (x) {
+            return parseInt($(x).attr('data-season'));
+        });
+    }
+
     var shift_type = $('form.x-wm-filters #shift_type').val();
     var group_by = $('form.x-wm-filters #group_by').val();
 
@@ -18,13 +26,13 @@ function getFilters() {
 
     var min_toi = $('form.x-wm-filters #min_toi').val();
     var max_toi = $('form.x-wm-filters #max_toi').val();
-    var from_date = $('form.x-wm-filters #from_date').val();
-    var to_date = $('form.x-wm-filters #to_date').val();
+    // var from_date = $('form.x-wm-filters #from_date').val();
+    // var to_date = $('form.x-wm-filters #to_date').val();
     var team = $('form.x-wm-filters #team').val();
 
     var filters = {
         player : $("form.x-wm-filters #player-id").val(),
-        season: season,
+        seasons: seasons,
         shift_type: shift_type,
         positions: positions,
         team: team,
@@ -38,10 +46,10 @@ function getFilters() {
     if(!filters.positions) delete filters.positions;
     if(!filters.player) delete filters.player;
 
-    if(!season && from_date && to_date) {
-        filters.from_date = new Date(parseInt(from_date)).getTime();
-        filters.to_date = new Date(parseInt(to_date)).getTime();
-    }
+    // if(!season && from_date && to_date) {
+    //     filters.from_date = new Date(parseInt(from_date)).getTime();
+    //     filters.to_date = new Date(parseInt(to_date)).getTime();
+    // }
 
     console.log("filters", filters);
     return filters;
@@ -90,32 +98,43 @@ function onForwardChange() {
 
 $(function() {
 
-    $('#season-input').change(function () {
-        var newSeason = $('#season-input').val();
-        if (newSeason === '') {
-            showModal();
+    // $('#season-input').change(function () {
+    //     var newSeason = $('#season-input').val();
+    //     if (newSeason === '') {
+    //         showModal();
+    //     } else {
+    //         $("#from_date").val('');
+    //         $("#to_date").val('');
+    //         submitForm();
+    //     }
+    // });
+
+    $('#selected-seasons div').click(function (e) {
+
+        var $seas = $(e.target);
+
+        if($seas.hasClass("selected")){
+            $seas.removeClass("selected");
         } else {
-            $("#from_date").val('');
-            $("#to_date").val('');
-            submitForm();
+            $seas.addClass("selected");
         }
     });
 
     $(".x-positions").change(onPositionsChange);
     $("#pos-f").change(onForwardChange);
-    $(".x-date-range").change(function(e) {
-        let $target = $(e.target);
-        let val = $target.val();
-        if (val) {
-            let year = parseInt(val.substr(6, 4));
-            let month = parseInt(val.substr(0, 2));
-            let day = parseInt(val.substr(3, 2));
-            if (year > 0 && month > 0 && day > 0) {
-                let dt = new Date(year, month - 1, day);
-                $("#" + $target.attr("data-target")).val(dt.getTime());
-            }
-        }
-    });
+    // $(".x-date-range").change(function(e) {
+    //     let $target = $(e.target);
+    //     let val = $target.val();
+    //     if (val) {
+    //         let year = parseInt(val.substr(6, 4));
+    //         let month = parseInt(val.substr(0, 2));
+    //         let day = parseInt(val.substr(3, 2));
+    //         if (year > 0 && month > 0 && day > 0) {
+    //             let dt = new Date(year, month - 1, day);
+    //             $("#" + $target.attr("data-target")).val(dt.getTime());
+    //         }
+    //     }
+    // });
 
     $(".x-woodmoney-submit").click(function(){
         submitForm(false);
@@ -220,10 +239,12 @@ function renderTableHeader(filters){
     var html = `<thead>
     <tr>`;
 
+    if((filters.seasons && filters.seasons.length > 1) || filters.player) {
+        html += `<th data-sorter="false">Season</th>`;
+    }
+
     if(!filters.player) {
         html += `<th data-sorter="false">Player</th><th data-sorter="false" >Pos</th>`;
-    } else {
-        html += `<th data-sorter="false">Season</th>`;
     }
 
     if(!filters.team) {
@@ -256,11 +277,13 @@ function renderTableRow(playerData, filters) {
 
     var html = `<tr>`;
 
+    if((filters.seasons && filters.seasons.length > 1) || filters.player) {
+        html += `<td>${pd._id && (pd._id.season || 'all')}</td>`;
+    }
+
     if(!filters.player) {
         html += `<td style="white-space: nowrap;"><a href="/players/${pd._id.player_id}">${pd.name}</a></td>
             <td>${pd.position}</td>`;
-    } else {
-        html += `<td>${pd.season || 'all'}</td>`
     }
 
     if(!filters.team) {
@@ -273,7 +296,7 @@ function renderTableRow(playerData, filters) {
 
     html += `<td>${pd.shift_type}</td>
 <td>${formatDecimal(pd.shifts, 0)}</td>
-<td>${formatDecimal(pd.toi/60, 0)}</td>
+<td>${formatDecimal(pd.toi, 0)}</td>
 <td>${formatDecimal(pd.shift_pct, 1)}</td>
 <td>${formatDecimal(pd.gf, 0)}</td>
 <td>${formatDecimal(pd.ga, 0)}</td>

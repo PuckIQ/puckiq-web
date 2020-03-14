@@ -3,15 +3,18 @@
         <div class="col-padded">
             <input id="player-id" type="hidden" value="<%= request.player || '' %>" />
             <input id="sort" type="hidden" value="" />
-            Select date range:
-            <select id="season-input" name="season" class="">
-                <% if(player) { %>
-                    <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
-                <% } %>
-                <option value="20192020" <% if(request.season === 20192020) { %> selected <% } %>>2019-20</option>
-                <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
-                <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
-            </select>
+            <input id="seasons" name="seasons" type="hidden" value="" />
+
+            <% if(!player) { %>
+            <div style="display: flex; flex-direction: row;">
+                Select season(s):
+                <div id="selected-seasons">
+                    <div class="tag <%= !!~request.seasons.indexOf(20192020) ? 'selected' : '' %>" data-season="20192020">2019-20</div>
+                    <div class="tag <%= !!~request.seasons.indexOf(20182019) ? 'selected' : '' %>" data-season="20182019">2018-19</div>
+                    <div class="tag <%= !!~request.seasons.indexOf(20172018) ? 'selected' : '' %>" data-season="20172018">2017-18</div>
+                </div>
+            </div>
+            <% } %>
 
             <span id="show-date-range" style="padding-left: 10px; <% if(!request.from_date && !request.to_date) { %> display: none;<% } %>" >
                 <span><%= request.from_date_str + " to " + request.to_date_str %></span>
@@ -30,7 +33,8 @@
             <input type="hidden" id="from_date" name="from_date" value="" />
             <input type="hidden" id="to_date" name="to_date" value="" />
         </div>
-
+    </div>
+    <div class="row"  style="padding-top: 7px;">
         <div class="col-padded">
             <select id="shift_type" name="shift_type">
                 <option value="" <% if(!request.shift_type) { %>selected <% } %>>--shift type</option>
@@ -53,7 +57,7 @@
         <% } %>
 
     </div>
-    <div class="row" style="padding-top: 17px;">
+    <div class="row" style="padding-top: 7px;">
         <div class="col-padded">
             <select id="team" name="team">
                 <option value="" <% if(!request.team) { %>selected <% } %>>--Team</option>

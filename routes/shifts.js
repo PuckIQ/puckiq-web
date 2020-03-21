@@ -67,7 +67,7 @@ function ShiftHandler(app, locator) {
             let records = [];
 
             if (data.results && data.results.length) {
-                records = shifts_csv_file_definition.build(data);
+                records = shifts_csv_file_definition.build(data, options.group_by);
             }
 
             let file_name = `shifts.csv`;
@@ -129,7 +129,7 @@ function ShiftHandler(app, locator) {
             let records = [];
 
             if (data.results && data.results.length) {
-                records = shifts_csv_file_definition.build(data);
+                records = shifts_csv_file_definition.build(data, options.group_by);
             }
 
             let player_name = data.player.name.replace(/\s/g, "_");

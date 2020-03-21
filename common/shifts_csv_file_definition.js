@@ -23,12 +23,18 @@ const definition = {
     "avgshift": "AVG Shift (s)"
 };
 
-exports.build = (data) => {
+exports.build = (data, group_by) => {
 
     let is_date_range = !!(data.request.from_date && data.request.to_date);
 
     let _definition = _.extend({}, definition);
     if(is_date_range) delete _definition.season;
+    if(group_by === constants.group_by.player_season){
+        delete _definition.team;
+    } else if(group_by === constants.group_by.player){
+        delete _definition.team;
+        delete _definition.season;
+    }
 
     let headers = _.values(_definition);
 

@@ -1,6 +1,7 @@
 "use strict";
 
 const _ = require("lodash");
+const constants = require("./constants");
 
 const definition = {
     "name": "Name",

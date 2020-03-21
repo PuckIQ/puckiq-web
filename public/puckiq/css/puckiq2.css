@@ -68,3 +68,24 @@ tr.hidden {
     background-color: #84c9f7;
 }
 
+#table-container {
+    width: 1000px;
+}
+.scrollable-container {
+    width: auto;
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 1px solid #dddddd;
+    margin: 10px 0 ;
+}
+
+table#puckiq th {
+    white-space:nowrap;
+}
+
+table#puckiq td {
+    vertical-align:top;
+    border-bottom: 1px solid #ddd;
+    padding: 2px 5px;
+}
+

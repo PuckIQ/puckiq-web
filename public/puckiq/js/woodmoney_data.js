@@ -33,6 +33,7 @@ function loadDataTable(filters) {
 
             setTimeout(function(){
                 initDatatable(data.request);
+                initHorizontalScroll($('#table-container'));
             }, 1);
         },
         error: function() {
@@ -40,6 +41,74 @@ function loadDataTable(filters) {
         }
     });
 
+}
+
+function initHorizontalScroll($container) {
+
+    let $table_obj = $("#puckiq");
+
+    //get count fixed collumns params
+    var count_fixed_collumns = parseInt($table_obj.attr('data-count-fixed-columns'));
+
+    if (count_fixed_collumns < 1) return;
+
+    //get wrapper object
+    var wrapper_obj = $container.find('.scrollable-container');
+    var wrapper_left_margin = 0;
+
+    var table_collumns_width = new Array();
+    var table_collumns_margin = new Array();
+
+    //calculate wrapper margin and fixed column width
+    $table_obj.find("th").each(function (index) {
+        if (index < count_fixed_collumns) {
+            wrapper_left_margin += $(this).outerWidth();
+            table_collumns_width[index] = $(this).outerWidth();
+        }
+    });
+
+    //calculate margin for each column
+    $.each(table_collumns_width, function (key, value) {
+        if (key === 0) {
+            table_collumns_margin[key] = wrapper_left_margin;
+        } else {
+            var next_margin = 0;
+            $.each(table_collumns_width, function (key_next, value_next) {
+                if (key_next < key) {
+                    next_margin += value_next;
+                }
+            });
+
+            table_collumns_margin[key] = wrapper_left_margin - next_margin;
+        }
+    });
+
+    //set wrapper margin
+    if (wrapper_left_margin > 0) {
+        wrapper_obj.css('cssText', 'margin-left:' + wrapper_left_margin + 'px !important; width: auto')
+    }
+
+    //set position for fixed columns
+    $table_obj.find("tr").each(function () {
+
+        //get current row height
+        var current_row_height = $(this).outerHeight();
+
+        $('th,td', $(this)).each(function (index) {
+
+            //set row height for all cells
+            $(this).css('height', current_row_height);
+
+            //set position
+            if (index < count_fixed_collumns) {
+                $(this).css('position', 'absolute')
+                    .css('margin-left', '-' + table_collumns_margin[index] + 'px')
+                    .css('width', table_collumns_width[index]);
+
+                $(this).addClass('table-fixed-cell')
+            }
+        })
+    })
 }
 
 function initDatatable(request) {

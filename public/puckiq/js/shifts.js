@@ -257,12 +257,18 @@ function renderTableHeader(filters){
     html += `<th data-sorter="true" style="text-align: center;">Shift Start %</th>`;
     html += `<th data-sorter="true" style="text-align: center;">GF</th>`;
     html += `<th data-sorter="true" style="text-align: center;">GA</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">GF60</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">GA60</th>`;
     html += `<th data-sorter="true" style="text-align: center;">GF%</th>`;
     html += `<th data-sorter="true" style="text-align: center;">CF</th>`;
     html += `<th data-sorter="true" style="text-align: center;">CA</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">CF60</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">CA60</th>`;
     html += `<th data-sorter="true" style="text-align: center;">CF%</th>`;
     html += `<th data-sorter="true" style="text-align: center;">DFF</th>`;
     html += `<th data-sorter="true" style="text-align: center;">DFA</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">DFF60</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">DFA60</th>`;
     html += `<th data-sorter="true" style="text-align: center;">DFF%</th>`;
     html += `<th data-sorter="true" style="text-align: center;">AVG Shift (s)</th>`;
     html += `</tr></thead>`;
@@ -300,12 +306,18 @@ function renderTableRow(playerData, filters) {
 <td>${formatDecimal(pd.shift_pct, 1)}</td>
 <td>${formatDecimal(pd.gf, 0)}</td>
 <td>${formatDecimal(pd.ga, 0)}</td>
+<td>${formatDecimal(pd.gf60, 1)}</td>
+<td>${formatDecimal(pd.ga60, 1)}</td>
 <td>${formatDecimal(pd.gf_pct, 1)}</td>
 <td>${formatDecimal(pd.cf, 0)}</td>
 <td>${formatDecimal(pd.ca, 0)}</td>
+<td>${formatDecimal(pd.cf60, 1)}</td>
+<td>${formatDecimal(pd.ca60, 1)}</td>
 <td>${formatDecimal(pd.cf_pct, 1)}</td>
 <td>${formatDecimal(pd.dff, 0)}</td>
 <td>${formatDecimal(pd.dfa, 0)}</td>
+<td>${formatDecimal(pd.dff60, 1)}</td>
+<td>${formatDecimal(pd.dfa60, 1)}</td>
 <td>${formatDecimal(pd.dff_pct, 1)}</td>
 <td>${formatDecimal(pd.avgshift, 2)}</td>`;
 

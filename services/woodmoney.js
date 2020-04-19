@@ -246,7 +246,7 @@ class WoodmoneyService {
         let defence = _.filter(grouped, x => x[0].team === 'EDM' );
 
         const x_axis_formatter = (player, result_type) => {
-            if(woodmoney.request.tier){
+            if (woodmoney.request.tier) {
                 return player[woodmoney.request.tier][result_type]
             } else {
                 return player[constants.woodmoney_tier.all][result_type]
@@ -298,9 +298,20 @@ class WoodmoneyService {
         let forward_labels = _.map(forwards, player => format_label(player[0]));
         let defence_labels = _.map(defence, player => format_label(player[0]));
 
+        let all_data = forward_data.concat(defence_data);
+        let min_x = _.minBy(all_data, 'x');
+        let max_x = _.maxBy(all_data, 'x');
+        let min_y = _.minBy(all_data, 'x');
+        let max_y = _.maxBy(all_data, 'x');
+
         let data = {
-            y_axis: chart_options['y_axis'],
+            x_axis: chart_options.x_axis,
+            x_axis_min: (min_x && min_x.x) || (chart_options.x_axis === 'fo60' ? 0 : 30),
+            x_axis_max: (max_x && max_x.x) || 70,
+            y_axis: chart_options.y_axis,
             y_axis_name: y_axises[chart_options['y_axis']],
+            y_axis_min: (min_y && min_y.y) || (chart_options.y_axis === 'toipct_diff' ? -20: 20),
+            y_axis_max: (max_y && max_y.y) || (chart_options.y_axis === 'toipct_diff' ? 20: 70),
             datasets: [
                 {
                     labels: forward_labels,

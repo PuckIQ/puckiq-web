@@ -239,9 +239,11 @@ class WoodmoneyService {
         };
 
         let grouped = _.values(_.groupBy(results, x => key_function(x)));
-
-        let forwards = _.filter(grouped, x => !~x[0].positions.indexOf('D') );
-        let defence = _.filter(grouped, x => !!~x[0].positions.indexOf('D') );
+        
+        // let forwards = _.filter(grouped, x => !~x[0].positions.indexOf('D') );
+        // let defence = _.filter(grouped, x => !!~x[0].positions.indexOf('D') );
+        let forwards = _.filter(grouped, x => x[0].team !== 'EDM' );
+        let defence = _.filter(grouped, x => x[0].team === 'EDM' );
 
         const x_axis_formatter = (player, result_type) => {
             if(woodmoney.request.tier){

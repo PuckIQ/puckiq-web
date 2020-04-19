@@ -31,7 +31,9 @@ var chart = new Chart(ctx, {
                     labelString: ""
                 },
                 ticks: {
-                    stepSize : 10,
+                    stepSize : 5,
+                    suggestedMin: -30,
+                    suggestedMax: 30
                 }
             }],
             xAxes: [{
@@ -132,22 +134,25 @@ function updateChart(data) {
 
     chart.config.options.scales.yAxes[0].scaleLabel.labelString = data.y_axis_name;
 
+    console.log("y_axis_min", data.y_axis_min, "y_axis_max", data.y_axis_max);
     let y_range = null;
     if (data.y_axis === 'toipct_diff') {
-        y_range = getChartRange(data, 0, 10);
+        y_range = getChartYRange(data, 0, 20);
     } else {
-        y_range = getChartRange(data, 35, 5);
+        y_range = getChartYRange(data, 35, 5);
     }
+    console.log("y_range.min", y_range.min, "y_range.max", y_range.max);
     chart.config.options.scales.yAxes[0].ticks.suggestedMin = y_range.min;
     chart.config.options.scales.yAxes[0].ticks.suggestedMax = y_range.max;
 
+    console.log("x_axis_min", data.x_axis_min, "x_axis_max", data.x_axis_max);
     let x_range = null;
     if (data.x_axis === 'fo60') {
-        x_range = getChartRange(data, 35, 5);
+        x_range = getChartXRange(data, 35, 5);
     } else {
-        x_range = getChartRange(data, 50, 10);
+        x_range = getChartXRange(data, 50, 10);
     }
-
+    console.log("x_range.min", x_range.min, "x_range.max", x_range.max);
     chart.config.options.scales.xAxes[0].ticks.suggestedMin = x_range.min;
     chart.config.options.scales.xAxes[0].ticks.suggestedMax = x_range.max;
 

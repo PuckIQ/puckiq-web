@@ -301,8 +301,8 @@ class WoodmoneyService {
         let all_data = forward_data.concat(defence_data);
         let min_x = _.minBy(all_data, 'x');
         let max_x = _.maxBy(all_data, 'x');
-        let min_y = _.minBy(all_data, 'x');
-        let max_y = _.maxBy(all_data, 'x');
+        let min_y = _.minBy(all_data, 'y');
+        let max_y = _.maxBy(all_data, 'y');
 
         let data = {
             x_axis: chart_options.x_axis,

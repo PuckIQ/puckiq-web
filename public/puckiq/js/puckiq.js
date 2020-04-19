@@ -3,11 +3,24 @@ function formatDecimal(val, no_decimals) {
     return parseFloat("" + Math.round(val * 100) / 100).toFixed(no_decimals);
 }
 
-function getChartRange(data, midpoint, initial_offset) {
+
+function getChartXRange(data, midpoint, initial_offset) {
+    return _getChartRange(data, midpoint, initial_offset, 'x_axis');
+}
+
+function getChartYRange(data, midpoint, initial_offset) {
+    return _getChartRange(data, midpoint, initial_offset, 'y_axis');
+}
+
+function _getChartRange(data, midpoint, initial_offset, field) {
+
+    let fields = {};
+    fields.min = field + '_min';
+    fields.max = field + '_max';
 
     let range = {min: midpoint - initial_offset, max: midpoint + initial_offset};
     for (var i = 1; i < 6; i++) {
-        if (data.x_axis_min < range.min || data.x_axis_max > range.max) {
+        if (data[fields.min] < range.min || data[fields.max] > range.max) {
             range.min -= 5;
             range.max += 5;
         } else {

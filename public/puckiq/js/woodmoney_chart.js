@@ -40,7 +40,7 @@ var chart = new Chart(ctx, {
                     labelString: "CF%"
                 },
                 ticks: {
-                    stepSize : 50,
+                    stepSize : 5,
                     suggestedMin: 30,
                     suggestedMax: 70
                 }
@@ -132,21 +132,24 @@ function updateChart(data) {
 
     chart.config.options.scales.yAxes[0].scaleLabel.labelString = data.y_axis_name;
 
+    let y_range = null;
     if (data.y_axis === 'toipct_diff') {
-        chart.config.options.scales.yAxes[0].ticks.suggestedMin = -30;
-        chart.config.options.scales.yAxes[0].ticks.suggestedMax = 30;
+        y_range = getChartRange(data, 0, 10);
     } else {
-        chart.config.options.scales.yAxes[0].ticks.suggestedMin = 20;
-        chart.config.options.scales.yAxes[0].ticks.suggestedMax = 70;
+        y_range = getChartRange(data, 35, 5);
+    }
+    chart.config.options.scales.yAxes[0].ticks.suggestedMin = y_range.min;
+    chart.config.options.scales.yAxes[0].ticks.suggestedMax = y_range.max;
+
+    let x_range = null;
+    if (data.x_axis === 'fo60') {
+        x_range = getChartRange(data, 35, 5);
+    } else {
+        x_range = getChartRange(data, 50, 10);
     }
 
-    if (data.x_axis === 'fo60') {
-        chart.config.options.scales.xAxes[0].ticks.suggestedMin = 0;
-        chart.config.options.scales.xAxes[0].ticks.suggestedMax = 70;
-    } else {
-        chart.config.options.scales.xAxes[0].ticks.suggestedMin = 30;
-        chart.config.options.scales.xAxes[0].ticks.suggestedMax = 70;
-    }
+    chart.config.options.scales.xAxes[0].ticks.suggestedMin = x_range.min;
+    chart.config.options.scales.xAxes[0].ticks.suggestedMax = x_range.max;
 
     chart.update();
 

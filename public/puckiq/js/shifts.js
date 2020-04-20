@@ -122,9 +122,12 @@ $(function() {
 
     $(".x-positions").change(onPositionsChange);
     $("#pos-f").change(onForwardChange);
-    $("#shift_type").change(function(e){
+    $("#shift_type").change(function(e) {
         let shift_type = $(e.target).val();
         console.log("changing shift type", shift_type);
+        if (shift_type) {
+            $("#y-axis").val(shift_type);
+        }
     });
 
     // $(".x-date-range").change(function(e) {

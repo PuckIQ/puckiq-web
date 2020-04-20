@@ -31,7 +31,7 @@ var chart = new Chart(ctx, {
                     labelString: ""
                 },
                 ticks: {
-                    stepSize : 10,
+                    stepSize : 5,
                     suggestedMin: 0,
                     suggestedMax: 50
                 }
@@ -42,7 +42,7 @@ var chart = new Chart(ctx, {
                     labelString: "CF%"
                 },
                 ticks: {
-                    stepSize : 50,
+                    stepSize : 5,
                     suggestedMin: 30,
                     suggestedMax: 70
                 }
@@ -146,7 +146,7 @@ function updateChart(data) {
     chart.config.options.scales.yAxes[0].ticks.suggestedMax = y_range.max;
 
     console.log("x_axis_min", data.x_axis_min, "x_axis_max", data.x_axis_max);
-    let x_range = getChartXRange(data, 35, 10);
+    let x_range = getChartXRange(data, 50, 10);
     console.log("x_range.min", x_range.min, "x_range.max", x_range.max);
     chart.config.options.scales.xAxes[0].ticks.suggestedMin = x_range.min;
     chart.config.options.scales.xAxes[0].ticks.suggestedMax = x_range.max;

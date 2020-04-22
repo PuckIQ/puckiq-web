@@ -15,14 +15,21 @@
             <div style="width: 100%; height: 100%;">
                 <canvas id="bubble-chart"></canvas>
                 <div style="display:flex;">
-                    <div style="flex:1"></div>
+                    <div style="flex:1; padding-left: 50px;">
+                        <span>Y Axis: </span>
+                        <select id="y-axis">
+                            <option value="ostart">Offensive Zone Start</option>
+                            <option value="nstart">Neutral Zone Start</option>
+                            <option value="dstart">Defensive Zone Start</option>
+                            <option value="otf">On The Fly</option>
+                        </select>
+                    </div>
                     <div style="flex:1">
                         <span>X Axis: </span>
                         <select id="x-axis">
-                            <option value="dffpct">DFF%</option>
-                            <option value="gfpct">GF%</option>
-                            <option value="cfpct">CF%</option>
-                            <option value="fo60">FO/60</option>
+                            <option value="dff_pct">DFF%</option>
+                            <option value="gf_pct">GF%</option>
+                            <option value="cf_pct">CF%</option>
                         </select>
                     </div>
                     <div style="flex:1">
@@ -36,12 +43,11 @@
         </div>
     </div>
 
-    <table id="puckiq" class="table table-bordered table-condensed table-hover">
+    <table id="puckiq" class="table table-bordered table-condensed table-hover" style="max-width: 1400px;">
     </table>
 
     <div id="table-footer" style="text-align: center">
     </div>
-
 </div>
 
 <script type="text/javascript">
@@ -54,7 +60,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 
-<script src="/puckiq/js/woodmoney_chart.js"></script>
-<script src="/puckiq/js/woodmoney_data.js"></script>
-<script src="/puckiq/js/woodmoney.js"></script>
+<script src="/puckiq/js/shifts_chart.js"></script>
+<script src="/puckiq/js/shifts.js"></script>
 

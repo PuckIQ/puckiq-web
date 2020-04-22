@@ -19,60 +19,14 @@
           <div>
             <ul class="nav navbar-nav">
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle x-teams-dropdown" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Teams <span class="caret"></span></a>
-                <ul class="dropdown-menu columns-2 x-teams-dropdown-options">
-                  <li>
-                    <ul class="list-unstyled col-sm-6">
-                      <li>Atlantic</li>
-                      <li><a href="/woodmoney?team=BOS" data-team="bos">BOS</a></li>
-                      <li><a href="/woodmoney?team=BUF" data-team="buf">BUF</a></li>
-                      <li><a href="/woodmoney?team=DET" data-team="det">DET</a></li>
-                      <li><a href="/woodmoney?team=FLA" data-team="fla">FLA</a></li>
-                      <li><a href="/woodmoney?team=MTL" data-team="mtl">MTL</a></li>
-                      <li><a href="/woodmoney?team=OTT" data-team="ott">OTT</a></li>
-                      <li><a href="/woodmoney?team=TBL" data-team="tbl">TBL</a></li>
-                      <li><a href="/woodmoney?team=TOR" data-team="tor">TOR</a></li>
-                      <li role="separator" class="divider"></li>
-                    </ul>
-                    <ul class="list-unstyled col-sm-6">
-                      <li>Metropolitan</li>
-                      <li><a href="/woodmoney?team=CAR" data-team="car">CAR</a></li>
-                      <li><a href="/woodmoney?team=CBJ" data-team="cbj">CBJ</a></li>
-                      <li><a href="/woodmoney?team=NJD" data-team="njd">NJD</a></li>
-                      <li><a href="/woodmoney?team=NYR" data-team="nyr">NYR</a></li>
-                      <li><a href="/woodmoney?team=NYI" data-team="nyi">NYI</a></li>
-                      <li><a href="/woodmoney?team=PHI" data-team="phi">PHI</a></li>
-                      <li><a href="/woodmoney?team=PIT" data-team="pit">PIT</a></li>
-                      <li><a href="/woodmoney?team=WSH" data-team="wsh">WSH</a></li>
-                      <li role="separator" class="divider"></li>
-                    </ul>
-                    <ul class="list-unstyled col-sm-6">
-                      <li>Central</li>
-                      <li><a href="/woodmoney?team=DAL" data-team="dal">DAL</a></li>
-                      <li><a href="/woodmoney?team=CHI" data-team="chi">CHI</a></li>
-                      <li><a href="/woodmoney?team=COL" data-team="col">COL</a></li>
-                      <li><a href="/woodmoney?team=MIN" data-team="min">MIN</a></li>
-                      <li><a href="/woodmoney?team=NSH" data-team="nsh">NSH</a></li>
-                      <li><a href="/woodmoney?team=STL" data-team="stl">STL</a></li>
-                      <li><a href="/woodmoney?team=WPG" data-team="wpg">WPG</a></li>
-                    </ul>
-                    <ul class="list-unstyled col-sm-6">
-                      <li>Pacific</li>
-                      <li><a href="/woodmoney?team=ANA" data-team="ana">ANA</a></li>
-                      <li><a href="/woodmoney?team=ARI" data-team="ari">ARI</a></li>
-                      <li><a href="/woodmoney?team=CGY" data-team="cgy">CGY</a></li>
-                      <li><a href="/woodmoney?team=EDM" data-team="edm">EDM</a></li>
-                      <li><a href="/woodmoney?team=LAK" data-team="lak">LAK</a></li>
-                      <li><a href="/woodmoney?team=SJS" data-team="sjs">SJS</a></li>
-                      <li><a href="/woodmoney?team=VAN" data-team="van">VAN</a></li>
-                      <li><a href="/woodmoney?team=vgk" data-team="vgk">VGK</a></li>
-                    </ul>
-                  </li>
-                </ul>
+                <a href="#" class="dropdown-toggle x-teams-dropdown" data-type="woodmoney" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">WoodMoney <span class="caret"></span></a>
+                <%- include('_partials/team-dropdown', {page_type : 'woodmoney'}) %>
               </li>
-              <!--<li><a href="#search">Players</a></li>-->
-              <li><a href="/woodmoney">Players</a></li>
               <li><a href="/woodwowy">WoodWOWY</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle x-teams-dropdown" data-type="shifts" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shifts <span class="caret"></span></a>
+                <%- include('_partials/team-dropdown', {page_type : 'shifts'}) %>
+              </li>
               <li><a href="/glossary">Glossary</a></li>
               <li><a href="/about">About</a></li>
             </ul>
@@ -95,19 +49,19 @@
         new addAutoComplete($('#player-search'), $('.x-player-results'));
       });
 
-      $(".x-teams-dropdown").click(function() {
+      $(".x-teams-dropdown").click(function(e) {
 
         let filters = (getFilters && getFilters('team-menu')) || {};
-        console.log("filters", filters);
         if(!filters.positions) delete filters.positions;
         if(filters.season === 'all') delete filters.season;
         if(filters.team || filters.team === '') delete filters.team;
         if(filters.player || filters.player === '') delete filters.player;
 
+        var page_type = $(e.target).attr('data-type');
+
         $('.x-teams-dropdown-options a').each(function (index, e) {
           let $target = $(e);
-          let href = '/woodmoney?team=' + $target.attr('data-team')  + '&' + $.param(filters);
-          console.log("setting url", '/woodmoney?team=' + $target.attr('data-team')  + '&' + $.param(filters));
+          let href = '/' + page_type + '?team=' + $target.attr('data-team')  + '&' + $.param(filters);
           $target.attr("href", href);
         });
 

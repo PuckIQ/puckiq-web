@@ -203,7 +203,7 @@ function loadPlayerInfo(player_data) {
     _.each(player_data, (pd) => {
         html += `<tr>
         <td>${pd.shift_type}</td>
-        <td>${formatDecimal(pd.toi/60, 0)}</td>
+        <td>${formatDecimal(pd.toi, 0)}</td>
         <td>${formatDecimal(pd.shift_pct, 0)}</td>
         <td class="${3 === hi ? 'highlight' : ''}">${formatDecimal(pd.cf_pct, 1)}</td>
         <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.dff_pct || 0, 1)}</td>

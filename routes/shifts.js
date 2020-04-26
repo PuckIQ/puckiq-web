@@ -45,7 +45,9 @@ function ShiftHandler(app, locator) {
                 selected_positions
             }, req.query);
 
-            if (request.team) request.team = request.team.toLowerCase();
+            if (request.team) {
+                request.team = request.team.toLowerCase();
+            }
 
             let data = {request};
 
@@ -178,7 +180,15 @@ function ShiftHandler(app, locator) {
         page.title = `PuckIQ | Shifts ${sub_title ? '| ' + sub_title : ''}`;
         page.sub_title = `${sub_title || 'Shifts'}`;
 
-        data.request.seasons = data.request.seasons || [20192020]; //todo
+        if(data.request.seasons) {
+            let s = _.map(data.request.seasons, x => {
+                let seas = parseInt(x);
+                return seas > 0 ? seas : null;
+            });
+            data.request.seasons = _.compact(s);
+        } else {
+            data.request.seasons = [20192020]; //todo
+        }
 
         if (!(data.request.from_date && data.request.to_date)) {
             data.request.season = data.request.season || 'all';
@@ -228,9 +238,9 @@ function ShiftHandler(app, locator) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing chart_options.options"));
         }
 
-        // chart_options.options['y_axis'] = chart_options.filters.tier ?
-        //     `toipct_${chart_options.filters.tier.toLowerCase()}` :
-        //     'toipct_diff';
+        if(chart_options.group_by === constants.group_by.team_season) {
+            return error_handler.handle(req, res, new AppException(constants.exceptions.invalid_request, "Chart not available for team view"));
+        }
 
         controller._getShifts(chart_options.filters).then((shifts_data) => {
             let chart = shifts.formatChart(shifts_data, chart_options);

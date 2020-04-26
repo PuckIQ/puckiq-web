@@ -179,7 +179,7 @@ class ShiftsService {
                 }
 
                 _.each(data.results, x => {
-                    x.position = x.positions.length ? x.positions[0] : '';
+                    x.position = (x.positions && x.positions.length) ? x.positions[0] : '';
                 });
 
                 data.team = (options.team && iq.teams[options.team]) || null;

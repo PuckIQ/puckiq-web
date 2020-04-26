@@ -56,6 +56,7 @@ function getFilters() {
 }
 
 function changeQueryString(val) {
+    console.log("changing query string2", val);
     if (history.pushState) {
         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + val;
         window.history.pushState({path: newurl}, '', newurl);
@@ -74,8 +75,8 @@ function submitForm(initial_load) {
 
     if (!initial_load) {
         var query_string = tmp.join("&");
+        console.log("changing query string", filters);
         changeQueryString(query_string);
-        //updateDateRange(filters);
     }
 
     loadChart(filters);
@@ -98,17 +99,6 @@ function onForwardChange() {
 
 $(function() {
 
-    // $('#season-input').change(function () {
-    //     var newSeason = $('#season-input').val();
-    //     if (newSeason === '') {
-    //         showModal();
-    //     } else {
-    //         $("#from_date").val('');
-    //         $("#to_date").val('');
-    //         submitForm();
-    //     }
-    // });
-
     $('#selected-seasons div').click(function (e) {
 
         var $seas = $(e.target);
@@ -124,29 +114,18 @@ $(function() {
     $("#pos-f").change(onForwardChange);
     $("#shift_type").change(function(e) {
         let shift_type = $(e.target).val();
-        console.log("changing shift type", shift_type);
         if (shift_type) {
             $("#y-axis").val(shift_type);
         }
     });
 
-    // $(".x-date-range").change(function(e) {
-    //     let $target = $(e.target);
-    //     let val = $target.val();
-    //     if (val) {
-    //         let year = parseInt(val.substr(6, 4));
-    //         let month = parseInt(val.substr(0, 2));
-    //         let day = parseInt(val.substr(3, 2));
-    //         if (year > 0 && month > 0 && day > 0) {
-    //             let dt = new Date(year, month - 1, day);
-    //             $("#" + $target.attr("data-target")).val(dt.getTime());
-    //         }
-    //     }
-    // });
-
     $(".x-woodmoney-submit").click(function(){
         submitForm(false);
     });
+
+    if($("#group_by").val() === 'team_season'){
+        $("#woodmoney-visual").hide();
+    }
 
     setTimeout(function () {
         submitForm(true);
@@ -163,7 +142,6 @@ function loadDataTable(filters) {
         data : JSON.stringify(filters),
         contentType: 'application/json',
         success: function (data) {
-            console.log("data", data);
 
             $("#puckiq").html(renderTable(data.results, filters));
 
@@ -207,10 +185,6 @@ function initDatatable(request) {
     };
 
     var $sort = $("#puckiq thead tr th[data-sort='" + request.sort + "']");
-    // if($sort && $sort.length) {
-    //     base_sort.push($sort[0].cellIndex);
-    //     options.sortList = [[$sort[0].cellIndex, 1]];
-    // }
 
     $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
 
@@ -231,10 +205,12 @@ function renderTable(results, filters) {
 
     var html = `<tbody id="dataTable">`;
 
-    html += renderTableHeader(filters);
+    var is_team_view = filters.group_by === 'team_season';
+
+    html += renderTableHeader(filters, is_team_view);
 
     for (var i = 0; i < results.length; i++) {
-        html += renderTableRow(results[i], filters);
+        html += renderTableRow(results[i], filters, is_team_view);
     }
 
     html += "</tbody>";
@@ -242,7 +218,7 @@ function renderTable(results, filters) {
     return html;
 }
 
-function renderTableHeader(filters){
+function renderTableHeader(filters, is_team_view){
 
     var html = `<thead>
     <tr>`;
@@ -251,7 +227,7 @@ function renderTableHeader(filters){
         html += `<th data-sorter="false">Season</th>`;
     }
 
-    if(!filters.player) {
+    if(!is_team_view && !filters.player) {
         html += `<th data-sorter="false">Player</th><th data-sorter="false" >Pos</th>`;
     }
 
@@ -285,7 +261,7 @@ function renderTableHeader(filters){
 
 }
 
-function renderTableRow(playerData, filters) {
+function renderTableRow(playerData, filters, is_team_view) {
 
     var pd = playerData;
 
@@ -295,7 +271,7 @@ function renderTableRow(playerData, filters) {
         html += `<td>${pd._id && (pd._id.season || 'all')}</td>`;
     }
 
-    if(!filters.player) {
+    if(!is_team_view && !filters.player) {
         html += `<td style="white-space: nowrap;"><a href="/players/${pd._id.player_id}">${pd.name}</a></td>
             <td>${pd.position}</td>`;
     }

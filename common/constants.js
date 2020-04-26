@@ -21,7 +21,8 @@ module.exports = {
         player_season_team : 'player_season_team',
         player_season : 'player_season',
         player_team : 'player_team',
-        player : 'player'
+        player : 'player',
+        team_season: 'team_season' //shifts only
     },
     log_levels: {
         fatal: 0,

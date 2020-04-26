@@ -96,6 +96,13 @@ var _filters = {};
 
 function loadChart(filters) {
 
+    if(filters.group_by === 'team_season') {
+        $("#woodmoney-visual").hide();
+        return;
+    } else if(!$("#woodmoney-visual").is(":visible")) {
+        $("#woodmoney-visual").show();
+    }
+
     let chart_options = {
         filters,
         options: {

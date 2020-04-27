@@ -62,8 +62,6 @@
         if(filters.player || filters.player === '') delete filters.player;
         if(filters.group_by === 'team_season') delete filters.group_by;
 
-        console.log(".......seasons", filters.seasons);
-
         var page_type = $(e.target).attr('data-type');
 
         $('.x-teams-dropdown-options a').each(function (index, e) {

@@ -41,6 +41,9 @@ exports.build = (data, group_by) => {
     } else if(group_by === constants.group_by.player){
         delete _definition.team;
         delete _definition.season;
+    } else if(group_by === constants.group_by.team_season){
+        delete _definition.positions;
+        delete _definition.name;
     }
 
     let headers = _.values(_definition);

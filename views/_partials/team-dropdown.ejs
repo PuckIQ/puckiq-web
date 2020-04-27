@@ -1,5 +1,7 @@
 <ul class="dropdown-menu columns-2">
-    <li style="text-align: center;"><a href="/shifts?group_by=team_season">View all teams</a></li>
+    <% if(page_type === 'shifts') { %>
+    <li style="text-align: center;"><a href="/shifts?group_by=team_season">View team level data</a></li>
+    <% } %>
     <li class="x-teams-dropdown-options">
         <ul class="list-unstyled col-sm-6">
             <li>Atlantic</li>

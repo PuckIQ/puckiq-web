@@ -8,6 +8,7 @@ const definition = {
     "season": "Season",
     "team": "Team",
     "positions": "Positions",
+    "games_played": "Games Played",
     "shift_type": "Shift Type",
     "shifts": "Shifts",
     "toi": "TOI (min)",

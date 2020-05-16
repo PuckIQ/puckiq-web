@@ -259,6 +259,7 @@ function renderTableHeader(filters){
         html += `<th rowspan="2"  data-sorter="false">Team</th>`;
     }
 
+    html += `<th data-sorter="true" style="text-align: center;">Games Played</th>`;
     html += `<th data-sorter="true" style="text-align: center;">Shift Type</th>`;
     html += `<th data-sorter="true" style="text-align: center;">Shifts</th>`;
     html += `<th data-sorter="true" style="text-align: center;">TOI (min)</th>`;
@@ -308,7 +309,8 @@ function renderTableRow(playerData, filters) {
         }
     }
 
-    html += `<td>${pd.shift_type}</td>
+    html += `<td>${pd.games_played}</td>
+<td>${pd.shift_type}</td>
 <td>${formatDecimal(pd.shifts, 0)}</td>
 <td>${formatDecimal(pd.toi, 0)}</td>
 <td>${formatDecimal(pd.shift_pct, 1)}</td>

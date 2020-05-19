@@ -215,7 +215,8 @@ class ShiftsService {
             'ostart': 'Offensive Zone Start',
             'nstart': 'Neutral Zone Start',
             'dstart': 'Defensive Zone Start',
-            'otf': 'On the Fly'
+            'otf': 'On the Fly',
+            'all': 'All'
         };
 
         const key_function = (rec) => {

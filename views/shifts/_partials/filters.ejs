@@ -38,6 +38,7 @@
         <div class="col-padded">
             <select id="shift_type" name="shift_type">
                 <option value="" <% if(!request.shift_type) { %>selected <% } %>>--shift type</option>
+                <option value="all" <% if(request.shift_type === "all") { %>selected <% } %>>All</option>
                 <option value="ostart" <% if(request.shift_type === "ostart") { %>selected <% } %>>Offensive Zone Start</option>
                 <option value="nstart" <% if(request.shift_type === "nstart") { %>selected <% } %>>Neutral Zone Start</option>
                 <option value="dstart" <% if(request.shift_type === "dstart") { %>selected <% } %>>Defensive Zone Start</option>

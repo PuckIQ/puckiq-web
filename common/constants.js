@@ -38,11 +38,11 @@ module.exports = {
         d : 'D'
     },
     shift_type : {
+        "all": "all",
         "ostart": "ostart",
         "nstart":"nstart",
         "dstart":"dstart",
-        "otf":"otf",
-        "pureotf":"pureotf"
+        "otf":"otf"
     },
     sort : {
         ascending: 'asc',

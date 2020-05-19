@@ -10,6 +10,9 @@
 
 <div style="padding-left: 17px;">
 
+    <div id="no-chart" style="display: none; padding: 0 0 17px 27px; font-style: italic;">
+        Chart is hidden when shift type is 'all' since everyone has a shift % of 100%.
+    </div>
     <div id="woodmoney-visual" style="display:none;">
         <div id="chart-container">
             <div style="width: 100%; height: 100%;">
@@ -18,10 +21,10 @@
                     <div style="flex:1; padding-left: 50px;">
                         <span>Y Axis: </span>
                         <select id="y-axis">
-                            <option value="ostart">Offensive Zone Start</option>
-                            <option value="nstart">Neutral Zone Start</option>
-                            <option value="dstart">Defensive Zone Start</option>
-                            <option value="otf">On The Fly</option>
+                            <option value="ostart" <% if(request.shift_type === "ostart") { %>selected <% } %>>Offensive Zone Start</option>
+                            <option value="nstart" <% if(request.shift_type === "nstart") { %>selected <% } %>>Neutral Zone Start</option>
+                            <option value="dstart" <% if(request.shift_type === "dstart") { %>selected <% } %>>Defensive Zone Start</option>
+                            <option value="otf" <% if(request.shift_type === "otf") { %>selected <% } %>>On The Fly</option>
                         </select>
                     </div>
                     <div style="flex:1">

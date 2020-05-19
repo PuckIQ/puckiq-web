@@ -98,17 +98,6 @@ function onForwardChange() {
 
 $(function() {
 
-    // $('#season-input').change(function () {
-    //     var newSeason = $('#season-input').val();
-    //     if (newSeason === '') {
-    //         showModal();
-    //     } else {
-    //         $("#from_date").val('');
-    //         $("#to_date").val('');
-    //         submitForm();
-    //     }
-    // });
-
     $('#selected-seasons div').click(function (e) {
 
         var $seas = $(e.target);
@@ -122,27 +111,6 @@ $(function() {
 
     $(".x-positions").change(onPositionsChange);
     $("#pos-f").change(onForwardChange);
-    $("#shift_type").change(function(e) {
-        let shift_type = $(e.target).val();
-        console.log("changing shift type", shift_type);
-        if (shift_type) {
-            $("#y-axis").val(shift_type);
-        }
-    });
-
-    // $(".x-date-range").change(function(e) {
-    //     let $target = $(e.target);
-    //     let val = $target.val();
-    //     if (val) {
-    //         let year = parseInt(val.substr(6, 4));
-    //         let month = parseInt(val.substr(0, 2));
-    //         let day = parseInt(val.substr(3, 2));
-    //         if (year > 0 && month > 0 && day > 0) {
-    //             let dt = new Date(year, month - 1, day);
-    //             $("#" + $target.attr("data-target")).val(dt.getTime());
-    //         }
-    //     }
-    // });
 
     $(".x-woodmoney-submit").click(function(){
         submitForm(false);
@@ -207,10 +175,6 @@ function initDatatable(request) {
     };
 
     var $sort = $("#puckiq thead tr th[data-sort='" + request.sort + "']");
-    // if($sort && $sort.length) {
-    //     base_sort.push($sort[0].cellIndex);
-    //     options.sortList = [[$sort[0].cellIndex, 1]];
-    // }
 
     $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
 

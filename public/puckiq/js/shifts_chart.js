@@ -104,23 +104,36 @@ function loadChart(filters) {
         }
     };
 
-    //let href = '/shifts/data?' + $.param(filters);
-    //$("#view-raw-data").attr("href", href);
+    if(filters.shift_type === 'all') {
 
-    $.ajax({
-        url: "/shifts/chart",
-        type: 'POST',
-        data : JSON.stringify(chart_options),
-        contentType: 'application/json',
-        success: function (data) {
-            _idMap = data.chart.id_map;
-            _filters = filters;
-            updateChart(data.chart);
-        },
-        error: function() {
-            //todo
+        $('.x-toggle-chart').hide();
+        $("#woodmoney-visual").hide();
+        $("#no-chart").show();
+
+    } else {
+
+        if(!$("#woodmoney-visual").is(":visible")) {
+            $('.x-toggle-chart').show();
+            $("#woodmoney-visual").show();
+            $("#no-chart").hide();
         }
-    });
+
+        $.ajax({
+            url: "/shifts/chart",
+            type: 'POST',
+            data : JSON.stringify(chart_options),
+            contentType: 'application/json',
+            success: function (data) {
+                _idMap = data.chart.id_map;
+                _filters = filters;
+                updateChart(data.chart);
+            },
+            error: function() {
+                //todo
+            }
+        });
+
+    }
 
 }
 
@@ -261,6 +274,14 @@ $(function() {
         } else {
             console.log("updating chart preference", false);
             localStorage.setItem('puckiq-show-chart', "false");
+        }
+    });
+
+    $("#shift_type").change(function(e) {
+        let shift_type = $(e.target).val();
+        console.log("changing shift type", shift_type);
+        if (shift_type) {
+            $("#y-axis").val(shift_type);
         }
     });
 

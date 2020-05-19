@@ -149,7 +149,7 @@ function loadDataTable(filters) {
                 $("#table-footer").html(`<a href="${href}" class="x-download">download csv</a>`);
             }
 
-            if(filters.player){
+            if(filters.player) {
                 console.log("todo update header");
             }
 

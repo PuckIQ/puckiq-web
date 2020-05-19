@@ -107,20 +107,35 @@ function loadChart(filters) {
     let href = '/woodmoney/data?' + $.param(filters);
     $("#view-raw-data").attr("href", href);
 
-    $.ajax({
-        url: "/woodmoney/chart",
-        type: 'POST',
-        data : JSON.stringify(chart_options),
-        contentType: 'application/json',
-        success: function (data) {
-            _idMap = data.chart.id_map;
-            _filters = filters;
-            updateChart(data.chart);
-        },
-        error: function() {
-            //todo
+    if(filters.tier === 'All') {
+
+        $('.x-toggle-chart').hide();
+        $("#woodmoney-visual").hide();
+        $("#no-chart").show();
+
+    } else {
+
+        if(!$("#woodmoney-visual").is(":visible")) {
+            $('.x-toggle-chart').show();
+            $("#woodmoney-visual").show();
+            $("#no-chart").hide();
         }
-    });
+
+        $.ajax({
+            url: "/woodmoney/chart",
+            type: 'POST',
+            data: JSON.stringify(chart_options),
+            contentType: 'application/json',
+            success: function(data) {
+                _idMap = data.chart.id_map;
+                _filters = filters;
+                updateChart(data.chart);
+            },
+            error: function() {
+                //todo
+            }
+        });
+    }
 
 }
 

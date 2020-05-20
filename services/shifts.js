@@ -28,7 +28,7 @@ class ShiftsService {
                 positions: 'all',
                 group_by : constants.group_by.player_season_team,
                 offset: 0,
-                sort: 'shifts',
+                sort: 'toi_per_game',
                 sort_direction: 'desc',
                 count: constants.MAX_COUNT
             };

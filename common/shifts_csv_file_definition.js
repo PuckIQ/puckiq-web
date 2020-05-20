@@ -12,6 +12,7 @@ const definition = {
     "shift_type": "Shift Type",
     "shifts": "Shifts",
     "toi": "TOI (min)",
+    "toi_per_game": "TOI/Game (min)",
     "shift_pct": "Shift Start %",
     "gf": "GF",
     "ga": "GA",

@@ -227,6 +227,7 @@ function renderTableHeader(filters){
     html += `<th data-sorter="true" style="text-align: center;">Shift Type</th>`;
     html += `<th data-sorter="true" style="text-align: center;">Shifts</th>`;
     html += `<th data-sorter="true" style="text-align: center;">TOI (min)</th>`;
+    html += `<th data-sorter="true" style="text-align: center;">TOI/G (min)</th>`;
     html += `<th data-sorter="true" style="text-align: center;">Shift Start %</th>`;
     html += `<th data-sorter="true" style="text-align: center;">GF</th>`;
     html += `<th data-sorter="true" style="text-align: center;">GA</th>`;
@@ -277,6 +278,7 @@ function renderTableRow(playerData, filters) {
 <td>${pd.shift_type}</td>
 <td>${formatDecimal(pd.shifts, 0)}</td>
 <td>${formatDecimal(pd.toi, 0)}</td>
+<td>${formatDecimal(pd.toi_per_game, 1)}</td>
 <td>${formatDecimal(pd.shift_pct, 1)}</td>
 <td>${formatDecimal(pd.gf, 0)}</td>
 <td>${formatDecimal(pd.ga, 0)}</td>

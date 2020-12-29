@@ -1,94 +1,97 @@
-<form class="x-wm-filters" method="get">
-    <div class="row" style="padding-top: 17px;">
-        <div class="col-padded">
-            <input id="player-id" type="hidden" value="<%= request.player || '' %>" />
-            <input id="sort" type="hidden" value="" />
-            Select date range:
-            <select id="season-input" name="season" class="">
-                <% if(player) { %>
-                    <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
-                <% } %>
-                <option value="20192020" <% if(request.season === 20192020) { %> selected <% } %>>2019-20</option>
-                <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
-                <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
-                <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
-                <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
-                <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
-                <option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>
-            </select>
+<form class="wm-filters x-wm-filters" method="get">
+    <div class="level" style="margin-bottom: 11px;">
+        <div class="level-left">
+            <div class="level-item">
+                <input id="player-id" type="hidden" value="<%= request.player || '' %>" />
+                <input id="sort" type="hidden" value="" />
+                Select date range:
+                <select id="season-input" name="season" class="">
+                    <% if(player) { %>
+                        <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
+                    <% } %>
+                    <option value="20192020" <% if(request.season === 20192020) { %> selected <% } %>>2019-20</option>
+                    <option value="20182019" <% if(request.season === 20182019) { %> selected <% } %>>2018-19</option>
+                    <option value="20172018" <% if(request.season === 20172018) { %> selected <% } %>>2017-18</option>
+                    <option value="20162017" <% if(request.season === 20162017) { %> selected <% } %>>2016-17</option>
+                    <option value="20152016" <% if(request.season === 20152016) { %> selected <% } %>>2015-16</option>
+                    <option value="20142015" <% if(request.season === 20142015) { %> selected <% } %>>2014-15</option>
+                    <option value="" <% if(!!request.from_date && !!request.to_date) { %> selected <% } %>>Custom Range</option>
+                </select>
 
-            <span id="show-date-range" style="padding-left: 10px; <% if(!request.from_date && !request.to_date) { %> display: none;<% } %>" >
-                <span><%= request.from_date_str + " to " + request.to_date_str %></span>
-                <a href="#change" class="x-change-date-range">change</a>
-            </span>
+                <span id="show-date-range" style="padding-left: 10px; <% if(!request.from_date && !request.to_date) { %> display: none;<% } %>" >
+                    <span><%= request.from_date_str + " to " + request.to_date_str %></span>
+                    <a href="#change" class="x-change-date-range">change</a>
+                </span>
 
-            <div id="date-range-modal" class="modal" style="height: 340px;">
-                <h4>Select date range for games</h4>
-                From: <input type="text" class="x-date-range" id="dp-from" data-target="from_date" />
-                To: <input type="text" class="x-date-range" id="dp-to" data-target="to_date" />
-                <button type="button" class="btn btn-xs btn-success x-date-range-submit"><strong>Go</strong></button>
-                <div class="col-padded x-date-error" style="padding-top: 17px; color: Red; display:none;">
+                <div id="date-range-modal" class="modal" style="height: 340px;">
+                    <h4>Select date range for games</h4>
+                    From: <input type="text" class="x-date-range" id="dp-from" data-target="from_date" />
+                    To: <input type="text" class="x-date-range" id="dp-to" data-target="to_date" />
+                    <button type="button" class="btn btn-xs btn-success x-date-range-submit"><strong>Go</strong></button>
+                    <div class="col-padded x-date-error" style="padding-top: 17px; color: Red; display:none;">
+                    </div>
                 </div>
+                <!--not sure why this has to be outside modal div -->
+                <input type="hidden" id="from_date" name="from_date" value="" />
+                <input type="hidden" id="to_date" name="to_date" value="" />
             </div>
-            <!--not sure why this has to be outside modal div -->
-            <input type="hidden" id="from_date" name="from_date" value="" />
-            <input type="hidden" id="to_date" name="to_date" value="" />
+
+            <% if(!request.player){ %>
+                <div class="level-item">
+                    <input type="hidden" id="positions" name="positions" value="<%= request.positions%>">
+                    Forwards <input type="checkbox" id="pos-f" value="clr" <% if(request.selected_positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
+                    Centres <input type="checkbox" id="pos-c" class="x-positions" value="c" <% if(request.selected_positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    LW <input type="checkbox" id="pos-l" class="x-positions" value="l" <% if(request.selected_positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    RW <input type="checkbox" id="pos-r" class="x-positions" value="r" <% if(request.selected_positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    Defence <input type="checkbox" id="pos-d" class="x-positions" value="d" <% if(request.selected_positions.d) { %>checked="checked" <% } %>  />
+                </div>
+            <% } %>
         </div>
-
-        <% if(!request.player){ %>
-            <div class="col-padded">
-                <input type="hidden" id="positions" name="positions" value="<%= request.positions%>">
-                Forwards <input type="checkbox" id="pos-f" value="clr" <% if(request.selected_positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
-                Centres <input type="checkbox" id="pos-c" class="x-positions" value="c" <% if(request.selected_positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                LW <input type="checkbox" id="pos-l" class="x-positions" value="l" <% if(request.selected_positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                RW <input type="checkbox" id="pos-r" class="x-positions" value="r" <% if(request.selected_positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                Defence <input type="checkbox" id="pos-d" class="x-positions" value="d" <% if(request.selected_positions.d) { %>checked="checked" <% } %>  />
-            </div>
-        <% } %>
-
     </div>
-    <div class="row" style="padding-top: 17px;">
-        <div class="col-padded">
-            <select id="team" name="team">
-                <option value="" <% if(!request.team) { %>selected <% } %>>--All Teams</option>
-                <% for (var i = 0; i < 31; i++) { %>
-                    <option value="<%= teams[i]._id %>" <% if(request.team === teams[i]._id) { %>selected <% } %>><%= teams[i].name %></option>
-                <% } %>
-            </select>
-        </div>
-        <div class="col-padded">
-            <select id="tier" name="tier">
-                <option value="" <% if(!request.tier) { %>selected <% } %>>--Competition</option>
-                <option value="All" <% if(request.tier === "All") { %>selected <% } %>>All</option>
-                <option value="Elite" <% if(request.tier === "Elite") { %>selected <% } %>>Elite</option>
-                <option value="Middle" <% if(request.tier === "Middle") { %>selected <% } %>>Middle</option>
-                <option value="Gritensity" <% if(request.tier === "Gritensity") { %>selected <% } %>>Gritensity</option>
-            </select>
-        </div>
-        <% if(!request.player){ %>
-        <div class="col-padded">
-                Min TOI:
-                <input type="text" id="min_toi" name="min_toi" placeholder="min" class="toi_minutes" maxlength="5"
-                       value="<% if(request.min_toi !== null){%><%= request.min_toi %><% } %>" />
-                Max TOI:
-                <input type="text" id="max_toi" name="max_toi" placeholder="max" class="toi_minutes" maxlength="5"
-                       value="<% if(request.max_toi !== null){%><%= request.max_toi %><% } %>" />
+    <div class="level" style=" margin-bottom: 11px;">
+        <div class="level-left">
+            <div class="level-item">
+                <select id="team" name="team">
+                    <option value="" <% if(!request.team) { %>selected <% } %>>--All Teams</option>
+                    <% for (var i = 0; i < 31; i++) { %>
+                        <option value="<%= teams[i]._id %>" <% if(request.team === teams[i]._id) { %>selected <% } %>><%= teams[i].name %></option>
+                    <% } %>
+                </select>
             </div>
-        <% } %>
-        <div class="col-padded">
-            Group By:
-            <select id="group_by" name="group_by">
-                <option value="player_season_team" <% if(!request.group_by) { %>selected <% } %>>Player/Season/Team</option>
-                <option value="player_season" <% if(request.group_by === "player_season") { %>selected <% } %>>Player/Season</option>
-                <option value="player_team" <% if(request.group_by === "player_team") { %>selected <% } %>>Player/Team</option>
-                <option value="player" <% if(request.group_by === "player") { %>selected <% } %>>Player</option>
-            </select>
-        </div>
-        <div class="col-padded">
-            <button type="button" class="btn btn-xs btn-success x-woodmoney-submit"><strong>Go</strong></button>
-        </div>
-        <div class="col-padded">
-            <a href="#" class="x-toggle-chart"></a>
+            <div class="level-item">
+                <select id="tier" name="tier">
+                    <option value="" <% if(!request.tier) { %>selected <% } %>>--Competition</option>
+                    <option value="All" <% if(request.tier === "All") { %>selected <% } %>>All</option>
+                    <option value="Elite" <% if(request.tier === "Elite") { %>selected <% } %>>Elite</option>
+                    <option value="Middle" <% if(request.tier === "Middle") { %>selected <% } %>>Middle</option>
+                    <option value="Gritensity" <% if(request.tier === "Gritensity") { %>selected <% } %>>Gritensity</option>
+                </select>
+            </div>
+            <% if(!request.player){ %>
+            <div class="level-item">
+                    Min TOI:
+                    <input type="text" id="min_toi" name="min_toi" placeholder="min" class="toi_minutes" maxlength="5"
+                           value="<% if(request.min_toi !== null){%><%= request.min_toi %><% } %>" />
+                    Max TOI:
+                    <input type="text" id="max_toi" name="max_toi" placeholder="max" class="toi_minutes" maxlength="5"
+                           value="<% if(request.max_toi !== null){%><%= request.max_toi %><% } %>" />
+                </div>
+            <% } %>
+            <div class="level-item">
+                Group By:
+                <select id="group_by" name="group_by">
+                    <option value="player_season_team" <% if(!request.group_by) { %>selected <% } %>>Player/Season/Team</option>
+                    <option value="player_season" <% if(request.group_by === "player_season") { %>selected <% } %>>Player/Season</option>
+                    <option value="player_team" <% if(request.group_by === "player_team") { %>selected <% } %>>Player/Team</option>
+                    <option value="player" <% if(request.group_by === "player") { %>selected <% } %>>Player</option>
+                </select>
+            </div>
+            <div class="level-item">
+                <button type="button" class="btn btn-xs btn-success x-woodmoney-submit"><strong>Go</strong></button>
+            </div>
+            <div class="level-item">
+                <a href="#" class="x-toggle-chart"></a>
+            </div>
         </div>
     </div>
 </form>

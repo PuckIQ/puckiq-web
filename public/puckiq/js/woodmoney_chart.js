@@ -205,7 +205,7 @@ function loadPlayerInfo(player_data) {
       return formatDecimal(x.evtoi/x.games_played);
     };
 
-    let html = `<h4>${all.name} <small>${all.position}`;
+    let html = `<h4 class="subtitle">${all.name} <small>${all.position}`;
 
     if (all.team) {
         html += `, ${all.team}`;

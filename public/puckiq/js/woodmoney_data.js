@@ -12,7 +12,7 @@ function loadDataTable(filters) {
         success: function (data) {
             console.log("data", data);
 
-            $("#puckiq").html(renderTable(data.results, filters));
+            $("#puckiq-data").html(renderTable(data.results, filters));
 
             if(data.results.length === 0){
                 $("#table-footer").html("No results");
@@ -44,13 +44,13 @@ function loadDataTable(filters) {
 
 function initDatatable(request) {
 
-    var options = {
-        //sortInitialOrder  : 'desc',
-        widgets: ['zebra', 'columns', 'stickyHeaders'],
-        widgetOptions: {
-            stickyHeaders_attachTo: null
-        }
-    };
+    // var options = {
+    //     //sortInitialOrder  : 'desc',
+    //     widgets: ['zebra', 'columns', 'stickyHeaders'],
+    //     widgetOptions: {
+    //         stickyHeaders_attachTo: null
+    //     }
+    // };
 
     var $sort = $("#puckiq thead tr th[data-sort='" + request.sort + "']");
     // if($sort && $sort.length) {
@@ -58,14 +58,14 @@ function initDatatable(request) {
     //     options.sortList = [[$sort[0].cellIndex, 1]];
     // }
 
-    $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
+    //$("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
 
-    var resort = true;
-    var callback = function() {
-        //nothing required
-    };
-
-    $("#puckiq").trigger("updateAll", [ resort, callback ]);
+    // var resort = true;
+    // var callback = function() {
+    //     //nothing required
+    // };
+    //
+    // $("#puckiq").trigger("updateAll", [ resort, callback ]);
 
     if ($sort && $sort.length) {
         let cell_index = $sort[0].cellIndex;
@@ -75,9 +75,9 @@ function initDatatable(request) {
 
 function renderTable(results, filters) {
 
-    var html = `<tbody id="dataTable">`;
+    var html = renderTableHeader(filters);
 
-    html += renderTableHeader(filters);
+    html += `<tbody>`;
 
     for (var i = 0; i < results.length; i++) {
         html += renderTableRow(results[i], filters);
@@ -154,10 +154,10 @@ function renderTableRow(playerData, filters) {
     var html = `<tr>`;
 
     if(!filters.player) {
-        html += `<td style="white-space: nowrap;"><a href="/players/${pd.player_id}">${pd.name}</a></td>
+        html += `<th style="white-space: nowrap;"><a href="/players/${pd.player_id}">${pd.name}</a></th>
             <td>${pd.position}</td>`;
     } else {
-        html += `<td>${pd.season || 'all'}</td>`
+        html += `<th>${pd.season || 'all'}</th>`
     }
 
     if(!filters.team) {

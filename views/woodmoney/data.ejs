@@ -43,16 +43,24 @@
 </section>
 
 <section>
-    <div class="puckiq-data-container" style="max-width: 100%; max-height: 100%; overflow: scroll; position: relative;">
-        <table id="puckiq-data" class="table is-bordered is-narrow is-hoverable is-striped" style="position: relative; border-collapse: collapse;">
-        </table>
+    <div class="puckiq-container x-puckiq-container">
+        <div class="puckiq-left x-puckiq-left">
+        </div>
+        <div class="puckiq-right">
+            <div class="syncscroll puckiq-header x-puckiq-header" name="puckiq" style="">
+            </div>
+            <div class="syncscroll puckiq-data x-puckiq-data" name="puckiq" style="">
+            </div>
+        </div>
     </div>
 </section>
 
-<footer class="footer">
-    <div id="table-footer" class="content has-text-centered">
+<footer class="footer content">
+    <div class="has-text-centered x-download">
     </div>
-    <div>Provided by <strong>PuckIQ</strong></div>
+    <div class="has-text-centered">
+        Provided by <strong>PuckIQ</strong>
+    </div>
 </footer>
 
 <script type="text/javascript">
@@ -65,6 +73,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 
+<script src="/puckiq/js/syncscroll.js"></script>
 <script src="/puckiq/js/woodmoney_chart.js"></script>
 <script src="/puckiq/js/woodmoney_data.js"></script>
 <script src="/puckiq/js/woodmoney.js"></script>

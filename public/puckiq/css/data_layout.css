@@ -1,0 +1,139 @@
+.puckiq-container {
+    position:relative;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.puckiq-left {
+    /* this is overriden by js */
+    width: 100px;
+    flex: 0 0 100px;
+}
+
+.puckiq-right {
+    width: 800px;
+    flex: 1 0 800px;
+}
+
+.puckiq-header::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.puckiq-header {
+    top: 0;
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    background-color: White;
+    color: Black;
+    font-weight: bold;
+
+}
+
+.puckiq-header div {
+    border-top: solid 1px #DFDFDF;
+    border-bottom: solid 1px #DFDFDF;
+}
+
+.puckiq-header div, .row div, .puckiq-left div, .puckiq-left div span {
+    line-height: 24px;
+    height: 24px;
+}
+
+.puckiq-data {
+    overflow-x: scroll;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+/*
+would have to be done with js
+.puckiq-left div:hover, .row:hover {
+    background-color: Red;
+}*/
+
+.puckiq-left div:nth-child(odd) {
+    background-color: #dfdfdf;
+}
+
+.row:nth-child(even) {
+    background-color: #dfdfdf;
+}
+
+.puckiq-left div:first-child {
+    top: 0;
+    position: -webkit-sticky;
+    position: sticky;
+    z-index: 1;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    background-color: White;
+    color: Black;
+    font-weight: bold;
+    border: solid 1px #DFDFDF;
+}
+
+.puckiq-header div, .row div {
+    padding: 0px 5px;
+    width: 40px;
+    flex: 0 0 40px;
+}
+
+.puckiq-header div.width50, .row div.width50 {
+    width: 50px;
+    flex: 0 0 50px;
+}
+
+.puckiq-header div.width60, .row div.width60 {
+    width: 60px;
+    flex: 0 0 60px;
+}
+
+.puckiq-header div.width70, .row div.width70 {
+    width: 70px;
+    flex: 0 0 70px;
+}
+
+.puckiq-header div.width80, .row div.width80 {
+    width: 80px;
+    flex: 0 0 80px;
+}
+
+.puckiq-header div, .row div, .puckiq-left div div {
+    width: 50px;
+}
+
+.puckiq-left div span {
+    padding: 0 5px;
+    width: 60px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.puckiq-left div span.is-season {
+    width: 70px !important;
+    max-width: 70px;
+}
+
+.puckiq-left div span.is-player {
+    width: 160px !important;
+    max-width: 160px;
+}

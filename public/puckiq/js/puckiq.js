@@ -67,7 +67,7 @@ var column_definitions = {
         // width: 50,
         formatter : function(obj, tag) {
             if (obj.team) {
-                return `<${tag}><a href="/teams/${obj.team}">${obj.team}</a></${tag}>`;
+                return `<${tag}><a href="/woodmoney?team=${obj.team}">${obj.team}</a></${tag}>`;
             } else {
                 return `<${tag}>all</${tag}>`;
             }
@@ -170,7 +170,7 @@ var column_definitions = {
     dffpct : {
         name: 'DFF%',
         type: 'decimal',
-        digits: 2,
+        digits: 1,
         width: 60
     },
     dff60 : {
@@ -218,7 +218,7 @@ var column_definitions = {
         name: 'GF%',
         type: 'decimal',
         digits: 2,
-        width: 40
+        width: 60
     },
 
     onshpct : {

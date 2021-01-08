@@ -86,7 +86,8 @@ function loadDataTable(filters) {
 
                 syncscroll.reset();
 
-                let left_width = filters.player ? 70 : 160+60;
+                // the extra 2 pixels is for the border
+                let left_width = 2 + (filters.player ? 70 : 160+60);
                 if(!filters.team) left_width += 60;
 
                 console.log("setting left width", left_width);
@@ -111,9 +112,9 @@ function loadDataTable(filters) {
 
 }
 
-function buildLeftColumn(columns, results, filters) {
+function buildLeftColumn(columns, results) {
 
-    var html = "<div>";
+    var html = "<div class='puckiq-header'>";
     _.each(columns, col => {
        html += getFormattedHeader(col, 'span');
     });

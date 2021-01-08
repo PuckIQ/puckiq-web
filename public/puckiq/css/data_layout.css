@@ -3,12 +3,19 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
+    padding: 0 7px;
 }
 
 .puckiq-left {
     /* this is overriden by js */
     width: 100px;
     flex: 0 0 100px;
+    border-left: solid 1px #DFDFDF;
+    border-right: solid 1px #DFDFDF;
+}
+
+.puckiq-left div:nth-child(odd) {
+    background-color: #dfdfdf;
 }
 
 .puckiq-right {
@@ -32,18 +39,21 @@
     overflow-x: scroll;
     -ms-overflow-style: none;  /* IE and Edge */
     scrollbar-width: none;  /* Firefox */
-    background-color: White;
+    background-color: White !important;
     color: Black;
     font-weight: bold;
-
-}
-
-.puckiq-header div {
     border-top: solid 1px #DFDFDF;
     border-bottom: solid 1px #DFDFDF;
+    line-height: 26px;
+    height: 26px;
 }
 
-.puckiq-header div, .row div, .puckiq-left div, .puckiq-left div span {
+/*.puckiq-header div {
+    border-top: solid 1px #DFDFDF;
+    border-bottom: solid 1px #DFDFDF;
+}*/
+
+.row div, .puckiq-left div:not(:first-child) {
     line-height: 24px;
     height: 24px;
 }
@@ -58,35 +68,21 @@
     flex-wrap: nowrap;
 }
 
+.row div {
+    /* screws the alignment a ton */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-right: solid 1px #DFDFDF;
+}
+
 /*
 would have to be done with js
 .puckiq-left div:hover, .row:hover {
     background-color: Red;
 }*/
 
-.puckiq-left div:nth-child(odd) {
+.row:nth-child(even) div {
     background-color: #dfdfdf;
-}
-
-.row:nth-child(even) {
-    background-color: #dfdfdf;
-}
-
-.puckiq-left div:first-child {
-    top: 0;
-    position: -webkit-sticky;
-    position: sticky;
-    z-index: 1;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: scroll;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
-    background-color: White;
-    color: Black;
-    font-weight: bold;
-    border: solid 1px #DFDFDF;
 }
 
 .puckiq-header div, .row div {
@@ -128,6 +124,14 @@ would have to be done with js
     display: inline-block;
 }
 
+.puckiq-left div span:not(:last-child) {
+    border-right: solid 1px #DFDFDF;
+}
+
+.puckiq-right div.puckiq-header div {
+    border-right: solid 1px #DFDFDF;
+}
+
 .puckiq-left div span.is-season {
     width: 70px !important;
     max-width: 70px;
@@ -136,4 +140,9 @@ would have to be done with js
 .puckiq-left div span.is-player {
     width: 160px !important;
     max-width: 160px;
+}
+
+.puckiq-header div:not([data-sorter='false']):hover, .puckiq-header div span:not([data-sorter='false']):hover {
+    cursor: pointer;
+    color: #999999;
 }

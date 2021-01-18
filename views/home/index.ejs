@@ -1,47 +1,36 @@
-<div class="content">
 
-  <section class="content-header" style="width: 800px; color: red;">
-    <h2>
+<div class="container">
+
+  <section class="content" style="width: 900px;">
+    <p class="title has-text-danger">
       Reminder: Always be careful with small sample sizes :)
       <!--Please note we are still in the early days of the season. Be careful with small sample sizes :)-->
-    </h2>
-  </section>
-
-  <!-- Content Header (Page header) -->
-  <section class="content-header">
-    <h1>
+    </p>
+    <p class="title" style="margin-bottom: 14px;">
       Welcome to PuckIQ
-      <small>Home of WoodMoney</small>
-    </h1>
+      <span class="subtitle">Home of WoodMoney</span>
+    </p>
+    <p>Read more about our methodology at
+      <a href="http://becauseoilers.blogspot.com/2016/07/woodmoney-new-quality-of-competition.html" target="_blank">
+        WoodBlog
+      </a>
+    </p>
   </section>
 
-  <!-- Main content -->
   <section class="content">
 
-    <div>
-
-      <div>Read more about our methodology at
-        <a href="http://becauseoilers.blogspot.com/2016/07/woodmoney-new-quality-of-competition.html" target="_blank">
-          WoodBlog
-        </a>
-      </div>
-
-      <h3>Team Woodmoney</h3>
-      <div style="display: flex; align-items: stretch; width : 800px;">
-        <% divisions.forEach(function(division){ %>
-          <div style="flex: 1;">
-            <h4><%= division.name %></h4>
-            <% division.teams.forEach(function(team){ %>
-              <p><a href="/woodmoney?team=<%= team._id %>"><%= team.name %></a></p>
-            <% }); %>
-          </div>
-        <% }); %>
-
-      </div>
+    <h5 class="title is-5 has-text-weight-semibold">Team Woodmoney</h5>
+    <div class="homepage-teams">
+      <% divisions.forEach(function(division){ %>
+        <div style="flex: 1;">
+          <h4 class="subtitle is-5 has-text-weight-medium"><%= division.name %></h4>
+          <% division.teams.forEach(function(team){ %>
+            <p><a href="/woodmoney?team=<%= team._id %>"><%= team.name %></a></p>
+          <% }); %>
+        </div>
+      <% }); %>
 
     </div>
 
   </section>
-  <!-- /.content -->
-
 </div>

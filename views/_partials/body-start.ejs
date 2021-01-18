@@ -1,44 +1,72 @@
   <body>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-static-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">
-            <div class="logo-mask">
-              <img style="max-height:200px; margin-top:-80px;" src="/puckiq/img/<%= skin %>-puckiq.svg" />
-            </div>
-          </a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <div>
-            <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle x-teams-dropdown" data-type="woodmoney" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">WoodMoney <span class="caret"></span></a>
-                <%- include('_partials/team-dropdown', {page_type : 'woodmoney'}) %>
-              </li>
-              <li><a href="/woodwowy">WoodWOWY</a></li>
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle x-teams-dropdown" data-type="shifts" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Shifts <span class="caret"></span></a>
-                <%- include('_partials/team-dropdown', {page_type : 'shifts'}) %>
-              </li>
-              <li><a href="/glossary">Glossary</a></li>
-              <li><a href="/about">About</a></li>
-            </ul>
-            <div style="text-align: right; height: 40px; display: inline-block; padding-left: 25px;">
-              <div style="display: block; position: relative;">
-                <input type="text" id="player-search" placeholder="Enter player name" class="autocomplete-search" style="width: 200px; margin-top: 8px;" />
-                <div class="autocomplete-results x-player-results" style="display:none; text-align: left;">
-                </div>
-              </div>
-            </div>
+
+    <nav class="navbar" role="navigation" aria-label="main navigation" style="background-color: White; border-bottom: solid 1px #d3e0e9;">
+
+      <div class="navbar-brand">
+
+        <a class="navbar-item" href="/" style="height: 50px;">
+          <div class="logo-mask">
+            <img style="max-height:200px; margin-top:-80px;" src="/puckiq/img/<%= skin %>-puckiq.svg" />
           </div>
-        </div><!--/.nav-collapse -->
+        </a>
+
+        <div class="navbar-item has-dropdown is-hoverable" style="margin-left: -50px;">
+          <a class="navbar-link">
+            Woodmoney
+          </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="/woodmoney" style="justify-content: center; padding-top: 0.1em; padding-bottom: 0.1em;">
+              Show All Teams
+            </a>
+            <%- include('_partials/team-dropdown', {page_type : 'woodmoney'}) %>
+          </div>
+        </div>
+
+        <a href="/woodwowy" class="navbar-item" >
+          WoodWOWY
+        </a>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Shifts
+          </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item" href="/shifts" style="justify-content: center; padding-top: 0.1em; padding-bottom: 0.1em;">
+              Show All Teams
+            </a>
+            <%- include('_partials/team-dropdown', {page_type : 'shifts'}) %>
+          </div>
+        </div>
+
+        <a href="/glossary" class="navbar-item">
+          Glossary
+        </a>
+
+        <a href="/about" class="navbar-item">
+          About
+        </a>
+
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="puckiq-nav">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="puckiq-nav" class="navbar-menu">
+        <div class="navbar-start">
+        </div>
+
+        <div class="navbar-end">
+          <div class="navbar-item" style="display: block; position: relative;">
+            <input type="text" id="player-search" placeholder="Enter player name" class="input autocomplete-search" style="width: 250px; margin-top: 8px;" />
+            <div class="autocomplete-results x-player-results" style="display:none; text-align: left;">
+          </div>
+        </div>
+
+
       </div>
     </nav>
 

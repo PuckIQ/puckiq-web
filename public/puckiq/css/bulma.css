@@ -7714,3 +7714,20 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
 @import "../../../node_modules/bulma/sass/layout/hero.sass";
 @import "../../../node_modules/bulma/sass/layout/section.sass";
 */
+/* https://github.com/jgthms/bulma/issues/1381 */
+.navbar-item.has-dropdown .navbar-dropdown {
+  display: none; }
+
+.navbar-item.has-dropdown.is-active .navbar-dropdown {
+  display: block;
+  background-color: white;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top: 2px solid #dbdbdb;
+  box-shadow: 0 8px 8px rgba(10, 10, 10, 0.1);
+  font-size: 0.875rem;
+  left: 0;
+  min-width: 100%;
+  position: absolute;
+  top: 100%;
+  z-index: 20; }

@@ -1,4 +1,4 @@
-<div class="container-fluid" role="main">
+<section class="content">
     <div class="page-header">
         <h2>
             <%= sub_title %>
@@ -6,9 +6,9 @@
         </h2>
         <%- include('_partials/filters') %>
     </div>
-</div>
+</section>
 
-<div style="padding-left: 17px;">
+<section class="content">
 
     <div id="no-chart" style="display: none; padding: 0 0 17px 27px; font-style: italic;">
         Chart is hidden when shift type is 'all' since all players have a shift % of 100%.
@@ -49,9 +49,18 @@
     <table id="puckiq" class="table table-bordered table-condensed table-hover" style="max-width: 1400px;">
     </table>
 
-    <div id="table-footer" style="text-align: center">
+    <div id="table-footer">
     </div>
-</div>
+
+</section>
+
+<footer class="footer content">
+    <div class="has-text-centered x-download">
+    </div>
+    <div class="has-text-centered">
+        Provided by <strong>PuckIQ</strong>
+    </div>
+</footer>
 
 <script type="text/javascript">
     //used by date range only...

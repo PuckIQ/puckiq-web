@@ -1,6 +1,6 @@
 <form class="x-wm-filters" method="get">
-    <div class="row" style="padding-top: 17px;">
-        <div class="col-padded">
+    <div class="level" style="padding-top: 17px;">
+        <div class=level-left">
             <input id="player-id" type="hidden" value="<%= request.player || '' %>" />
             <input id="sort" type="hidden" value="" />
             <input id="seasons" name="seasons" type="hidden" value="" />
@@ -25,7 +25,7 @@
                 <h4>Select date range for games</h4>
                 From: <input type="text" class="x-date-range" id="dp-from" data-target="from_date" />
                 To: <input type="text" class="x-date-range" id="dp-to" data-target="to_date" />
-                <button type="button" class="btn btn-xs btn-success x-date-range-submit"><strong>Go</strong></button>
+                <button class="button is-extra-small is-success x-date-range-submit"><strong>Go</strong></button>
                 <div class="col-padded x-date-error" style="padding-top: 17px; color: Red; display:none;">
                 </div>
             </div>
@@ -34,41 +34,43 @@
             <input type="hidden" id="to_date" name="to_date" value="" />
         </div>
     </div>
-    <div class="row"  style="padding-top: 7px;">
-        <div class="col-padded">
-            <select id="shift_type" name="shift_type">
-                <option value="" <% if(!request.shift_type) { %>selected <% } %>>--shift type</option>
-                <option value="all" <% if(request.shift_type === "all") { %>selected <% } %>>All</option>
-                <option value="ostart" <% if(request.shift_type === "ostart") { %>selected <% } %>>Offensive Zone Start</option>
-                <option value="nstart" <% if(request.shift_type === "nstart") { %>selected <% } %>>Neutral Zone Start</option>
-                <option value="dstart" <% if(request.shift_type === "dstart") { %>selected <% } %>>Defensive Zone Start</option>
-                <option value="otf" <% if(request.shift_type === "otf") { %>selected <% } %>>On the Fly</option>
-            </select>
-        </div>
-
-        <% if(!request.player){ %>
-            <div class="col-padded">
-                <input type="hidden" id="positions" name="positions" value="<%= request.positions%>">
-                Forwards <input type="checkbox" id="pos-f" value="clr" <% if(request.selected_positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
-                Centres <input type="checkbox" id="pos-c" class="x-positions" value="c" <% if(request.selected_positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                LW <input type="checkbox" id="pos-l" class="x-positions" value="l" <% if(request.selected_positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                RW <input type="checkbox" id="pos-r" class="x-positions" value="r" <% if(request.selected_positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                Defence <input type="checkbox" id="pos-d" class="x-positions" value="d" <% if(request.selected_positions.d) { %>checked="checked" <% } %>  />
+    <div class="level"  style="padding-top: 7px;">
+        <div class="level-left">
+            <div class="level-item">
+                <select id="shift_type" name="shift_type">
+                    <option value="" <% if(!request.shift_type) { %>selected <% } %>>--shift type</option>
+                    <option value="all" <% if(request.shift_type === "all") { %>selected <% } %>>All</option>
+                    <option value="ostart" <% if(request.shift_type === "ostart") { %>selected <% } %>>Offensive Zone Start</option>
+                    <option value="nstart" <% if(request.shift_type === "nstart") { %>selected <% } %>>Neutral Zone Start</option>
+                    <option value="dstart" <% if(request.shift_type === "dstart") { %>selected <% } %>>Defensive Zone Start</option>
+                    <option value="otf" <% if(request.shift_type === "otf") { %>selected <% } %>>On the Fly</option>
+                </select>
             </div>
-        <% } %>
 
+            <% if(!request.player){ %>
+                <div class="level-item">
+                    <input type="hidden" id="positions" name="positions" value="<%= request.positions%>">
+                    Forwards <input type="checkbox" id="pos-f" value="clr" <% if(request.selected_positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
+                    Centres <input type="checkbox" id="pos-c" class="x-positions" value="c" <% if(request.selected_positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    LW <input type="checkbox" id="pos-l" class="x-positions" value="l" <% if(request.selected_positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    RW <input type="checkbox" id="pos-r" class="x-positions" value="r" <% if(request.selected_positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
+                    Defence <input type="checkbox" id="pos-d" class="x-positions" value="d" <% if(request.selected_positions.d) { %>checked="checked" <% } %>  />
+                </div>
+            <% } %>
+
+        </div>
     </div>
-    <div class="row" style="padding-top: 7px;">
-        <div class="col-padded">
+    <div class="level-left" style="padding-top: 7px;">
+        <div class="level-item">
             <select id="team" name="team">
-                <option value="" <% if(!request.team) { %>selected <% } %>>--Team</option>
+                <option value="" <% if(!request.team) { %>selected <% } %>>--All Teams</option>
                 <% for (var i = 0; i < 31; i++) { %>
                     <option value="<%= teams[i]._id %>" <% if(request.team === teams[i]._id) { %>selected <% } %>><%= teams[i].name %></option>
                 <% } %>
             </select>
         </div>
         <% if(!request.player){ %>
-        <div class="col-padded">
+        <div class="level-item">
                 Min TOI:
                 <input type="text" id="min_toi" name="min_toi" placeholder="min" class="toi_minutes" maxlength="5"
                        value="<% if(request.min_toi !== null){%><%= request.min_toi %><% } %>" />
@@ -77,7 +79,7 @@
                        value="<% if(request.max_toi !== null){%><%= request.max_toi %><% } %>" />
             </div>
         <% } %>
-        <div class="col-padded">
+        <div class="level-item">
             Group By:
             <select id="group_by" name="group_by">
                 <option value="player_season_team" <% if(!request.group_by) { %>selected <% } %>>Player/Season/Team</option>
@@ -86,10 +88,10 @@
                 <option value="player" <% if(request.group_by === "player") { %>selected <% } %>>Player</option>
             </select>
         </div>
-        <div class="col-padded">
-            <button type="button" class="btn btn-xs btn-success x-woodmoney-submit"><strong>Go</strong></button>
+        <div class="level-item">
+            <button class="button is-extra-small is-success x-woodmoney-submit"><strong>Go</strong></button>
         </div>
-        <div class="col-padded">
+        <div class="level-item">
             <a href="#" class="x-toggle-chart"></a>
         </div>
     </div>

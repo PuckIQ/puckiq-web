@@ -86,8 +86,8 @@
 .autocomplete-results {
     overflow-y: auto;
     position: absolute;
-    top: 38px;
-    width: 100%;
+    top: 49px;
+    width: 250px;
     background: white;
     border: solid 1px lightgrey;
     padding-left: 7px;

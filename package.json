@@ -4,8 +4,11 @@
   "description": "Trying Stuff with Express",
   "main": "app.js",
   "scripts": {
+    "css-build": "node-sass --omit-source-map-url public/puckiq/css/bulma.scss public/puckiq/css/bulma.css",
+    "css-watch": "npm run css-build -- --watch",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node app.js",
+    "ui": "npm run css-watch"
   },
   "author": "Zsolt Munoz <zmunoz@gmail.com>",
   "license": "GPL-2.0",
@@ -24,7 +27,9 @@
     "winston": "2.3.0"
   },
   "devDependencies": {
+    "bulma": "0.9.1",
     "mocha": "2.5.3",
+    "node-sass": "5.0.0",
     "shelljs": "0.8.1",
     "should": "11.1.2"
   }

@@ -1,4 +1,4 @@
-<div class="container-fluid" role="main">
+<section>
     <div class="page-header">
 
         <h2>WoodWOWY <small>See how one player does with and without a player</small></h2>
@@ -65,7 +65,7 @@
                             <h4>Select date range for games</h4>
                             From: <input type="text" class="x-date-range" id="dp-from" data-target="from_date" />
                             To: <input type="text" class="x-date-range" id="dp-to" data-target="to_date" />
-                            <button type="button" class="btn btn-xs btn-success x-date-range-submit"><strong>Go</strong></button>
+                            <button type="button" class="button is-extra-small is-success x-date-range-submit"><strong>Go</strong></button>
                             <div class="col-padded x-date-error" style="padding-top: 17px; color: Red; display:none;">
                             </div>
                         </div>
@@ -75,7 +75,7 @@
                     </div>
 
                     <div class="col-padded">
-                        <button type="button" class="btn btn-xs btn-success x-woodmoney-submit"><strong>Go</strong></button>
+                        <button type="button" class="button is-extra-small is-success x-woodmoney-submit"><strong>Go</strong></button>
                     </div>
                 </div>
 
@@ -84,74 +84,80 @@
         </form>
 
     </div>
-</div>
+
+</section>
 
 <% if(player && teammate) { %>
 
-<!--Begin render table-->
-<table id="puckiq" class="table table-bordered table-condensed table-hover">
-    <thead>
-        <tr>
+    <section>
+        <table id="puckiq" class="table table-bordered table-condensed table-hover">
+            <thead>
+                <tr>
 
-            <th>Team</th>
-            <th>Players</th>
-            <th data-sorter="false">Comp</th>
-            <th data-sort="evtoi">TOI</th>
+                    <th>Team</th>
+                    <th>Players</th>
+                    <th data-sorter="false">Comp</th>
+                    <th data-sort="evtoi">TOI</th>
 
-            <!--<th data-sort="ctoipct">CTOI%</th>-->
-            <th data-sort="cf">CF</th>
-            <th data-sort="ca">CA</th>
-            <th data-sort="cfpct">CF%</th>
-            <th data-sort="cf60">CF/60</th>
+                    <!--<th data-sort="ctoipct">CTOI%</th>-->
+                    <th data-sort="cf">CF</th>
+                    <th data-sort="ca">CA</th>
+                    <th data-sort="cfpct">CF%</th>
+                    <th data-sort="cf60">CF/60</th>
 
-            <th data-sort="ca60">CA/60</th>
-            <th data-sort="cf60rc">CF60RC</th>
-            <th data-sort="ca60rc">CA60RC</th>
-            <th data-sort="cfpctrc">CF%RC</th>
-            <th data-sort="dff">DFF</th>
+                    <th data-sort="ca60">CA/60</th>
+                    <th data-sort="cf60rc">CF60RC</th>
+                    <th data-sort="ca60rc">CA60RC</th>
+                    <th data-sort="cfpctrc">CF%RC</th>
+                    <th data-sort="dff">DFF</th>
 
-            <th data-sort="dfa">DFA</th>
-            <th data-sort="dffpct">DFF%</th>
-            <th data-sort="dff60">DFF/60</th>
-            <th data-sort="dfa60">DFA/60</th>
-            <th data-sort="dff60rc">DFF60RC</th>
+                    <th data-sort="dfa">DFA</th>
+                    <th data-sort="dffpct">DFF%</th>
+                    <th data-sort="dff60">DFF/60</th>
+                    <th data-sort="dfa60">DFA/60</th>
+                    <th data-sort="dff60rc">DFF60RC</th>
 
-            <th data-sort="dfa60rc">DFA60RC</th>
-            <th data-sort="dffpctrc">DFF%RC</th>
-            <th data-sort="gf">GF</th>
-            <th data-sort="ga">GA</th>
-            <th data-sort="gfpct">GF%</th>
+                    <th data-sort="dfa60rc">DFA60RC</th>
+                    <th data-sort="dffpctrc">DFF%RC</th>
+                    <th data-sort="gf">GF</th>
+                    <th data-sort="ga">GA</th>
+                    <th data-sort="gfpct">GF%</th>
 
-            <th data-sort="gfpct">ONSH%</th>
-            <th data-sort="gfpct">ONSV%</th>
-            <th data-sort="gfpct">PDO</th>
-            <th data-sort="gf60">GF/60</th>
-            <th data-sort="ga60">GA/60</th>
+                    <th data-sort="gfpct">ONSH%</th>
+                    <th data-sort="gfpct">ONSV%</th>
+                    <th data-sort="gfpct">PDO</th>
+                    <th data-sort="gf60">GF/60</th>
+                    <th data-sort="ga60">GA/60</th>
 
-            <th data-sort="ozspct">OZS%</th>
-            <th data-sort="fo60">FO/60</th>
-        </tr>
-    </thead>
-    <tbody id="dataTable">
-    <%
-    for (var i = 0; i < results.length; i++) {
-        renderTableRow(results[i]);
-    }
-    %>
-    </tbody>
-</table>
+                    <th data-sort="ozspct">OZS%</th>
+                    <th data-sort="fo60">FO/60</th>
+                </tr>
+            </thead>
+            <tbody id="dataTable">
+            <%
+            for (var i = 0; i < results.length; i++) {
+                renderTableRow(results[i]);
+            }
+            %>
+            </tbody>
+        </table>
+    </section>
 <% } %>
 
-<!--End render table-->
-<div style="text-align: center">
-    <% if(player && teammate) { %>
-        <% if(results.length === 0) {%>
-            No results
-        <% } else { %>
-            <a href="<%= download_url %>" class="x-download">download csv</a>
-        <% } %>
+<% if(player && teammate) { %>
+    <% if(results.length === 0) {%>
+        <section>No results</section>
     <% } %>
-</div>
+<% } %>
+
+<footer class="footer content">
+    <div class="has-text-centered x-download">
+        <a href="<%= download_url %>" class="x-download">download csv</a>
+    </div>
+    <div class="has-text-centered">
+        Provided by <strong>PuckIQ</strong>
+    </div>
+</footer>
 
 <script>
     <%

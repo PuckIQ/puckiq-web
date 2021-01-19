@@ -82,7 +82,7 @@ var column_definitions = {
     woodmoneytier : {
         name: 'Comp',
         type: 'string',
-        width: 80,
+        width: 70,
         sortable: false,
     },
     game_type : {
@@ -265,6 +265,18 @@ var column_definitions = {
         width: 60
     },
 
+    // this is woodwowy description
+    description : {
+        name: 'Players',
+        type: 'String',
+        // width: 200, see css
+        class_name: 'is-woodwowy-desc',
+        sortable: false,
+        // formatter : function(obj, tag) {
+        //     return `<${tag} class="width200">${obj.description}</${tag}>`;
+        // }
+    },
+
     default : {
         name: 'TODO',
         type: 'string',
@@ -306,8 +318,11 @@ function getFormattedColumn(field, obj, tag) {
         return defn.formatter(obj, tag);
     } else {
 
+        let classes = _.compact([defn.width ? `width${defn.width}` : '', defn.class_name]);
+        let class_str = classes.join(' ');
+
         if(!(field in obj)) {
-            return `<${tag} class="width${defn.width}">${field}</${tag}>`;
+            return `<${tag} class="${class_str}">${field}</${tag}>`;
         }
 
         let val = obj[field];
@@ -316,7 +331,49 @@ function getFormattedColumn(field, obj, tag) {
             val = formatDecimal(val, defn.digits || 0);
         }
 
-        return `<${tag} class="width${defn.width}">${val}</${tag}>`;
+        return `<${tag} class="${class_str}">${val}</${tag}>`;
     }
+
+}
+
+function buildLeftColumn(columns, results) {
+
+    var html = "<div class='puckiq-header'>";
+    _.each(columns, col => {
+        html += getFormattedHeader(col, 'span');
+    });
+    html += "</div>";
+
+    _.each(results, (res) => {
+        html += "<div>";
+        _.each(columns, col => {
+            html += getFormattedColumn(col, res,'span');
+        });
+        html += "</div>";
+    });
+
+    return html;
+}
+
+function buildRightHeader(columns){
+
+    var html = "";
+    _.each(columns, col => {
+        html += getFormattedHeader(col, 'div');
+    });
+    return html;
+
+}
+
+function buildRow(columns, pd) {
+
+    var html = `<div class="row">`;
+
+    _.each(columns, col => {
+        html += getFormattedColumn(col, pd, 'div');
+    });
+    html += "</div>";
+
+    return html;
 
 }

@@ -86,11 +86,12 @@
 .autocomplete-results {
     overflow-y: auto;
     position: absolute;
-    top: 49px;
+    top: 40px;
     width: 250px;
     background: white;
     border: solid 1px lightgrey;
     padding-left: 7px;
+    z-index: 100;
 }
 
 .highlight {

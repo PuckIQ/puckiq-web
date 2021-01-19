@@ -33,7 +33,6 @@ function getFilters(source) {
 
 function showModal(){
 
-    console.log("showing modal");
     let filters = getFilters();
     if(!filters.season && !filters.from_date && !filters.to_date) {
         console.log('defaulting from_date and to_date');
@@ -74,26 +73,103 @@ function submitForm(clearSeason){
     $('form.x-wm-filters').submit();
 }
 
-$(function() {
+function renderPage(player_id, teammate_id){
 
-    var options = {
-        widgets           : ['zebra','columns','stickyHeaders'],
-        widgetOptions: {
-            stickyHeaders_attachTo : null
-        }
-    };
-
-    var $sort = $("#puckiq thead tr th[data-sort='" + wmState.request.sort + "']");
-
-    //sorting done server side atm (SS)
-    $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
-
-    // this is a to highlight the sortable column since the sort order is grouped by player its not
-    // supported (moved server side)
-    if($sort && $sort.length){
-        let cell_index = $sort[0].cellIndex;
-        $("#puckiq tbody tr td:nth-child(" + (cell_index + 1) + ")").addClass("primary");
+    if(!player_id || !teammate_id){
+        return;
     }
+
+    console.log("todo render", player_id, teammate_id);
+    var results = [];
+    try{
+        results = JSON.parse($("#woodwowy-results").text());
+    } catch(e) {
+        console.log('could not parse results', e);
+    }
+
+    console.log("results", results);
+    if(!results.length){
+        return;
+    }
+
+    var data = { results: results };
+
+    let left_columns = ['team','description','woodmoneytier'];
+
+    let data_columns = [
+        "evtoi",
+
+        //"ctoipct",
+        "cf",
+        "ca",
+        "cfpct",
+        "cf60",
+
+        "ca60",
+        "cf60rc",
+        "ca60rc",
+        "cfpctrc",
+        "dff",
+
+        "dfa",
+        "dffpct",
+        "dff60",
+        "dfa60",
+        "dff60rc",
+
+        "dfa60rc",
+        "dffpctrc",
+        "gf",
+        "ga",
+        "gfpct",
+
+        "onshpct",
+        "onsvpct",
+        "pdo",
+        "gf60",
+        "ga60",
+
+        "ozspct",
+        "fo60"];
+
+    var left_column_html = buildLeftColumn(left_columns, data.results)
+    $(".x-puckiq-left").html(left_column_html);
+
+    var header_html = buildRightHeader(data_columns);
+    $(".x-puckiq-header").html(header_html);
+
+    var stats_html = "";
+    _.each(data.results, (res) => {
+        stats_html += buildRow(data_columns, res);
+    });
+    $(".x-puckiq-data").html(stats_html);
+
+    if(data.results.length === 0) {
+        $(".x-puckiq-container").html("No results");
+    }
+
+    setTimeout(function() {
+
+        syncscroll.reset();
+
+        console.log("todo hightlight sort column");
+        // var $sort = $("#puckiq thead tr th[data-sort='" + wmState.request.sort + "']");
+        //
+        // //sorting done server side atm (SS)
+        // $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
+        //
+        // // this is a to highlight the sortable column since the sort order is grouped by player its not
+        // // supported (moved server side)
+        // if($sort && $sort.length){
+        //     let cell_index = $sort[0].cellIndex;
+        //     $("#puckiq tbody tr td:nth-child(" + (cell_index + 1) + ")").addClass("primary");
+        // }
+
+    }, 20);
+
+}
+
+$(function() {
 
     $(".x-date-range").change(function(e) {
         let $target = $(e.target);

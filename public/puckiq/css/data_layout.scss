@@ -111,6 +111,11 @@ would have to be done with js
     flex: 0 0 80px;
 }
 
+.puckiq-header div.width90, .row div.width90 {
+    width: 90px;
+    flex: 0 0 90px;
+}
+
 .puckiq-header div, .row div, .puckiq-left div div {
     width: 50px;
 }
@@ -132,6 +137,11 @@ would have to be done with js
     border-right: solid 1px #DFDFDF;
 }
 
+.puckiq-left div span.width70 {
+    width: 70px !important;
+    max-width: 70px;
+}
+
 .puckiq-left div span.is-season {
     width: 70px !important;
     max-width: 70px;
@@ -140,6 +150,11 @@ would have to be done with js
 .puckiq-left div span.is-player {
     width: 160px !important;
     max-width: 160px;
+}
+
+.puckiq-left div span.is-woodwowy-desc {
+    width: 300px !important;
+    max-width: 300px;
 }
 
 .puckiq-header div:not([data-sorter='false']):hover, .puckiq-header div span:not([data-sorter='false']):hover {

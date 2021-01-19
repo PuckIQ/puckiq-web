@@ -3,21 +3,17 @@ function loadDataTable(filters) {
     let href = '/woodmoney/chart?' + $.param(filters);
     $("#view-chart").attr("href", href);
 
-    console.log(JSON.stringify(filters));
     $.ajax({
         url: "/woodmoney/data",
         type: 'POST',
         data: JSON.stringify(filters),
         contentType: 'application/json',
         success: function(data) {
-            console.log("data", data);
 
             let left_columns = filters.player ? ['season'] : ['player','position'];
             if(!filters.team) {
                 left_columns.push('team');
             }
-
-            console.log("left columns", left_columns);
 
             let data_columns = ["games_played",
                 "woodmoneytier",
@@ -109,47 +105,5 @@ function loadDataTable(filters) {
             console.log("Error occurred", e)
         }
     });
-
-}
-
-function buildLeftColumn(columns, results) {
-
-    var html = "<div class='puckiq-header'>";
-    _.each(columns, col => {
-       html += getFormattedHeader(col, 'span');
-    });
-    html += "</div>";
-
-    _.each(results, (res) => {
-        html += "<div>";
-        _.each(columns, col => {
-            html += getFormattedColumn(col, res,'span');
-        });
-        html += "</div>";
-    });
-
-    return html;
-}
-
-function buildRightHeader(columns){
-
-    var html = "";
-    _.each(columns, col => {
-        html += getFormattedHeader(col, 'div');
-    });
-    return html;
-
-}
-
-function buildRow(columns, pd) {
-
-    var html = `<div class="row">`;
-
-    _.each(columns, col => {
-        html += getFormattedColumn(col, pd, 'div');
-    });
-    html += "</div>";
-
-    return html;
 
 }

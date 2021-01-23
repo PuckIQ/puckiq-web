@@ -1,11 +1,11 @@
-<form class="wm-filters x-wm-filters" method="get">
-    <div class="level" style="margin-bottom: 11px;">
+<form class="filters-form x-wm-filters" method="get">
+    <div class="level">
         <div class="level-left">
             <div class="level-item">
                 <input id="player-id" type="hidden" value="<%= request.player || '' %>" />
                 <input id="sort" type="hidden" value="" />
                 Select date range:
-                <select id="season-input" name="season" class="">
+                <select id="season-input" name="season" class="select is-small">
                     <% if(player) { %>
                         <option value="all" <% if(request.season === "all") { %> selected <% } %>>All</option>
                     <% } %>
@@ -37,21 +37,36 @@
             </div>
 
             <% if(!request.player){ %>
-                <div class="level-item">
+                <div class="level-item position-picker">
                     <input type="hidden" id="positions" name="positions" value="<%= request.positions%>">
-                    Forwards <input type="checkbox" id="pos-f" value="clr" <% if(request.selected_positions.f) { %>checked="checked" <% } %> style="margin-right:5px;" />
-                    Centres <input type="checkbox" id="pos-c" class="x-positions" value="c" <% if(request.selected_positions.c) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    LW <input type="checkbox" id="pos-l" class="x-positions" value="l" <% if(request.selected_positions.l) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    RW <input type="checkbox" id="pos-r" class="x-positions" value="r" <% if(request.selected_positions.r) { %>checked="checked" <% } %>  style="margin-right:5px;" />
-                    Defence <input type="checkbox" id="pos-d" class="x-positions" value="d" <% if(request.selected_positions.d) { %>checked="checked" <% } %>  />
+                    <label class="checkbox">
+                        <input type="checkbox" id="pos-f" value="clr" <% if(request.selected_positions.f) { %>checked="checked" <% } %> />
+                        Forwards
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" id="pos-c" class="x-positions" value="c" <% if(request.selected_positions.c) { %>checked="checked" <% } %>  />
+                        Centres
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" id="pos-l" class="x-positions" value="l" <% if(request.selected_positions.l) { %>checked="checked" <% } %>  />
+                        LW
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" id="pos-r" class="x-positions" value="r" <% if(request.selected_positions.r) { %>checked="checked" <% } %>  />
+                        RW
+                    </label>
+                    <label class="checkbox">
+                        <input type="checkbox" id="pos-d" class="x-positions" value="d" <% if(request.selected_positions.d) { %>checked="checked" <% } %>  />
+                        Defence
+                    </label>
                 </div>
             <% } %>
         </div>
     </div>
-    <div class="level" style="margin-bottom: 11px;">
+    <div class="level">
         <div class="level-left">
             <div class="level-item">
-                <select id="team" name="team">
+                <select id="team" class="select is-small" name="team">
                     <option value="" <% if(!request.team) { %>selected <% } %>>--All Teams</option>
                     <% for (var i = 0; i < 31; i++) { %>
                         <option value="<%= teams[i]._id %>" <% if(request.team === teams[i]._id) { %>selected <% } %>><%= teams[i].name %></option>
@@ -59,7 +74,7 @@
                 </select>
             </div>
             <div class="level-item">
-                <select id="tier" name="tier">
+                <select id="tier" class="select is-small" name="tier">
                     <option value="" <% if(!request.tier) { %>selected <% } %>>--Competition</option>
                     <option value="All" <% if(request.tier === "All") { %>selected <% } %>>All</option>
                     <option value="Elite" <% if(request.tier === "Elite") { %>selected <% } %>>Elite</option>
@@ -70,16 +85,16 @@
             <% if(!request.player){ %>
             <div class="level-item">
                     Min TOI:
-                    <input type="text" id="min_toi" name="min_toi" placeholder="min" class="toi_minutes" maxlength="5"
+                    <input type="text" id="min_toi" name="min_toi" placeholder="min" class="input is-small toi_minutes" maxlength="5"
                            value="<% if(request.min_toi !== null){%><%= request.min_toi %><% } %>" />
                     Max TOI:
-                    <input type="text" id="max_toi" name="max_toi" placeholder="max" class="toi_minutes" maxlength="5"
+                    <input type="text" id="max_toi" name="max_toi" placeholder="max" class="input is-small toi_minutes" maxlength="5"
                            value="<% if(request.max_toi !== null){%><%= request.max_toi %><% } %>" />
                 </div>
             <% } %>
             <div class="level-item">
                 Group By:
-                <select id="group_by" name="group_by">
+                <select id="group_by" class="select is-small" name="group_by">
                     <option value="player_season_team" <% if(!request.group_by) { %>selected <% } %>>Player/Season/Team</option>
                     <option value="player_season" <% if(request.group_by === "player_season") { %>selected <% } %>>Player/Season</option>
                     <option value="player_team" <% if(request.group_by === "player_team") { %>selected <% } %>>Player/Team</option>

@@ -1,9 +1,14 @@
-<section style="padding-top: 30px; padding-bottom: 30px;">
+<section class="content" style="margin-bottom: 30px; margin-top: 17px;">
     <div class="pad-left">
 
-        <h2 class="title">WoodWOWY <span class="subtitle">See how one player does with and without a player</span></h2>
+        <div class="page-header">
+            <h2 class="title has-text-weight-medium" style="margin-bottom: 0;">
+                WoodWOWY
+                <span class="subtitle">See how one player does with and without a player</span>
+            </h2>
+        </div>
 
-        <form class="filters-form x-wm-filters" method="get">
+        <form class="filters-form x-wm-filters" method="get" style="padding-top:30px;">
 
             <div class="level-left">
                 <div class="level-item" style="width: 400px; justify-content: left;">
@@ -86,8 +91,8 @@
     </div>
 </section>
 
-<section>
-    <div class="puckiq-container x-puckiq-container">
+<section style="min-height: 300px;">
+    <div class="puckiq-container x-puckiq-container" style="display: <%= (player && teammate) ? "block" : "none" %>">
         <!--60+300+70+2 for border-->
         <div class="puckiq-left x-puckiq-left" style="width: 432px; flex: 0 0 432px;">
         </div>
@@ -101,7 +106,7 @@
 </section>
 
 <footer class="footer content">
-    <div class="has-text-centered x-download">
+    <div class="has-text-centered x-download" style="display: <%= (player && teammate) ? "block" : "none" %>">
         <a href="<%= download_url %>" class="x-download">download csv</a>
     </div>
     <div class="has-text-centered">

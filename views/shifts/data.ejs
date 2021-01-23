@@ -1,6 +1,6 @@
-<section class="content">
+<section class="content" style="margin-bottom: 0; margin-top: 17px;">
     <div class="page-header">
-        <h2>
+        <h2 class="title has-text-weight-medium" style="margin-bottom: 0;">
             <%= sub_title %>
             <% if(player) { %><small><%= player.positions %></small><% } %>
         </h2>
@@ -8,7 +8,7 @@
     </div>
 </section>
 
-<section class="content">
+<section class="content" style="margin-bottom: 0;">
 
     <div id="no-chart" style="display: none; padding: 0 0 17px 27px; font-style: italic;">
         Chart is hidden when shift type is 'all' since all players have a shift % of 100%.
@@ -29,10 +29,10 @@
                     </div>
                     <div style="flex:1">
                         <span>X Axis: </span>
-                        <select id="x-axis">
-                            <option value="dff_pct">DFF%</option>
-                            <option value="gf_pct">GF%</option>
-                            <option value="cf_pct">CF%</option>
+                        <select id="x-axis" class="select is-small">
+                            <option value="dffpct">DFF%</option>
+                            <option value="gfpct">GF%</option>
+                            <option value="cfpct">CF%</option>
                         </select>
                     </div>
                     <div style="flex:1">
@@ -46,12 +46,19 @@
         </div>
     </div>
 
-    <table id="puckiq" class="table table-bordered table-condensed table-hover" style="max-width: 1400px;">
-    </table>
+</section>
 
-    <div id="table-footer">
+<section>
+    <div class="puckiq-container x-puckiq-container">
+        <div class="puckiq-left x-puckiq-left">
+        </div>
+        <div class="puckiq-right">
+            <div class="syncscroll puckiq-header x-puckiq-header" name="puckiq" style="">
+            </div>
+            <div class="syncscroll puckiq-data x-puckiq-data" name="puckiq" style="">
+            </div>
+        </div>
     </div>
-
 </section>
 
 <footer class="footer content">
@@ -72,6 +79,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
 
+<script src="/puckiq/js/syncscroll.js"></script>
 <script src="/puckiq/js/shifts_chart.js"></script>
 <script src="/puckiq/js/shifts.js"></script>
 

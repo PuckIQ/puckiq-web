@@ -53,17 +53,18 @@ var column_definitions = {
         class_name: 'is-player',
         // width: 200, // see js
         formatter : function(obj, tag) {
-            return `<${tag} class="is-player"><a href="/players/${obj.player_id}">${obj.name}</a></${tag}>`
+            let player_id = (obj._id && obj._id.player_id) || obj.player_id;
+            return `<${tag} class="is-player"><a href="/players/${player_id || obj._id}">${obj.name}</a></${tag}>`
         }
     },
     position : {
         name: 'POS',
-        type: 'String',
+        type: 'string',
         width: 50 // see js
     },
     team : {
         name: 'Team',
-        type: 'String',
+        type: 'string',
         // width: 50,
         formatter : function(obj, tag) {
             if (obj.team) {
@@ -268,13 +269,52 @@ var column_definitions = {
     // this is woodwowy description
     description : {
         name: 'Players',
-        type: 'String',
+        type: 'string',
         // width: 200, see css
         class_name: 'is-woodwowy-desc',
         sortable: false,
         // formatter : function(obj, tag) {
         //     return `<${tag} class="width200">${obj.description}</${tag}>`;
         // }
+    },
+
+    //shifts
+    shift_type : {
+        name: 'Shift Type',
+        type: 'string',
+        digits: 1,
+        width: 50,
+        sortable: false,
+    },
+    shifts : {
+        name: 'Shifts',
+        type: 'decimal',
+        digits: 0,
+        width: 50,
+    },
+    toi : {
+        name: 'TOI (min)',
+        type: 'decimal',
+        digits: 0,
+        width: 80,
+    },
+    toi_per_game : {
+        name: 'TOI/G (min)',
+        type: 'decimal',
+        digits: 0,
+        width: 90,
+    },
+    shift_pct : {
+        name: 'Shift Start %',
+        type: 'decimal',
+        digits: 1,
+        width: 80,
+    },
+    avgshift : {
+        name: 'AVG Shift (s)',
+        type: 'decimal',
+        digits: 2,
+        width: 100,
     },
 
     default : {

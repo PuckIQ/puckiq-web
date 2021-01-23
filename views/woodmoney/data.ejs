@@ -1,6 +1,6 @@
-<section style="margin-bottom: 0; padding-top: 17px;">
-    <div class="pad-left">
-        <h2 class="title">
+<section class="content" style="margin-bottom: 0; margin-top: 17px;">
+    <div class="page-header">
+        <h2 class="title has-text-weight-medium" style="margin-bottom: 0;">
             <%= sub_title %>
             <% if(player) { %><small><%= player.positions %></small><% } %>
         </h2>
@@ -8,9 +8,8 @@
     </div>
 </section>
 
-<section>
+<section class="content" style="margin-bottom: 0;">
     <div class="pad-left">
-
         <div id="no-chart" style="display: none; padding: 0 0 17px 27px; font-style: italic;">
             Chart is hidden when competition type is 'all' since all players have a time on ice % of 100%.
         </div>
@@ -22,7 +21,7 @@
                         <div style="flex:1"></div>
                         <div style="flex:1">
                             <span>X Axis: </span>
-                            <select id="x-axis">
+                            <select id="x-axis" class="select is-small">
                                 <option value="dffpct">DFF%</option>
                                 <option value="gfpct">GF%</option>
                                 <option value="cfpct">CF%</option>

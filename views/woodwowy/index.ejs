@@ -21,7 +21,7 @@
                         </div>
                     <% } %>
                     <div class="x-select-player" style="display: <%= player ? "none" : "inline-block"%>; position: relative;">
-                        <input type="text" id="wowy-player-search" placeholder="Enter player name" class="input autocomplete-search" style="width: 200px; margin-top: 8px;" />
+                        <input type="text" id="wowy-player-search" placeholder="Enter player name" class="input autocomplete-search" style="width: 250px; margin-top: 8px;" />
                         <div class="autocomplete-results x-wowy-player-results" style="display:none; text-align: left;">
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                         </div>
                     <% } %>
                     <div class="x-select-teammate" style="display: <%= teammate ? "none" : "inline-block"%>; position: relative;">
-                        <input type="text" id="wowy-teammate-search" placeholder="Enter teammate name" class="input autocomplete-search" style="width: 200px; margin-top: 8px;" />
+                        <input type="text" id="wowy-teammate-search" placeholder="Enter teammate name" class="input autocomplete-search" style="width: 250px; margin-top: 8px;" />
                         <div class="autocomplete-results x-wowy-teammate-results" style="display:none; text-align: left;">
                         </div>
                     </div>
@@ -92,14 +92,14 @@
 </section>
 
 <section style="min-height: 300px;">
-    <div class="puckiq-container x-puckiq-container" style="display: <%= (player && teammate) ? "block" : "none" %>">
+    <div class="puckiq-container x-puckiq-container" style="display: <%= (player && teammate) ? "flex" : "none" %>">
         <!--60+300+70+2 for border-->
         <div class="puckiq-left x-puckiq-left" style="width: 432px; flex: 0 0 432px;">
         </div>
         <div class="puckiq-right">
-            <div class="syncscroll puckiq-header x-puckiq-header" name="puckiq" style="">
+            <div class="syncscroll puckiq-header x-puckiq-header" name="puckiq">
             </div>
-            <div class="syncscroll puckiq-data x-puckiq-data" name="puckiq" style="">
+            <div class="syncscroll puckiq-data x-puckiq-data" name="puckiq">
             </div>
         </div>
     </div>

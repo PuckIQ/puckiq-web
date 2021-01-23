@@ -188,7 +188,7 @@ $(function() {
         return false;
     });
 
-    // $( ".x-date-range" ).datepicker({});
+    $( ".x-date-range" ).datepicker({});
 
     if($("#show-date-range").is(":visible")) {
         console.log('setting from_date and to_date', wmState.request.from_date, wmState.request.to_date);

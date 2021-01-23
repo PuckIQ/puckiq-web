@@ -91,8 +91,8 @@
     </div>
 </section>
 
-<section style="min-height: 300px;">
-    <div class="puckiq-container x-puckiq-container" style="display: <%= (player && teammate) ? "flex" : "none" %>">
+<section class="x-data-container" style="min-height: 300px;">
+    <div class="puckiq-container" style="display: <%= (player && teammate) ? "flex" : "none" %>">
         <!--60+300+70+2 for border-->
         <div class="puckiq-left x-puckiq-left" style="width: 432px; flex: 0 0 432px;">
         </div>
@@ -103,6 +103,16 @@
             </div>
         </div>
     </div>
+</section>
+
+<section class="content" style="position: relative;">
+    <div class="loader-wrapper x-loader">
+        <div class="loader is-loading"></div>
+    </div>
+</section>
+
+<section class="content has-text-centered x-no-results" style="display: none;">
+    No Results
 </section>
 
 <footer class="footer content">

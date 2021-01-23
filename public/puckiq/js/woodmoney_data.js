@@ -3,6 +3,12 @@ function loadDataTable(filters) {
     let href = '/woodmoney/chart?' + $.param(filters);
     $("#view-chart").attr("href", href);
 
+    $(".x-loader").addClass("is-active");
+    $(".x-no-results").hide();
+    $(".x-data-container").hide();
+
+    console.log("filters", filters);
+
     $.ajax({
         url: "/woodmoney/data",
         type: 'POST',
@@ -78,9 +84,13 @@ function loadDataTable(filters) {
             });
             $(".x-puckiq-data").html(stats_html);
 
+            $(".x-loader").removeClass("is-active");
+
             if(data.results.length === 0) {
-                $(".x-puckiq-container").html("No results");
+                $(".x-no-results").show();
             } else {
+                $(".x-data-container").show();
+
                 let filter_str = $.param(filters);
                 let href = "";
                 if(filters.player) {

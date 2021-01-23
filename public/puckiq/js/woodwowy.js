@@ -79,7 +79,6 @@ function renderPage(player_id, teammate_id){
         return;
     }
 
-    console.log("todo render", player_id, teammate_id);
     var results = [];
     try{
         results = JSON.parse($("#woodwowy-results").text());
@@ -87,7 +86,6 @@ function renderPage(player_id, teammate_id){
         console.log('could not parse results', e);
     }
 
-    console.log("results", results);
     if(!results.length){
         return;
     }
@@ -145,7 +143,9 @@ function renderPage(player_id, teammate_id){
     $(".x-puckiq-data").html(stats_html);
 
     if(data.results.length === 0) {
-        $(".x-puckiq-container").html("No results");
+        $(".x-no-results").show();
+    } else {
+        $(".x-data-container").show();
     }
 
     setTimeout(function() {

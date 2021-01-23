@@ -124,6 +124,10 @@ $(function() {
 
 function loadDataTable(filters) {
 
+    $(".x-loader").addClass("is-active");
+    $(".x-no-results").hide();
+    $(".x-data-container").hide();
+
     console.log(JSON.stringify(filters));
     $.ajax({
         url: "/shifts/data",
@@ -195,6 +199,14 @@ function loadDataTable(filters) {
 
             if(filters.player){
                 console.log("todo update header");
+            }
+
+            $(".x-loader").removeClass("is-active");
+
+            if(data.results.length === 0) {
+                $(".x-no-results").show();
+            } else {
+                $(".x-data-container").show();
             }
 
             setTimeout(function() {

@@ -10,9 +10,22 @@ function loadDataTable(filters) {
         contentType: 'application/json',
         success: function(data) {
 
-            let left_columns = filters.player ? ['season'] : ['player','position'];
+            // the extra 2 pixels is for the border
+            let width = 2;
+
+            let left_columns = [];
+            if(filters.player){
+                left_columns.push('season');
+                width += 70;
+            } else {
+                left_columns.push('player');
+                left_columns.push('position');
+                width += 220; // 160+60
+            }
+
             if(!filters.team) {
                 left_columns.push('team');
+                width += 60;
             }
 
             let data_columns = ["games_played",
@@ -82,14 +95,10 @@ function loadDataTable(filters) {
 
                 syncscroll.reset();
 
-                // the extra 2 pixels is for the border
-                let left_width = 2 + (filters.player ? 70 : 160+60);
-                if(!filters.team) left_width += 60;
-
-                console.log("setting left width", left_width);
+                console.log("setting left width", width);
                 let $left_column = $('.x-puckiq-left');
-                $left_column.css('flex', `0 0 ${left_width}px`);
-                $left_column.css('width', `${left_width}px`);
+                $left_column.css('flex', `0 0 ${width}px`);
+                $left_column.css('width', `${width}px`);
 
                 console.log("todo hightlight sort column");
                 // var $sort = $("#puckiq thead tr th[data-sort='" + request.sort + "']");

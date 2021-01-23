@@ -174,13 +174,13 @@ function loadPlayerInfo(player_data) {
 
     let hi = -1;
     switch (x_axis) {
-        case 'cf_pct':
+        case 'cfpct':
             hi = 3;
             break;
-        case 'dff_pct':
+        case 'dffpct':
             hi = 4;
             break;
-        case 'gf_pct':
+        case 'gfpct':
             hi = 5;
             break;
     }
@@ -218,9 +218,9 @@ function loadPlayerInfo(player_data) {
         <td>${pd.shift_type}</td>
         <td>${formatDecimal(pd.toi, 0)}</td>
         <td>${formatDecimal(pd.shift_pct, 0)}</td>
-        <td class="${3 === hi ? 'highlight' : ''}">${formatDecimal(pd.cf_pct, 1)}</td>
-        <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.dff_pct || 0, 1)}</td>
-        <td class="${5 === hi ? 'highlight' : ''}">${formatDecimal(pd.gf_pct, 1)}</td>
+        <td class="${3 === hi ? 'highlight' : ''}">${formatDecimal(pd.cfpct, 1)}</td>
+        <td class="${4 === hi ? 'highlight' : ''}">${formatDecimal(pd.dffpct || 0, 1)}</td>
+        <td class="${5 === hi ? 'highlight' : ''}">${formatDecimal(pd.gfpct, 1)}</td>
         </tr>`;
     });
 

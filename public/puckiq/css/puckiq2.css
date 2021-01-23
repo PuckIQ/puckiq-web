@@ -86,11 +86,6 @@ tr.hidden {
 
 .padded-content { padded-content : 17px; }
 
-.wm-filters input[type=checkbox], .wm-filters input[type=radio], .wm-filters input[type=text], .wm-filters select {
-    margin: 0 4px 0 2px;
-    line-height: normal;
-}
-
 .team-dropdown .column a { padding-top: 0.1em; padding-bottom: 0.1em;  }
 
 .homepage-teams {

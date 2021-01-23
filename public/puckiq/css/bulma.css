@@ -7702,8 +7702,11 @@ a.has-text-danger-dark:hover, a.has-text-danger-dark:focus {
   background-color: #fafafa;
   padding: 3rem 1.5rem 6rem; }
 
-.button.is-extra-small {
+button.is-extra-small {
   font-size: 0.65em; }
+
+select.is-small {
+  height: 2em !important; }
 
 .pad-left {
   padding-left: 17px; }
@@ -7904,6 +7907,10 @@ would have to be done with js
   width: 90px;
   flex: 0 0 90px; }
 
+.puckiq-header div.width100, .row div.width100 {
+  width: 100px;
+  flex: 0 0 100px; }
+
 .puckiq-header div, .row div, .puckiq-left div div {
   width: 50px; }
 
@@ -7966,3 +7973,16 @@ would have to be done with js
   position: absolute;
   top: 100%;
   z-index: 20; }
+
+.filters-form input[type=checkbox], .filters-form input[type=radio], .filters-form input[type=text], .filters-form select {
+  margin: 0 4px 0 2px;
+  line-height: normal; }
+
+.filters-form {
+  padding-top: 7px; }
+  .filters-form .level {
+    padding-top: 7px;
+    margin-bottom: 0; }
+
+.position-picker label {
+  margin-right: 7px; }

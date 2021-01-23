@@ -116,6 +116,11 @@ would have to be done with js
     flex: 0 0 90px;
 }
 
+.puckiq-header div.width100, .row div.width100 {
+    width: 100px;
+    flex: 0 0 100px;
+}
+
 .puckiq-header div, .row div, .puckiq-left div div {
     width: 50px;
 }

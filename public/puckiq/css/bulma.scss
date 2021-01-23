@@ -17,7 +17,8 @@ $content-heading-color: $puckiq-color;
 
 @import "../../../node_modules/bulma/bulma.sass";
 
-.button.is-extra-small { font-size: 0.65em; }
+button.is-extra-small { font-size: 0.65em; }
+select.is-small { height: 2em !important; }
 .pad-left { padding-left: 17px;}
 
 @import "./autocomplete.scss";
@@ -59,5 +60,25 @@ $content-heading-color: $puckiq-color;
     }
   }
 }
+
+.filters-form input[type=checkbox], .filters-form input[type=radio], .filters-form input[type=text], .filters-form select {
+  margin: 0 4px 0 2px;
+  line-height: normal;
+}
+
+.filters-form {
+  padding-top: 7px;
+  .level {
+    padding-top: 7px;
+    margin-bottom: 0;
+  }
+}
+
+.position-picker {
+  label {
+    margin-right: 7px;
+  }
+}
+
 
 

@@ -133,172 +133,92 @@ function loadDataTable(filters) {
         success: function (data) {
             console.log("data", data);
 
-            $("#puckiq").html(renderTable(data.results, filters));
+            // the extra 2 pixels is for the border
+            let width = 2;
+            let left_columns = [];
 
-            if(data.results.length === 0){
-                $("#table-footer").html("No results");
-            } else {
-
-                let filter_str = $.param(filters);
-                let href = "";
-                if (filters.player) {
-                    href += `/players/${filters.player}/download?${filter_str}`;
-                } else {
-                    href = `/shifts/download?${filter_str}`;
-                }
-                $("#table-footer").html(`<a href="${href}" class="x-download">download csv</a>`);
+            if((filters.seasons && filters.seasons.length > 1) || filters.player) {
+                left_columns.push('season');
+                width += 70;
             }
+
+            if(!filters.player) {
+                left_columns.push('player');
+                left_columns.push('position');
+                width += 220; // 160+60
+            }
+
+            if(!filters.team) {
+                left_columns.push('team');
+                width += 60;
+            }
+
+            let data_columns = [
+                "games_played",
+                "shift_type",
+                "shifts",
+                "toi",
+                "toi_per_game",
+                "shift_pct",
+
+                "gf",
+                "ga",
+                "gf60",
+                "ga60",
+                "gfpct",
+
+                "cf",
+                "ca",
+                "cf60",
+                "ca60",
+                "cfpct",
+
+                "dff",
+                "dfa",
+                "dff60",
+                "dfa60",
+                "dffpct",
+
+                "avgshift"];
+
+            var left_column_html = buildLeftColumn(left_columns, data.results, filters)
+            $(".x-puckiq-left").html(left_column_html);
+
+            var header_html = buildRightHeader(data_columns);
+            $(".x-puckiq-header").html(header_html);
+
+            var stats_html = "";
+            _.each(data.results, (res) => {
+                stats_html += buildRow(data_columns, res);
+            });
+            $(".x-puckiq-data").html(stats_html);
 
             if(filters.player){
                 console.log("todo update header");
             }
 
-            setTimeout(function(){
-                initDatatable(data.request);
-            }, 1);
+            setTimeout(function() {
+
+                syncscroll.reset();
+
+                console.log("setting left width", 2+width);
+                let $left_column = $('.x-puckiq-left');
+                $left_column.css('flex', `0 0 ${width}px`);
+                $left_column.css('width', `${width}px`);
+
+                console.log("todo hightlight sort column");
+                // var $sort = $("#puckiq thead tr th[data-sort='" + request.sort + "']");
+                //
+                // if ($sort && $sort.length) {
+                //     let cell_index = $sort[0].cellIndex;
+                //     $("#puckiq tbody tr td:nth-child(" + (cell_index + 1) + ")").addClass("primary");
+                // }
+
+            }, 20);
         },
         error: function() {
             //todo
         }
     });
-
-}
-
-function initDatatable(request) {
-
-    var options = {
-        //sortInitialOrder  : 'desc',
-        widgets: ['zebra', 'columns', 'stickyHeaders'],
-        widgetOptions: {
-            stickyHeaders_attachTo: null
-        }
-    };
-
-    var $sort = $("#puckiq thead tr th[data-sort='" + request.sort + "']");
-
-    $("#puckiq").tablesorter(options); //.bind("sortEnd", refreshTableStyles);
-
-    var resort = true;
-    var callback = function() {
-        //nothing required
-    };
-
-    $("#puckiq").trigger("updateAll", [ resort, callback ]);
-
-    if ($sort && $sort.length) {
-        let cell_index = $sort[0].cellIndex;
-        $("#puckiq tbody tr td:nth-child(" + (cell_index + 1) + ")").addClass("primary");
-    }
-}
-
-function renderTable(results, filters) {
-
-    var html = `<tbody id="dataTable">`;
-
-    html += renderTableHeader(filters);
-
-    for (var i = 0; i < results.length; i++) {
-        html += renderTableRow(results[i], filters);
-    }
-
-    html += "</tbody>";
-
-    return html;
-}
-
-function renderTableHeader(filters){
-
-    var html = `<thead>
-    <tr>`;
-
-    if((filters.seasons && filters.seasons.length > 1) || filters.player) {
-        html += `<th data-sorter="false">Season</th>`;
-    }
-
-    if(!filters.player) {
-        html += `<th data-sorter="false">Player</th><th data-sorter="false" >Pos</th>`;
-    }
-
-    if(!filters.team) {
-        html += `<th rowspan="2"  data-sorter="false">Team</th>`;
-    }
-
-    html += `<th data-sorter="true" style="text-align: center;">Games Played</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">Shift Type</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">Shifts</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">TOI (min)</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">TOI/G (min)</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">Shift Start %</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">GF</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">GA</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">GF60</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">GA60</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">GF%</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">CF</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">CA</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">CF60</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">CA60</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">CF%</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">DFF</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">DFA</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">DFF60</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">DFA60</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">DFF%</th>`;
-    html += `<th data-sorter="true" style="text-align: center;">AVG Shift (s)</th>`;
-    html += `</tr></thead>`;
-
-    return html;
-
-}
-
-function renderTableRow(playerData, filters) {
-
-    var pd = playerData;
-
-    var html = `<tr>`;
-
-    if((filters.seasons && filters.seasons.length > 1) || filters.player) {
-        html += `<td>${pd._id && (pd._id.season || 'all')}</td>`;
-    }
-
-    if(!filters.player) {
-        html += `<td style="white-space: nowrap;"><a href="/players/${pd._id.player_id}">${pd.name}</a></td>
-            <td>${pd.position}</td>`;
-    }
-
-    if(!filters.team) {
-        if (pd.team) {
-            html += `<td><a href="/teams/${pd.team}">${pd.team}</a></td>`;
-        } else {
-            html += `<td>all</td>`;
-        }
-    }
-
-    html += `<td>${pd.games_played}</td>
-<td>${pd.shift_type}</td>
-<td>${formatDecimal(pd.shifts, 0)}</td>
-<td>${formatDecimal(pd.toi, 0)}</td>
-<td>${formatDecimal(pd.toi_per_game, 1)}</td>
-<td>${formatDecimal(pd.shift_pct, 1)}</td>
-<td>${formatDecimal(pd.gf, 0)}</td>
-<td>${formatDecimal(pd.ga, 0)}</td>
-<td>${formatDecimal(pd.gf60, 1)}</td>
-<td>${formatDecimal(pd.ga60, 1)}</td>
-<td>${formatDecimal(pd.gf_pct, 1)}</td>
-<td>${formatDecimal(pd.cf, 0)}</td>
-<td>${formatDecimal(pd.ca, 0)}</td>
-<td>${formatDecimal(pd.cf60, 1)}</td>
-<td>${formatDecimal(pd.ca60, 1)}</td>
-<td>${formatDecimal(pd.cf_pct, 1)}</td>
-<td>${formatDecimal(pd.dff, 0)}</td>
-<td>${formatDecimal(pd.dfa, 0)}</td>
-<td>${formatDecimal(pd.dff60, 1)}</td>
-<td>${formatDecimal(pd.dfa60, 1)}</td>
-<td>${formatDecimal(pd.dff_pct, 1)}</td>
-<td>${formatDecimal(pd.avgshift, 2)}</td>`;
-
-    html += `</tr>`;
-
-    return html;
 
 }

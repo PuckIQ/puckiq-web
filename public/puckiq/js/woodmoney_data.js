@@ -7,8 +7,6 @@ function loadDataTable(filters) {
     $(".x-no-results").hide();
     $(".x-data-container").hide();
 
-    console.log("filters", filters);
-
     $.ajax({
         url: "/woodmoney/data",
         type: 'POST',
@@ -105,18 +103,32 @@ function loadDataTable(filters) {
 
                 syncscroll.reset();
 
-                console.log("setting left width", width);
+                // console.log("setting left width", width);
                 let $left_column = $('.x-puckiq-left');
                 $left_column.css('flex', `0 0 ${width}px`);
                 $left_column.css('width', `${width}px`);
 
-                console.log("todo hightlight sort column");
-                // var $sort = $("#puckiq thead tr th[data-sort='" + request.sort + "']");
-                //
-                // if ($sort && $sort.length) {
-                //     let cell_index = $sort[0].cellIndex;
-                //     $("#puckiq tbody tr td:nth-child(" + (cell_index + 1) + ")").addClass("primary");
-                // }
+                let sort_index = data_columns.indexOf(data.request.sort)+1;
+                if(sort_index < 0) {
+                    sort_index = left_columns.indexOf(data.request.sort)+1;
+                    $('.x-puckiq-left div span:nth-child(' + sort_index + ')').addClass('sort-column');
+                } else {
+                    $('.x-puckiq-header div:nth-child(' + sort_index + ')').addClass('sort-column');
+                    $('.x-puckiq-data .row div:nth-child(' + sort_index + ')').addClass('sort-column');
+                }
+
+                $(".sortable").click(function(e){
+
+                    let new_sort = $(e.target).attr('data-sort')
+                    let dir = 'desc';
+                    if(new_sort === data.request.sort) {
+                        dir = data.request.sort_direction === 'desc' ? 'asc' : 'desc';
+                    }
+                    $('.x-wm-filters input#sort').val(new_sort);
+                    $('.x-wm-filters input#sort_direction').val(dir);
+
+                    submitForm(false);
+                });
 
             }, 20);
         },

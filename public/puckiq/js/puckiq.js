@@ -3,7 +3,6 @@ function formatDecimal(val, no_decimals) {
     return parseFloat("" + Math.round(val * 100) / 100).toFixed(no_decimals);
 }
 
-
 function getChartXRange(data, midpoint, initial_offset) {
     return _getChartRange(data, midpoint, initial_offset, 'x_axis');
 }
@@ -338,7 +337,11 @@ function getFormattedHeader(field, tag) {
     }
 
     let classes = _.compact([defn.width ? `width${defn.width}` : '', defn.class_name]);
-    let sort = defn.sortable === false ? 'data-sorter="false"' : `data-sort="${field}"`;
+    let sort = '';
+    if(defn.sortable !== false) {
+        classes.push('sortable');
+        sort = `data-sort="${field}"`;
+    }
 
     return `<${tag} class="${classes.join(" ")}" ${sort}>${defn.name}</${tag}>`;
 }
@@ -395,7 +398,7 @@ function buildLeftColumn(columns, results) {
     return html;
 }
 
-function buildRightHeader(columns){
+function buildRightHeader(columns) {
 
     var html = "";
     _.each(columns, col => {
@@ -408,12 +411,10 @@ function buildRightHeader(columns){
 function buildRow(columns, pd) {
 
     var html = `<div class="row">`;
-
     _.each(columns, col => {
         html += getFormattedColumn(col, pd, 'div');
     });
     html += "</div>";
-
     return html;
 
 }

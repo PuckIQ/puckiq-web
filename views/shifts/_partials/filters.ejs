@@ -1,4 +1,6 @@
 <form class="filters-form x-wm-filters" method="get">
+    <input type="hidden" id="sort" name="sort" value="<%= request.sort %>" />
+    <input type="hidden" id="sort_direction" name="sort_direction" value="<%= request.sort_direction %>" />
     <div class="level">
         <div class=level-left">
             <input id="player-id" type="hidden" value="<%= request.player || '' %>" />

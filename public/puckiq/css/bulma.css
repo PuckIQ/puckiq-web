@@ -7944,9 +7944,12 @@ would have to be done with js
   width: 300px !important;
   max-width: 300px; }
 
-.puckiq-header div:not([data-sorter='false']):hover, .puckiq-header div span:not([data-sorter='false']):hover {
+.puckiq-header div.sortable:hover, .puckiq-header div span.sortable:hover {
   cursor: pointer;
   color: #999999; }
+
+.sort-column {
+  background-color: #accafa !important; }
 
 /* home */
 .logo-mask {

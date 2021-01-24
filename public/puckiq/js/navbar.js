@@ -25,6 +25,7 @@ $(".navbar-item.has-dropdown").click(function(e) {
         $(this).toggleClass("is-active");
     }
 });
+
 $(".navbar-item > .navbar-link").click(function(e) {
     if ($(".navbar-burger").is(':visible')) {
         e.preventDefault();

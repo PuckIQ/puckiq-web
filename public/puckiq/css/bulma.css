@@ -7949,7 +7949,7 @@ would have to be done with js
   color: #999999; }
 
 .sort-column {
-  background-color: #accafa !important; }
+  background-color: #84c9f7 !important; }
 
 /* home */
 .logo-mask {
@@ -8009,3 +8009,88 @@ would have to be done with js
   .loader-wrapper.is-active {
     opacity: 1;
     z-index: 1; }
+
+/* from puckiq2.css */
+body table {
+  font-size: 12px;
+  color: black; }
+
+table {
+  margin: 0 0 0 16px; }
+
+tr.hidden {
+  display: none; }
+
+.page-header {
+  margin: 0px;
+  border-bottom: none; }
+
+.page-header h2 {
+  margin: 0px; }
+
+.page-header h4 {
+  margin: 0 0 16px 0; }
+
+.content {
+  padding: 17px; }
+
+.col-padded {
+  float: left;
+  padding-left: 17px; }
+
+.col {
+  float: left; }
+
+.toi_minutes {
+  width: 40px; }
+
+#woodmoney-visual {
+  width: 1030px;
+  display: flex;
+  flex-direction: row; }
+
+#chart-container {
+  height: 400px;
+  width: 700px;
+  display: flex;
+  flex-direction: row; }
+
+#player-info {
+  width: 330px;
+  padding-top: 15px; }
+
+#player-info table {
+  width: 100%;
+  margin: 0; }
+
+#player-info table th.highlight {
+  background-color: #84c9f7;
+  font-weight: 700; }
+
+#player-info table td.highlight {
+  background-color: #84c9f7; }
+
+#selected-seasons {
+  display: flex;
+  flex-direction: row;
+  margin-left: 17px; }
+
+#selected-seasons div {
+  padding: 2px 6px;
+  margin-left: 4px;
+  cursor: pointer; }
+
+#selected-seasons div.selected {
+  background-color: #e1e1e1; }
+
+.team-dropdown .column a {
+  padding-top: 0.1em;
+  padding-bottom: 0.1em; }
+
+.homepage-teams {
+  display: flex;
+  align-items: stretch;
+  width: 800px; }
+
+.homepage-teams p {
+  line-height: 16px; }

@@ -8089,8 +8089,11 @@ tr.hidden {
 
 .homepage-teams {
   display: flex;
-  align-items: stretch;
-  width: 800px; }
-
-.homepage-teams p {
-  line-height: 16px; }
+  flex-wrap: wrap;
+  max-width: 800px; }
+  .homepage-teams div {
+    flex: 1 1 200px;
+    width: 200px;
+    margin-top: 1.5rem; }
+  .homepage-teams p {
+    line-height: 16px; }

@@ -19,10 +19,10 @@
 
   <section class="content" style="padding-top: 0;">
 
-    <h5 class="title is-5 has-text-weight-semibold">Team Woodmoney</h5>
+    <h5 class="title is-5 has-text-weight-semibold" style="margin-bottom: 0">Team Woodmoney</h5>
     <div class="homepage-teams">
       <% divisions.forEach(function(division){ %>
-        <div style="flex: 1;">
+        <div>
           <h4 class="subtitle is-5 has-text-weight-medium"><%= division.name %></h4>
           <% division.teams.forEach(function(team){ %>
             <p><a href="/woodmoney?team=<%= team._id %>"><%= team.name %></a></p>

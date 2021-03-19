@@ -3,6 +3,23 @@ function formatDecimal(val, no_decimals) {
     return parseFloat("" + Math.round(val * 100) / 100).toFixed(no_decimals);
 }
 
+function encodeObjectForQuery(obj) {
+    var keys = Object.keys(obj);
+    var tmp = [];
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        if (obj[key] !== null && obj[key] !== '') tmp.push(key + "=" + encodeURIComponent(obj[key]));
+    }
+    return tmp.join("&");
+}
+
+function changeQueryString(val) {
+    if (history.pushState) {
+        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + val;
+        window.history.pushState({path: newurl}, '', newurl);
+    }
+}
+
 function getChartXRange(data, midpoint, initial_offset) {
     return _getChartRange(data, midpoint, initial_offset, 'x_axis');
 }

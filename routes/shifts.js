@@ -40,8 +40,13 @@ function ShiftHandler(app, locator) {
 
         cache.init().then((iq) => {
 
+            let seasons = [constants.default_shifts_season];
+            if(req.query.seasons) {
+                seasons = _.map(req.query.seasons.split(','), x=> parseInt(x));
+            }
+
             let request = _.extend({
-                seasons: [iq.current_woodmoney_season._id],
+                seasons: seasons,
                 selected_positions
             }, req.query);
 
@@ -178,7 +183,7 @@ function ShiftHandler(app, locator) {
         page.title = `PuckIQ | Shifts ${sub_title ? '| ' + sub_title : ''}`;
         page.sub_title = `${sub_title || 'Shifts'}`;
 
-        data.request.seasons = data.request.seasons || [20192020]; //todo
+        data.request.seasons = data.request.seasons || [constants.default_shifts_season];
 
         if (!(data.request.from_date && data.request.to_date)) {
             data.request.season = data.request.season || 'all';

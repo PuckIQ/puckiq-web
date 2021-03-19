@@ -60,25 +60,12 @@ function getFilters() {
     return filters;
 }
 
-function changeQueryString(val) {
-    if (history.pushState) {
-        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + val;
-        window.history.pushState({path: newurl}, '', newurl);
-    }
-}
-
 function submitForm(initial_load) {
 
     var filters = getFilters();
-    var keys = Object.keys(filters);
-    var tmp = [];
-    for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        if (filters[key] !== null && filters[key] !== '') tmp.push(key + "=" + encodeURIComponent(filters[key]));
-    }
 
     if (!initial_load) {
-        var query_string = tmp.join("&");
+        var query_string = encodeObjectForQuery(filters);
         changeQueryString(query_string);
         //updateDateRange(filters);
     }
@@ -133,7 +120,6 @@ function loadDataTable(filters) {
     $(".x-no-results").hide();
     $(".x-data-container").hide();
 
-    console.log(JSON.stringify(filters));
     $.ajax({
         url: "/shifts/data",
         type: 'POST',

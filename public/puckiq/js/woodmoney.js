@@ -66,13 +66,6 @@ function showModal(){
     $('#date-range-modal').modal({});
 }
 
-function changeQueryString(val) {
-    if (history.pushState) {
-        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?' + val;
-        window.history.pushState({path: newurl}, '', newurl);
-    }
-}
-
 function submitForm(initial_load) {
 
     var filters = getFilters();

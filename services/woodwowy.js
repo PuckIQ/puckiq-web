@@ -109,6 +109,15 @@ class WoodwowyService {
                     return reject(new AppException(data.error.type, data.error.message));
                 }
 
+                if(_.isString(data)) {
+                    return reject(new AppException(constants.exceptions.timeout, `The application timed out please try again`, {
+                        status_code: response.statusCode,
+                        data,
+                        url,
+                        options
+                    }));
+                }
+
                 data.team = (options.team && iq.teams[options.team]) || null;
 
                 return resolve(_.extend({request: options}, data));

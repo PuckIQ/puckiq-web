@@ -198,6 +198,10 @@ function loadDataTable(filters) {
                 $(".x-no-results").show();
             } else {
                 $(".x-data-container").show();
+
+                let filter_str = $.param(filters);
+                let href = `/shifts/download?${filter_str}`;
+                $(".x-download").html(`<a href="${href}" class="x-download">download csv</a>`);
             }
 
             setTimeout(function() {

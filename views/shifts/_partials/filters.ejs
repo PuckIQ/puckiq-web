@@ -11,6 +11,7 @@
             <div style="display: flex; flex-direction: row;">
                 Select season(s):
                 <div id="selected-seasons">
+                    <div class="tag is-light <%= !!~request.seasons.indexOf(20212022) ? 'selected' : '' %>" data-season="20202021">2021-22</div>
                     <div class="tag is-light <%= !!~request.seasons.indexOf(20202021) ? 'selected' : '' %>" data-season="20202021">2020-21</div>
                     <div class="tag is-light <%= !!~request.seasons.indexOf(20192020) ? 'selected' : '' %>" data-season="20192020">2019-20</div>
                     <div class="tag is-light <%= !!~request.seasons.indexOf(20182019) ? 'selected' : '' %>" data-season="20182019">2018-19</div>

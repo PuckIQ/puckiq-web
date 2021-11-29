@@ -58,9 +58,10 @@ app.locals.api_host = config.api.host;
 
 routes(app, null, config);
 
-console.log("running server on port", 5000);
-server.listen(5000, function () {
+const port = 5002;
+console.log("running server on port", port);
+server.listen(port, function () {
     server.close(function() {
-        server.listen(5000);
+        server.listen(port);
     });
 });

@@ -3,7 +3,7 @@
 //ALPHABETICAL
 module.exports = {
     //default_woodmoney_season: 20202021, calculated in local_cache from backend
-    default_shifts_season: 20202021,
+    default_shifts_season: 20212022,
     MAX_COUNT : 100,
     exceptions: {
         invalid_argument: 'invalid_argument', // 400

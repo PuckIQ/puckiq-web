@@ -58,7 +58,7 @@ app.locals.api_host = config.api.host;
 
 routes(app, null, config);
 
-const port = 5002;
+const port = 5000;
 console.log("running server on port", port);
 server.listen(port, function () {
     server.close(function() {

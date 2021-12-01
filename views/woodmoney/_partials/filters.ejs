@@ -72,7 +72,7 @@
             <div class="level-item">
                 <select id="team" class="select is-small" name="team">
                     <option value="" <% if(!request.team) { %>selected <% } %>>--All Teams</option>
-                    <% for (var i = 0; i < 31; i++) { %>
+                    <% for (var i = 0; i < teams.length; i++) { %>
                         <option value="<%= teams[i]._id %>" <% if(request.team === teams[i]._id) { %>selected <% } %>><%= teams[i].name %></option>
                     <% } %>
                 </select>

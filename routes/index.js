@@ -46,6 +46,7 @@ module.exports = function (app, request, config) {
     app.get('/woodwowy/download', woodwowyHandler.downloadWoodwowy);
 
     app.get('/shifts', shiftHandler.getShifts);
+    app.get('/shifts/players/:player', shiftHandler.getPlayerShifts);
     app.get('/shifts/download', shiftHandler.downloadShifts);
     app.post('/shifts/data', shiftHandler.xhrShifts);
     app.post('/shifts/chart', shiftHandler.xhrShiftsChartData);

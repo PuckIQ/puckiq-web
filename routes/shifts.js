@@ -21,10 +21,10 @@ function ShiftHandler(app, locator) {
     const shifts = new ShiftService(locator);
     const playerService = new PlayerService(locator);
 
-    controller.getShifts = function (req, res) {
+    controller.getShifts = function(req, res) {
 
         let selected_positions = {};
-        if (req.query.positions && req.query.positions !== 'all') {
+        if(req.query.positions && req.query.positions !== 'all') {
             _.each(_.keys(constants.positions), pos => {
                 selected_positions[pos] = false;
             });
@@ -42,7 +42,7 @@ function ShiftHandler(app, locator) {
 
             let seasons = [constants.default_shifts_season];
             if(req.query.seasons) {
-                seasons = _.map(req.query.seasons.split(','), x=> parseInt(x));
+                seasons = _.map(req.query.seasons.split(','), x => parseInt(x));
             }
 
             let request = _.extend({
@@ -50,9 +50,9 @@ function ShiftHandler(app, locator) {
                 selected_positions
             }, req.query);
 
-            if (request.team) request.team = request.team.toLowerCase();
+            if(request.team) request.team = request.team.toLowerCase();
 
-            let data = {request};
+            let data = { request };
 
             let page = getShiftsPage(data, req.url, iq.teams);
 
@@ -63,15 +63,15 @@ function ShiftHandler(app, locator) {
 
     };
 
-    controller.downloadShifts = function (req, res) {
+    controller.downloadShifts = function(req, res) {
 
-        let options = _.extend({}, req.query, {count: 10000});
+        let options = _.extend({}, req.query, { count: 10000 });
 
         controller._getShifts(options).then((data) => {
 
             let records = [];
 
-            if (data.results && data.results.length) {
+            if(data.results && data.results.length) {
                 records = shifts_csv_file_definition.build(data, options.group_by);
             }
 
@@ -80,7 +80,7 @@ function ShiftHandler(app, locator) {
             res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
             res.setHeader('Content-Type', 'text/csv');
 
-            stringify(records, {quoted_string: true}, (err, content) => {
+            stringify(records, { quoted_string: true }, (err, content) => {
                 res.send(content);
             });
 
@@ -90,9 +90,9 @@ function ShiftHandler(app, locator) {
 
     };
 
-    controller.getPlayerShifts = function (req, res) {
+    controller.getPlayerShifts = function(req, res) {
 
-        if (!_.has(req.params, "player")) {
+        if(!_.has(req.params, "player")) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: player"));
         }
 
@@ -109,7 +109,7 @@ function ShiftHandler(app, locator) {
                 player: req.params.player
             }, req.query);
 
-            let data = {request, player};
+            let data = { request, player };
 
             let page = getShiftsPage(data, req.url, iq.teams);
 
@@ -121,19 +121,19 @@ function ShiftHandler(app, locator) {
 
     };
 
-    controller.downloadPlayerShifts = function (req, res) {
+    controller.downloadPlayerShifts = function(req, res) {
 
-        if (!_.has(req.params, "player")) {
+        if(!_.has(req.params, "player")) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: player"));
         }
 
-        let options = _.extend({player: req.params.player}, req.query);
+        let options = _.extend({ player: req.params.player }, req.query);
 
         controller._getShifts(options).then((data) => {
 
             let records = [];
 
-            if (data.results && data.results.length) {
+            if(data.results && data.results.length) {
                 records = shifts_csv_file_definition.build(data, options.group_by);
             }
 
@@ -143,7 +143,7 @@ function ShiftHandler(app, locator) {
             res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
             res.setHeader('Content-Type', 'text/csv');
 
-            stringify(records, {quoted_string: true}, (err, content) => {
+            stringify(records, { quoted_string: true }, (err, content) => {
                 res.send(content);
             });
 
@@ -153,14 +153,14 @@ function ShiftHandler(app, locator) {
 
     };
 
-    controller._getShifts = function (options) {
+    controller._getShifts = function(options) {
 
         return new Promise((resolve, reject) => {
 
             cache.init().then((iq) => {
 
                 //always do 50 for now...
-                options = _.extend({}, {count: constants.MAX_COUNT}, options);
+                options = _.extend({}, { count: constants.MAX_COUNT }, options);
 
                 shifts.query(options, iq).then((data) => {
                     return resolve(data);
@@ -173,10 +173,10 @@ function ShiftHandler(app, locator) {
 
     function getShiftsPage(data, base_url, teams) {
 
-        let page = { hide_competition : true};
+        let page = { hide_competition: true };
 
         let sub_title = '';
-        if (data.player) {
+        if(data.player) {
             sub_title = data.player.name;
         }
 
@@ -185,7 +185,7 @@ function ShiftHandler(app, locator) {
 
         data.request.seasons = data.request.seasons || [constants.default_shifts_season];
 
-        if (!(data.request.from_date && data.request.to_date)) {
+        if(!(data.request.from_date && data.request.to_date)) {
             data.request.season = data.request.season || 'all';
         } else {
             page.is_date_range = true;
@@ -196,10 +196,10 @@ function ShiftHandler(app, locator) {
         }
 
         //delete selected_positions its not used by the backend
-        let _request = _.extend({}, data.request, {selected_positions: null});
+        let _request = _.extend({}, data.request, { selected_positions: null });
         delete _request._id;
         _.each(_.keys(_request), key => {
-            if (_request[key] === null) delete _request[key];
+            if(_request[key] === null) delete _request[key];
         });
 
         base_url = url.parse(base_url).pathname;
@@ -213,7 +213,7 @@ function ShiftHandler(app, locator) {
         return _.extend(page, data);
     }
 
-    controller.xhrShifts = function (req, res) {
+    controller.xhrShifts = function(req, res) {
 
         let options = _.extend({}, req.body);
 
@@ -225,11 +225,11 @@ function ShiftHandler(app, locator) {
 
     };
 
-    controller.xhrShiftsChartData = function (req, res) {
+    controller.xhrShiftsChartData = function(req, res) {
 
         let chart_options = _.extend({}, req.body);
 
-        if (!chart_options.options) {
+        if(!chart_options.options) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing chart_options.options"));
         }
 
@@ -239,7 +239,7 @@ function ShiftHandler(app, locator) {
 
         controller._getShifts(chart_options.filters).then((shifts_data) => {
             let chart = shifts.formatChart(shifts_data, chart_options);
-            res.jsonp(_.extend(shifts_data, {chart}));
+            res.jsonp(_.extend(shifts_data, { chart }));
         }, (err) => {
             return error_handler.handle(req, res, err);
         });

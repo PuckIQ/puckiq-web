@@ -54,8 +54,9 @@ var column_definitions = {
         width: 70, // see js
         class_name: 'is-season',
         formatter : function(obj, tag) {
-            if(obj.season) {
-                let seas = obj.season.toString();
+            let season = obj.season || (obj._id && obj._id.season);
+            if(season) {
+                let seas = season.toString();
                 let seas_str = seas.substring(0,4) + "/" + seas.substring(6,8);
                 return `<${tag} style="width: 70px;">${seas_str}</${tag}>`;
             } else {
@@ -68,9 +69,13 @@ var column_definitions = {
         type: 'string',
         class_name: 'is-player',
         // width: 200, // see js
-        formatter : function(obj, tag) {
+        formatter : function(obj, tag, is_shifts) {
             let player_id = (obj._id && obj._id.player_id) || obj.player_id;
-            return `<${tag} class="is-player"><a href="/players/${player_id || obj._id}">${obj.name}</a></${tag}>`
+            if(is_shifts) {
+                return `<${tag} class="is-player"><a href="/shifts/players/${player_id || obj._id}">${obj.name}</a></${tag}>`
+            } else {
+                return `<${tag} class="is-player"><a href="/players/${player_id || obj._id}">${obj.name}</a></${tag}>`
+            }
         }
     },
     position : {
@@ -83,8 +88,9 @@ var column_definitions = {
         type: 'string',
         // width: 50,
         formatter : function(obj, tag) {
-            if (obj.team) {
-                return `<${tag}><a href="/woodmoney?team=${obj.team}">${obj.team}</a></${tag}>`;
+            let team = obj.team || (obj._id && obj._id.team);
+            if (team) {
+                return `<${tag}><a href="/woodmoney?team=${team}">${team}</a></${tag}>`;
             } else {
                 return `<${tag}>all</${tag}>`;
             }
@@ -363,19 +369,19 @@ function getFormattedHeader(field, tag) {
     return `<${tag} class="${classes.join(" ")}" ${sort}>${defn.name}</${tag}>`;
 }
 
-function getFormattedColumn(field, obj, tag) {
+function getFormattedColumn(field, obj, tag, is_shifts) {
 
     tag = tag || "div";
 
     let defn = column_definitions.default;
-    if(!column_definitions[field]){
+    if(!column_definitions[field]) {
         console.log('missing definition for field', field);
     } else {
         defn = column_definitions[field];
     }
 
-    if(defn.formatter){
-        return defn.formatter(obj, tag);
+    if(defn.formatter) {
+        return defn.formatter(obj, tag, is_shifts);
     } else {
 
         let classes = _.compact([defn.width ? `width${defn.width}` : '', defn.class_name]);
@@ -396,7 +402,7 @@ function getFormattedColumn(field, obj, tag) {
 
 }
 
-function buildLeftColumn(columns, results) {
+function buildLeftColumn(columns, results, is_shifts) {
 
     var html = "<div class='puckiq-header'>";
     _.each(columns, col => {
@@ -407,7 +413,7 @@ function buildLeftColumn(columns, results) {
     _.each(results, (res) => {
         html += "<div>";
         _.each(columns, col => {
-            html += getFormattedColumn(col, res,'span');
+            html += getFormattedColumn(col, res,'span', is_shifts);
         });
         html += "</div>";
     });

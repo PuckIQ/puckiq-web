@@ -21,9 +21,9 @@ function WoodmoneyHandler(app, locator) {
     const wm = new WoodmoneyService(locator);
     const playerService = new PlayerService(locator);
 
-    controller.getWoodmoney = function (view) {
+    controller.getWoodmoney = function(view) {
 
-        return function (req, res) {
+        return function(req, res) {
 
             let selected_positions = {};
             if(req.query.positions && req.query.positions !== 'all') {
@@ -61,15 +61,15 @@ function WoodmoneyHandler(app, locator) {
 
     };
 
-    controller.downloadWoodmoney = function (req, res) {
+    controller.downloadWoodmoney = function(req, res) {
 
-        let options = _.extend({}, req.query, {count: 10000});
+        let options = _.extend({}, req.query, { count: 10000 });
 
         controller._getWoodmoney(options).then((data) => {
 
             let records = [];
 
-            if (data.results && data.results.length) {
+            if(data.results && data.results.length) {
                 records = woodmoney_csv_file_definition.build(data);
             }
 
@@ -78,7 +78,7 @@ function WoodmoneyHandler(app, locator) {
             res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
             res.setHeader('Content-Type', 'text/csv');
 
-            stringify(records, {quoted_string: true}, (err, content) => {
+            stringify(records, { quoted_string: true }, (err, content) => {
                 res.send(content);
             });
 
@@ -88,9 +88,9 @@ function WoodmoneyHandler(app, locator) {
 
     };
 
-    controller.getPlayerWoodmoney = function (req, res) {
+    controller.getPlayerWoodmoney = function(req, res) {
 
-        if (!_.has(req.params, "player")) {
+        if(!_.has(req.params, "player")) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: player"));
         }
 
@@ -107,7 +107,7 @@ function WoodmoneyHandler(app, locator) {
                 player: req.params.player
             }, req.query);
 
-            let data = {request, player};
+            let data = { request, player };
 
             let page = getWoodmoneyPage(data, req.url, iq.teams);
 
@@ -119,19 +119,19 @@ function WoodmoneyHandler(app, locator) {
 
     };
 
-    controller.downloadPlayerWoodmoney = function (req, res) {
+    controller.downloadPlayerWoodmoney = function(req, res) {
 
-        if (!_.has(req.params, "player")) {
+        if(!_.has(req.params, "player")) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: player"));
         }
 
-        let options = _.extend({player: req.params.player}, req.query);
+        let options = _.extend({ player: req.params.player }, req.query);
 
         controller._getWoodmoney(options).then((data) => {
 
             let records = [];
 
-            if (data.results && data.results.length) {
+            if(data.results && data.results.length) {
                 records = woodmoney_csv_file_definition.build(data);
             }
 
@@ -141,7 +141,7 @@ function WoodmoneyHandler(app, locator) {
             res.setHeader('Content-Disposition', `attachment; filename=${file_name}`);
             res.setHeader('Content-Type', 'text/csv');
 
-            stringify(records, {quoted_string: true}, (err, content) => {
+            stringify(records, { quoted_string: true }, (err, content) => {
                 res.send(content);
             });
 
@@ -151,14 +151,14 @@ function WoodmoneyHandler(app, locator) {
 
     };
 
-    controller._getWoodmoney = function (options) {
+    controller._getWoodmoney = function(options) {
 
         return new Promise((resolve, reject) => {
 
             cache.init().then((iq) => {
 
                 //always do 50 for now...
-                options = _.extend({}, {count: constants.MAX_COUNT}, options);
+                options = _.extend({}, { count: constants.MAX_COUNT }, options);
 
                 wm.query(options, iq).then((data) => {
                     return resolve(data);
@@ -174,14 +174,14 @@ function WoodmoneyHandler(app, locator) {
         let page = {};
 
         let sub_title = '';
-        if (data.player) {
+        if(data.player) {
             sub_title = data.player.name;
         }
 
         page.title = `PuckIQ | Woodmoney ${sub_title ? '| ' + sub_title : ''}`;
         page.sub_title = `${sub_title || 'Woodmoney'}`;
 
-        if (!(data.request.from_date && data.request.to_date)) {
+        if(!(data.request.from_date && data.request.to_date)) {
             data.request.season = data.request.season || 'all';
         } else {
             page.is_date_range = true;
@@ -192,10 +192,10 @@ function WoodmoneyHandler(app, locator) {
         }
 
         //delete selected_positions its not used by the backend
-        let _request = _.extend({}, data.request, {selected_positions: null});
+        let _request = _.extend({}, data.request, { selected_positions: null });
         delete _request._id;
         _.each(_.keys(_request), key => {
-            if (_request[key] === null) delete _request[key];
+            if(_request[key] === null) delete _request[key];
         });
 
         base_url = url.parse(base_url).pathname;
@@ -209,7 +209,7 @@ function WoodmoneyHandler(app, locator) {
         return _.extend(page, data);
     }
 
-    controller.xhrWoodmoneyData = function (req, res) {
+    controller.xhrWoodmoneyData = function(req, res) {
 
         let options = _.extend({}, req.body);
 
@@ -221,11 +221,11 @@ function WoodmoneyHandler(app, locator) {
 
     };
 
-    controller.xhrWoodmoneyChartData = function (req, res) {
+    controller.xhrWoodmoneyChartData = function(req, res) {
 
         let chart_options = _.extend({}, req.body);
 
-        if (!chart_options.options) {
+        if(!chart_options.options) {
             return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing chart_options.options"));
         }
 
@@ -235,7 +235,7 @@ function WoodmoneyHandler(app, locator) {
 
         controller._getWoodmoney(chart_options.filters).then((woodmoney) => {
             let chart = wm.formatChart(woodmoney, chart_options);
-            res.jsonp(_.extend(woodmoney, {chart}));
+            res.jsonp(_.extend(woodmoney, { chart }));
         }, (err) => {
             return error_handler.handle(req, res, err);
         });

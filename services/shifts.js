@@ -262,7 +262,7 @@ class ShiftsService {
 
         const include_player = !filters.player;
         const include_team = !filters.team && !!~filters.group_by.indexOf('team');
-        const include_season = (filters.season === 'all' || (filters.from_date && filters.to_date))
+        const include_season = (filters.seasons === 'all' || (filters.from_date && filters.to_date))
             && !!~filters.group_by.indexOf('season');
 
         const format_label = (player) => {
@@ -270,8 +270,9 @@ class ShiftsService {
             if(include_team && player.team && player.team !== 'all') {
                 lbl += include_player ? ` (${player.team})` : `${player.team}`;
             }
-            if(include_season && player.season && player.season !== 'all') {
-                let seas = player.season.toString();
+            let seas = player._id && player._id.season;
+            if(include_season && seas && seas !== 'all') {
+                seas = seas.toString();
                 lbl += ` ${seas.substr(2,2) + "-" + seas.substr(6,2)}`;
             }
             return lbl;

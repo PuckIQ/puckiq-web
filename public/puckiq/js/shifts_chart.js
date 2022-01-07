@@ -105,40 +105,39 @@ function loadChart(filters) {
     };
 
     if(filters.shift_type === 'all') {
-
-        $('.x-toggle-chart').hide();
-        $("#woodmoney-visual").hide();
-        $("#no-chart").show();
-
-    } else {
-
-        if(!$("#woodmoney-visual").is(":visible")) {
-            $('.x-toggle-chart').show();
-            $("#woodmoney-visual").show();
-            $("#no-chart").hide();
-        }
-
-        $.ajax({
-            url: "/shifts/chart",
-            type: 'POST',
-            data : JSON.stringify(chart_options),
-            contentType: 'application/json',
-            success: function (data) {
-                _idMap = data.chart.id_map;
-                _filters = filters;
-                updateChart(data.chart);
-            },
-            error: function() {
-                //todo
-            }
-        });
-
+        filters.shift_type = '';
+        // $('.x-toggle-chart').hide();
+        // $("#woodmoney-visual").hide();
+        // $("#no-chart").show();
+        // return;
     }
+
+    if(!$("#woodmoney-visual").is(":visible")) {
+        $('.x-toggle-chart').show();
+        $("#woodmoney-visual").show();
+        $("#no-chart").hide();
+    }
+
+    $.ajax({
+        url: "/shifts/chart",
+        type: 'POST',
+        data : JSON.stringify(chart_options),
+        contentType: 'application/json',
+        success: function (data) {
+            _idMap = data.chart.id_map;
+            _filters = filters;
+            updateChart(data.chart);
+        },
+        error: function() {
+            //todo
+        }
+    });
 
 }
 
 function updateChart(data) {
 
+    console.log(data);
     chart.data.datasets.shift();
     chart.data.datasets.shift();
 

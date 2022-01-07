@@ -2,7 +2,9 @@
     <div class="page-header">
         <h2 class="title has-text-weight-medium" style="margin-bottom: 0;">
             <%= sub_title %>
-            <% if(player) { %><small><%= player.positions %></small><% } %>
+            <% if(player) { %>
+                <small><%= player.positions %></small> - Shifts
+            <% } %>
         </h2>
         <%- include('_partials/filters') %>
     </div>

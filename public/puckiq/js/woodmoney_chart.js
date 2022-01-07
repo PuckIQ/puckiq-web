@@ -104,43 +104,44 @@ function loadChart(filters) {
         }
     };
 
+    if(filters.tier === 'All') {
+        // this is a bit of a hack, default the chart to what it looks like without a feature
+        filters.tier = '';
+        // $('.x-toggle-chart').hide();
+        // $("#woodmoney-visual").hide();
+        // $("#no-chart").show();
+        // return;
+    }
+
     let href = '/woodmoney/data?' + $.param(filters);
     $("#view-raw-data").attr("href", href);
 
-    if(filters.tier === 'All') {
-
-        $('.x-toggle-chart').hide();
-        $("#woodmoney-visual").hide();
-        $("#no-chart").show();
-
-    } else {
-
-        if(!$("#woodmoney-visual").is(":visible")) {
-            $('.x-toggle-chart').show();
-            $("#woodmoney-visual").show();
-            $("#no-chart").hide();
-        }
-
-        $.ajax({
-            url: "/woodmoney/chart",
-            type: 'POST',
-            data: JSON.stringify(chart_options),
-            contentType: 'application/json',
-            success: function(data) {
-                _idMap = data.chart.id_map;
-                _filters = filters;
-                updateChart(data.chart);
-            },
-            error: function() {
-                //todo
-            }
-        });
+    if(!$("#woodmoney-visual").is(":visible")) {
+        $('.x-toggle-chart').show();
+        $("#woodmoney-visual").show();
+        $("#no-chart").hide();
     }
+
+    $.ajax({
+        url: "/woodmoney/chart",
+        type: 'POST',
+        data: JSON.stringify(chart_options),
+        contentType: 'application/json',
+        success: function(data) {
+            _idMap = data.chart.id_map;
+            _filters = filters;
+            updateChart(data.chart);
+        },
+        error: function() {
+            //todo
+        }
+    });
 
 }
 
 function updateChart(data) {
 
+    console.log(data);
     chart.data.datasets.shift();
     chart.data.datasets.shift();
 
@@ -149,25 +150,25 @@ function updateChart(data) {
 
     chart.config.options.scales.yAxes[0].scaleLabel.labelString = data.y_axis_name;
 
-    console.log("y_axis_min", data.y_axis_min, "y_axis_max", data.y_axis_max);
+    // console.log("y_axis_min", data.y_axis_min, "y_axis_max", data.y_axis_max);
     let y_range = null;
     if (data.y_axis === 'toipct_diff') {
         y_range = getChartYRange(data, 0, 20);
     } else {
         y_range = getChartYRange(data, 35, 5);
     }
-    console.log("y_range.min", y_range.min, "y_range.max", y_range.max);
+    // console.log("y_range.min", y_range.min, "y_range.max", y_range.max);
     chart.config.options.scales.yAxes[0].ticks.suggestedMin = y_range.min;
     chart.config.options.scales.yAxes[0].ticks.suggestedMax = y_range.max;
 
-    console.log("x_axis_min", data.x_axis_min, "x_axis_max", data.x_axis_max);
+    // console.log("x_axis_min", data.x_axis_min, "x_axis_max", data.x_axis_max);
     let x_range = null;
     if (data.x_axis === 'fo60') {
         x_range = getChartXRange(data, 35, 5);
     } else {
         x_range = getChartXRange(data, 50, 10);
     }
-    console.log("x_range.min", x_range.min, "x_range.max", x_range.max);
+    // console.log("x_range.min", x_range.min, "x_range.max", x_range.max);
     chart.config.options.scales.xAxes[0].ticks.suggestedMin = x_range.min;
     chart.config.options.scales.xAxes[0].ticks.suggestedMax = x_range.max;
 

@@ -333,7 +333,6 @@ class WoodmoneyService {
         return data;
     }
 
-
 }
 
 module.exports = WoodmoneyService;

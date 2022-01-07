@@ -27,7 +27,6 @@ function getFilters(source) {
         filters.to_date = new Date(parseInt(to_date)).getTime();
     }
 
-    console.log("filters", filters);
     return filters;
 }
 

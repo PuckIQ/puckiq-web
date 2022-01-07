@@ -32,7 +32,8 @@ function loadDataTable(filters) {
                 width += 60;
             }
 
-            let data_columns = ["games_played",
+            let data_columns = [
+                "games_played",
                 "woodmoneytier",
                 "game_type",
                 "evtoi",
@@ -70,7 +71,7 @@ function loadDataTable(filters) {
                 "ozspct",
                 "fo60"];
 
-            var left_column_html = buildLeftColumn(left_columns, data.results, filters)
+            var left_column_html = buildLeftColumn(left_columns, data.results, false)
             $(".x-puckiq-left").html(left_column_html);
 
             var header_html = buildRightHeader(data_columns);

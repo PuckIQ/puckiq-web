@@ -10,7 +10,6 @@ function loadDataTable(filters) {
         data: JSON.stringify(filters),
         contentType: 'application/json',
         success: function(data) {
-            console.log("data", data);
 
             // the extra 2 pixels is for the border
             let width = 2;
@@ -66,7 +65,6 @@ function loadDataTable(filters) {
             var header_html = buildRightHeader(data_columns);
             $(".x-puckiq-header").html(header_html);
 
-            console.log('building shifts');
             var stats_html = "";
             _.each(data.results, (res) => {
                 stats_html += buildRow(data_columns, res);

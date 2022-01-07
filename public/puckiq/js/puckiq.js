@@ -71,6 +71,7 @@ var column_definitions = {
         // width: 200, // see js
         formatter : function(obj, tag, is_shifts) {
             let player_id = (obj._id && obj._id.player_id) || obj.player_id;
+            console.log('player', is_shifts);
             if(is_shifts) {
                 return `<${tag} class="is-player"><a href="/shifts/players/${player_id || obj._id}">${obj.name}</a></${tag}>`
             } else {

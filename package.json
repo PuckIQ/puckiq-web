@@ -30,7 +30,7 @@
     "bulma": "0.9.1",
     "mocha": "2.5.3",
     "node-sass": "5.0.0",
-    "shelljs": "0.8.1",
+    "shelljs": "0.8.5",
     "should": "11.1.2"
   }
 }

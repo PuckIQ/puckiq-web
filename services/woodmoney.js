@@ -12,7 +12,7 @@ class WoodmoneyService {
         this.locator = locator;
     }
 
-    query(options, iq){
+    query(options, iq) {
 
         let config = this.locator.get('config');
         let request = this.locator.get('request');
@@ -30,7 +30,7 @@ class WoodmoneyService {
                 min_toi: null,
                 max_toi: null,
                 positions: 'all',
-                group_by : constants.group_by.player_season_team,
+                group_by: constants.group_by.player_season_team,
                 offset: 0,
                 sort: 'evtoi',
                 sort_direction: 'desc',
@@ -44,14 +44,14 @@ class WoodmoneyService {
                 delete options.season;
             }
 
-            if (_.has(options, "from_date") && _.has(options, "to_date") && options.from_date && options.to_date) {
+            if(_.has(options, "from_date") && _.has(options, "to_date") && options.from_date && options.to_date) {
 
                 // dates are in the format of ms since epoch
                 let err = validator.validateDate(parseInt(options.from_date), "from_date");
-                if (err) return reject(err);
+                if(err) return reject(err);
 
                 err = validator.validateDate(parseInt(options.to_date), "to_date");
-                if (err) return reject(err);
+                if(err) return reject(err);
 
             } else {
 
@@ -73,74 +73,74 @@ class WoodmoneyService {
 
             }
 
-            if (options.player) {
+            if(options.player) {
                 options.player = parseInt(options.player);
-                let err = validator.validateInteger(options.player, "player", {nullable: false, min: 1});
-                if (err) return reject(err);
+                let err = validator.validateInteger(options.player, "player", { nullable: false, min: 1 });
+                if(err) return reject(err);
             }
 
-            if (options.min_toi) {
+            if(options.min_toi) {
                 options.min_toi = parseInt(options.min_toi);
-                let err = validator.validateInteger(options.min_toi, "min_toi", {nullable: true, min: 0});
-                if (err) return reject(err);
+                let err = validator.validateInteger(options.min_toi, "min_toi", { nullable: true, min: 0 });
+                if(err) return reject(err);
             }
 
-            if (options.max_toi) {
+            if(options.max_toi) {
                 options.max_toi = parseInt(options.max_toi);
-                let err = validator.validateInteger(options.max_toi, "max_toi", {nullable: true, min: 0});
-                if (err) return reject(err);
+                let err = validator.validateInteger(options.max_toi, "max_toi", { nullable: true, min: 0 });
+                if(err) return reject(err);
             }
 
-            if(options.min_toi && options.max_toi && options.min_toi > options.max_toi){
+            if(options.min_toi && options.max_toi && options.min_toi > options.max_toi) {
                 return new AppException(
                     constants.exceptions.invalid_argument,
                     `Min toi cannot be greater than max toi`,
-                    {param: 'min_toi', value: value}
+                    { param: 'min_toi', value: value }
                 );
             }
 
-            if (options.team) {
-                let err = validator.validateString(options.team, "team", {nullable: false});
-                if (err) return reject(err);
+            if(options.team) {
+                let err = validator.validateString(options.team, "team", { nullable: false });
+                if(err) return reject(err);
                 options.team = options.team.toLowerCase(); //just in case
-                if(!_.has(iq.teams, options.team)){
+                if(!_.has(iq.teams, options.team)) {
                     return new AppException(
                         constants.exceptions.invalid_argument,
                         `Invalid value for parameter: ${options.team}`,
-                        {param: 'team', value: value}
+                        { param: 'team', value: value }
                     );
                 }
             }
 
-            if (options.positions !== 'all') {
+            if(options.positions !== 'all') {
                 let err = validator.validateString(options.positions, "positions");
                 if(err) return reject(err);
                 options.positions = options.positions.toLowerCase();
                 const all_positions = _.keys(constants.positions);
-                for (var i = 0; i < options.positions.length; i++) {
-                    if (!~all_positions.indexOf(options.positions[i])) {
+                for(var i = 0; i < options.positions.length; i++) {
+                    if(!~all_positions.indexOf(options.positions[i])) {
                         return reject(new AppException(
                             constants.exceptions.invalid_argument,
                             `Invalid value for parameter: ${options.positions}`,
-                            {param: 'positions', value: value}
+                            { param: 'positions', value: value }
                         ));
                     }
                 }
             }
 
-            if (options.tier && !~_.values(constants.woodmoney_tier).indexOf(options.tier)) {
+            if(options.tier && !~_.values(constants.woodmoney_tier).indexOf(options.tier)) {
                 return reject(new AppException(
                     constants.exceptions.invalid_argument,
                     `Invalid value for parameter: tier`,
-                    {param: 'tier', value: options.tier}
+                    { param: 'tier', value: options.tier }
                 ));
             }
 
-            if (options.group_by && !~_.values(constants.group_by).indexOf(options.group_by)) {
+            if(options.group_by && !~_.values(constants.group_by).indexOf(options.group_by)) {
                 return reject(new AppException(
                     constants.exceptions.invalid_argument,
                     `Invalid value for parameter: group_by`,
-                    {param: 'group_by', value: options.group_by}
+                    { param: 'group_by', value: options.group_by }
                 ));
             }
 
@@ -153,10 +153,10 @@ class WoodmoneyService {
             //     );
             // }
 
-            if (options.count) {
+            if(options.count) {
                 options.count = parseInt(options.count);
                 let err = validator.validateInteger(options.count, 'count'); //, {min: 1, max: 50});
-                if (err) return reject(err);
+                if(err) return reject(err);
             }
 
             let url = `${baseUrl}/woodmoney`;
@@ -168,18 +168,19 @@ class WoodmoneyService {
                 url: url,
                 body: options,
                 json: true,
-                headers : { 'X-Requested-With' : 'XMLHttpRequest'} }, (err, response, data) => {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            }, (err, response, data) => {
 
-                if (err) {
-                    return reject(new AppException(constants.exceptions.unhandled_error, "An unhandled error occurred", {err: err}));
+                if(err) {
+                    return reject(new AppException(constants.exceptions.unhandled_error, "An unhandled error occurred", { err: err }));
                 }
 
                 //shouldnt really be possible as web should prevalidate but just in case
-                if (response.statusCode === 400) {
+                if(response.statusCode === 400) {
                     return reject(new AppException(constants.exceptions.invalid_request, "Invalid request. Please check your parameters and try again. If you think this is an error please report to slopitch@gmail.com"));
                 }
 
-                if (data.error) {
+                if(data.error) {
                     return reject(new AppException(data.error.type, data.error.message));
                 }
 
@@ -190,7 +191,7 @@ class WoodmoneyService {
                 data.team = (options.team && iq.teams[options.team]) || null;
 
                 data.request.selected_positions = {};
-                if (data.request.positions === "all") {
+                if(data.request.positions === "all") {
                     _.each(_.keys(constants.positions), pos => data.request.selected_positions[pos] = true);
                     data.request.selected_positions.f = true;
                 } else {
@@ -200,7 +201,7 @@ class WoodmoneyService {
                         data.request.selected_positions.r;
                 }
 
-                return resolve(_.extend({request: options}, data));
+                return resolve(_.extend({ request: options }, data));
 
             }, (err) => {
                 return reject(err);
@@ -224,7 +225,7 @@ class WoodmoneyService {
         };
 
         const key_function = (rec) => {
-            switch (filters.group_by) {
+            switch(filters.group_by) {
                 case constants.group_by.player_season_team:
                     return `${rec.season}-${rec.player_id}-${rec.team}`;
                 case constants.group_by.player_season:
@@ -240,11 +241,11 @@ class WoodmoneyService {
 
         let grouped = _.values(_.groupBy(results, x => key_function(x)));
 
-        let forwards = _.filter(grouped, x => !~x[0].positions.indexOf('D') );
-        let defence = _.filter(grouped, x => !!~x[0].positions.indexOf('D') );
+        let forwards = _.filter(grouped, x => !~x[0].positions.indexOf('D'));
+        let defence = _.filter(grouped, x => !!~x[0].positions.indexOf('D'));
 
         const x_axis_formatter = (player, result_type) => {
-            if (woodmoney.request.tier) {
+            if(woodmoney.request.tier) {
                 return player[woodmoney.request.tier][result_type]
             } else {
                 return player[constants.woodmoney_tier.all][result_type]
@@ -252,7 +253,7 @@ class WoodmoneyService {
         };
 
         const y_axis_formatter = (player, result_type) => {
-            switch(result_type){
+            switch(result_type) {
                 case 'toipct_diff':
                     return player[constants.woodmoney_tier.elite].ctoipct - player[constants.woodmoney_tier.gritensity].ctoipct;
                 case 'toipct_elite':
@@ -267,8 +268,8 @@ class WoodmoneyService {
         const player_formatter = (player_results) => {
             let keyed = _.keyBy(player_results, 'woodmoneytier');
             return {
-                x : x_axis_formatter(keyed, chart_options.x_axis),
-                y : y_axis_formatter(keyed, chart_options.y_axis),
+                x: x_axis_formatter(keyed, chart_options.x_axis),
+                y: y_axis_formatter(keyed, chart_options.y_axis),
                 r: 5
             };
         };
@@ -288,7 +289,7 @@ class WoodmoneyService {
             }
             if(include_season && player.season && player.season !== 'all') {
                 let seas = player.season.toString();
-                lbl += ` ${seas.substr(2,2) + "-" + seas.substr(6,2)}`;
+                lbl += ` ${seas.substr(2, 2) + "-" + seas.substr(6, 2)}`;
             }
             return lbl;
         };
@@ -308,8 +309,8 @@ class WoodmoneyService {
             x_axis_max: (max_x && max_x.x) || 70,
             y_axis: chart_options.y_axis,
             y_axis_name: y_axises[chart_options['y_axis']],
-            y_axis_min: (min_y && min_y.y) || (chart_options.y_axis === 'toipct_diff' ? -20: 20),
-            y_axis_max: (max_y && max_y.y) || (chart_options.y_axis === 'toipct_diff' ? 20: 70),
+            y_axis_min: (min_y && min_y.y) || (chart_options.y_axis === 'toipct_diff' ? -20 : 20),
+            y_axis_max: (max_y && max_y.y) || (chart_options.y_axis === 'toipct_diff' ? 20 : 70),
             datasets: [
                 {
                     labels: forward_labels,
@@ -328,6 +329,251 @@ class WoodmoneyService {
                 '0': forwards,
                 '1': defence
             }
+        };
+
+        return data;
+    }
+
+    query_player_games(options, iq) {
+
+        let config = this.locator.get('config');
+        let request = this.locator.get('request');
+        let baseUrl = config.api.host;
+
+        return new Promise((resolve, reject) => {
+
+            let defaults = {
+                season: null,
+                //from_date : null,
+                //to_date : null,
+                //player: null,
+                //team: null,
+                //tier: null,
+                min_toi: null,
+                max_toi: null,
+                positions: 'all',
+                group_by: constants.group_by.player_season_team,
+                offset: 0,
+                sort: 'evtoi',
+                sort_direction: 'desc',
+                count: constants.MAX_COUNT
+            };
+
+            options = _.extend({}, defaults, options);
+
+            if(_.has(options, "from_date") && _.has(options, "to_date") && options.from_date && options.to_date) {
+
+                // dates are in the format of ms since epoch
+                let err = validator.validateDate(parseInt(options.from_date), "from_date");
+                if(err) return reject(err);
+
+                err = validator.validateDate(parseInt(options.to_date), "to_date");
+                if(err) return reject(err);
+
+            } else {
+
+                delete options.from_date;
+                delete options.to_date;
+
+                if(_.has(options, "season") && options.season) {
+                    if(options.season !== "all") {
+                        options.season = parseInt(options.season);
+                        let err = validator.validateSeason(options.season, "season");
+                        if(err) return reject(err);
+                    }
+                } else if(options.player) {
+                    options.season = 'all';
+                } else {
+                    let current_season = iq.current_woodmoney_season;
+                    options.season = current_season && current_season._id;
+                }
+
+            }
+
+            if(options.player) {
+                options.player = parseInt(options.player);
+                let err = validator.validateInteger(options.player, "player", { nullable: false, min: 1 });
+                if(err) return reject(err);
+            } else {
+                return new AppException(constants.exceptions.missing_argument, 'Missing player');
+            }
+
+            if(options.tier && !~_.values(constants.woodmoney_tier).indexOf(options.tier)) {
+                return reject(new AppException(
+                    constants.exceptions.invalid_argument,
+                    `Invalid value for parameter: tier`,
+                    { param: 'tier', value: options.tier }
+                ));
+            }
+
+            if(options.team) {
+                let err = validator.validateString(options.team, "team", { nullable: false });
+                if(err) return reject(err);
+                options.team = options.team.toLowerCase(); //just in case
+                if(!_.has(iq.teams, options.team)) {
+                    return new AppException(
+                        constants.exceptions.invalid_argument,
+                        `Invalid value for parameter: ${options.team}`,
+                        { param: 'team', value: value }
+                    );
+                }
+            }
+
+            if(options.count) {
+                options.count = parseInt(options.count);
+                let err = validator.validateInteger(options.count, 'count'); //, {min: 1, max: 50});
+                if(err) return reject(err);
+            }
+
+            let url = `${baseUrl}/woodmoney/${options.player}/games`;
+
+            // delete options.player;
+            delete options.positions;
+            delete options.group_by;
+
+            if(config.env === 'local') console.log('options', JSON.stringify(options, null, 2));
+            if(config.env === 'local') console.log(`${url}?${utils.encode_query(options)}`);
+
+            request.post({
+                url: url,
+                body: options,
+                json: true,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            }, (err, response, data) => {
+
+                if(err) {
+                    return reject(new AppException(constants.exceptions.unhandled_error, "An unhandled error occurred", { err: err }));
+                }
+
+                //shouldnt really be possible as web should prevalidate but just in case
+                if(response.statusCode === 400) {
+                    return reject(new AppException(constants.exceptions.invalid_request, "Invalid request. Please check your parameters and try again. If you think this is an error please report to slopitch@gmail.com"));
+                }
+
+                if(data.error) {
+                    return reject(new AppException(data.error.type, data.error.message));
+                }
+
+                return resolve(_.extend({ request: options }, data));
+
+            }, (err) => {
+                return reject(err);
+            });
+
+        });
+
+    }
+
+    //assumes its for a player
+    formatChart2(woodmoney, options) {
+
+        let chart_options = options.options;
+        let results = woodmoney.results;
+
+        let on = _.filter(results, x => x.onoff === 'On Ice');
+        let off = _.filter(results, x => x.onoff === 'Off Ice');
+
+        const player_formatter = (result, index) => {
+            return {
+                x: index,
+                y: result[chart_options.y_axis],
+                r: 5
+            };
+        };
+
+        const SUMMATION_FIELDS = ['evtoi', 'cf','ca','dff','dfa','gf','ga','sf','sa','ff','fa','sacf','saca','oz', 'nz', 'dz'];
+        const new_record = () => {
+            let tmp = {};
+            _.each(SUMMATION_FIELDS, x => {
+                tmp[x] = 0;
+            });
+            return tmp;
+        };
+
+        const add_values_to = (wm, x) => {
+            _.each(SUMMATION_FIELDS, field => {
+                wm[field] += x[field];
+            });
+        };
+
+        const PCT_MULTIPLIER = 100;
+        const safeDivide = (x, y) => {
+            if(y === 0) return 0;
+            return x/y;
+        };
+
+        const calculateFieldsFor = (input) => {
+
+            let output = _.extend({}, input);
+            const hours = output.evtoi / 3600;
+
+            output.cf60 = safeDivide(output.cf, hours);
+            output.ca60 = safeDivide(output.ca, hours);
+            output.cfpct = safeDivide(output.cf, output.cf + output.ca) * PCT_MULTIPLIER;
+            output.dff60 = safeDivide(output.dff, hours);
+            output.dfa60 = safeDivide(output.dfa, hours);
+            output.dffpct = safeDivide(output.dff, output.dff + output.dfa) * PCT_MULTIPLIER;
+            output.gf60 = safeDivide(output.gf, hours);
+            output.ga60 = safeDivide(output.ga, hours);
+            output.gfpct = safeDivide(output.gf, output.gf + output.ga) * PCT_MULTIPLIER;
+            output.sf60 = safeDivide(output.sf, hours);
+            output.sa60 = safeDivide(output.sa, hours);
+            output.sfpct = safeDivide(output.sf, output.sf + output.sa) * PCT_MULTIPLIER;
+            output.ff60 = safeDivide(output.ff, hours);
+            output.fa60 = safeDivide(output.fa, hours);
+            output.ffpct = safeDivide(output.ff, output.ff + output.fa) * PCT_MULTIPLIER;
+            output.sacf60 = safeDivide(output.sacf, hours);
+            output.saca60 = safeDivide(output.saca, hours);
+            output.sacfpct = safeDivide(output.sacf, output.sacf + output.saca) * PCT_MULTIPLIER;
+
+            return output;
+        };
+
+        let wm_on = new_record();
+        let wm_off = new_record();
+        let on_keyed = _.keyBy(on, 'gamekey');
+
+        let tmp_on = [];
+        let tmp_off = [];
+        _.each(off, off_record => {
+            let on_record = on_keyed[off_record.gamekey];
+            add_values_to(wm_off, off_record);
+            if(on_record.evtoi > 0) {
+                add_values_to(wm_on, on_record);
+            }
+            tmp_on.push(calculateFieldsFor(wm_on));
+            tmp_off.push(calculateFieldsFor(wm_off));
+        });
+
+        let on_ice_data = _.map(tmp_on, (player, i) => player_formatter(player, i+1));
+        let off_ice_data = _.map(tmp_off, (player, i) => player_formatter(player, i+1));
+
+        let all_data = on_ice_data.concat(off_ice_data);
+        let min_y = _.minBy(all_data, 'y');
+        let max_y = _.maxBy(all_data, 'y');
+
+        let data = {
+            x_axis: 'Game',
+            x_axis_min: 1,
+            x_axis_max: off_ice_data.length,
+            y_axis: chart_options.y_axis,
+            y_axis_name: chart_options.y_axis,
+            y_axis_min: (min_y && min_y.y) || 20,
+            y_axis_max: (max_y && max_y.y) || 70,
+            datasets: [
+                {
+                    labels: _.map(on_ice_data, x => x.x),
+                    backgroundColor: "rgba(51, 153, 51,0.8)",
+                    borderColor: "rgba(51, 153, 51,1)",
+                    data: on_ice_data
+                },
+                {
+                    labels: _.map(off_ice_data, x => x.x),
+                    backgroundColor: "rgba(0, 102, 255,0.8)",
+                    borderColor: "rgba(0, 102, 255,1)",
+                    data: off_ice_data
+                },
+            ]
         };
 
         return data;

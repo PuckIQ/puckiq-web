@@ -37,9 +37,11 @@ module.exports = function (app, request, config) {
     app.get('/woodmoney/download', woodmoneyHandler.downloadWoodmoney);
     app.post('/woodmoney/data', woodmoneyHandler.xhrWoodmoneyData);
     app.post('/woodmoney/chart', woodmoneyHandler.xhrWoodmoneyChartData);
+    app.post('/woodmoney/chart2', woodmoneyHandler.xhrWoodmoneyChartData2);
 
     app.get('/players/search', puckIQHandler.searchPlayers);
     app.get('/players/:player', woodmoneyHandler.getPlayerWoodmoney);
+    app.get('/players/:player/woodmoney/games', woodmoneyHandler.getPlayerWoodmoney2);
     app.get('/players/:player/download', woodmoneyHandler.downloadPlayerWoodmoney);
 
     app.get('/woodwowy', woodwowyHandler.getWoodwowy);

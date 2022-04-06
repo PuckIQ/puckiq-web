@@ -119,6 +119,37 @@ function WoodmoneyHandler(app, locator) {
 
     };
 
+    controller.getPlayerWoodmoney2 = function(req, res) {
+
+        if(!_.has(req.params, "player")) {
+            return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing argument: player"));
+        }
+
+        Promise.all([
+            playerService.getById(req.params.player),
+            cache.init()
+        ]).then((promise_results) => {
+            let player = promise_results[0];
+            let iq = promise_results[1];
+
+            let request = _.extend({
+                season: 'all', //iq.current_woodmoney_season._id,
+                selected_positions: null,
+                player: req.params.player
+            }, req.query);
+
+            let data = { request, player };
+
+            let page = getWoodmoneyPage(data, req.url, iq.teams);
+
+            res.render('woodmoney/player2', page);
+
+        }, (err) => {
+            return error_handler.handle(req, res, err);
+        });
+
+    };
+
     controller.downloadPlayerWoodmoney = function(req, res) {
 
         if(!_.has(req.params, "player")) {
@@ -161,6 +192,24 @@ function WoodmoneyHandler(app, locator) {
                 options = _.extend({}, { count: constants.MAX_COUNT }, options);
 
                 wm.query(options, iq).then((data) => {
+                    return resolve(data);
+                }, (err) => {
+                    return reject(err);
+                });
+            });
+        });
+    };
+
+    controller._getGameWoodmoney = function(options) {
+
+        return new Promise((resolve, reject) => {
+
+            cache.init().then((iq) => {
+
+                //always do 50 for now...
+                options = _.extend({}, { count: constants.MAX_COUNT }, options);
+
+                wm.query_player_games(options, iq).then((data) => {
                     return resolve(data);
                 }, (err) => {
                     return reject(err);
@@ -241,6 +290,29 @@ function WoodmoneyHandler(app, locator) {
         });
 
     };
+
+    controller.xhrWoodmoneyChartData2 = function(req, res) {
+
+        let chart_options = _.extend({}, req.body);
+
+        if(!chart_options.options) {
+            return error_handler.handle(req, res, new AppException(constants.exceptions.missing_argument, "Missing chart_options.options"));
+        }
+
+        chart_options.options['y_axis'] = chart_options.filters.tier ?
+            `toipct_${chart_options.filters.tier.toLowerCase()}` :
+            'toipct_diff';
+
+        controller._getGameWoodmoney(chart_options.filters).then((woodmoney) => {
+            let chart = wm.formatChart2(woodmoney, chart_options);
+            res.jsonp(_.extend(woodmoney, { chart }));
+        }, (err) => {
+            return error_handler.handle(req, res, err);
+        });
+
+    };
+
+
 
 }
 

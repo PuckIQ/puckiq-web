@@ -32,8 +32,28 @@ $(".navbar-item > .navbar-link").click(function(e) {
     }
 });
 
-$(window).resize(function(e) {
+$(".navbar-burger").click(function(){
+    let $nav = $("#puckiq-nav");
+    if($nav.hasClass("is-active")){
+        $nav.removeClass("is-active");
+        $nav.css('margin-left', '-50px');
+    } else {
+        $nav.addClass("is-active");
+        $nav.css('margin-left', '-0');
+    }
+});
+
+function onResize() {
     if (!$(".navbar-burger").is(':visible') && $(".navbar-item.has-dropdown.is-active").length) {
         $(".navbar-item.has-dropdown.is-active").removeClass('is-active');
     }
+}
+
+$(window).resize(function(e) {
+    onResize();
 });
+
+setTimeout(function(){
+    onResize();
+}, 200);
+

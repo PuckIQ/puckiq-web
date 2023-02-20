@@ -10,53 +10,53 @@
           </div>
         </a>
 
-        <div class="navbar-item has-dropdown is-hoverable" style="margin-left: -50px;">
-          <a class="navbar-link">
-            Woodmoney
-          </a>
-
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="/woodmoney" style="justify-content: center; padding-top: 0.1em; padding-bottom: 0.1em;">
-              Show All Teams
-            </a>
-            <%- include('_partials/team-dropdown', {page_type : 'woodmoney'}) %>
-          </div>
-        </div>
-
-        <a href="/woodwowy" class="navbar-item" >
-          WoodWOWY
-        </a>
-
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link">
-            Shifts
-          </a>
-
-          <div class="navbar-dropdown">
-            <a class="navbar-item" href="/shifts" style="justify-content: center; padding-top: 0.1em; padding-bottom: 0.1em;">
-              Show All Teams
-            </a>
-            <%- include('_partials/team-dropdown', {page_type : 'shifts'}) %>
-          </div>
-        </div>
-
-        <a href="/glossary" class="navbar-item">
-          Glossary
-        </a>
-
-        <a href="/about" class="navbar-item">
-          About
-        </a>
-
-        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="puckiq-nav">
+        <a role="button" class="navbar-burger" data-target="puckiq-nav" aria-label="menu" aria-expanded="false">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
       </div>
 
-      <div id="puckiq-nav" class="navbar-menu">
+      <div id="puckiq-nav" class="navbar-menu" style="margin-left: -50px;">
+
         <div class="navbar-start">
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              Woodmoney
+            </a>
+
+            <div class="navbar-dropdown">
+              <a class="navbar-item" href="/woodmoney" style="justify-content: center; padding-top: 0.1em; padding-bottom: 0.1em;">
+                Show All Teams
+              </a>
+              <%- include('_partials/team-dropdown', {page_type : 'woodmoney'}) %>
+            </div>
+          </div>
+
+          <a href="/woodwowy" class="navbar-item" >
+            WoodWOWY
+          </a>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link">
+              Shifts
+            </a>
+
+            <div class="navbar-dropdown">
+              <a class="navbar-item" href="/shifts" style="justify-content: center; padding-top: 0.1em; padding-bottom: 0.1em;">
+                Show All Teams
+              </a>
+              <%- include('_partials/team-dropdown', {page_type : 'shifts'}) %>
+            </div>
+          </div>
+
+          <a href="/glossary" class="navbar-item">
+            Glossary
+          </a>
+
+          <a href="/about" class="navbar-item">
+            About
+          </a>
         </div>
 
         <div class="navbar-end">
@@ -65,8 +65,8 @@
             <div class="autocomplete-results x-player-results" style="display:none; text-align: left; top: 49px;">
             </div>
           </div>
-
         </div>
+
       </div>
     </nav>
 

@@ -48,6 +48,7 @@ function getFilters() {
         filters.to_date = new Date(parseInt(to_date)).getTime();
     }
 
+    console.log('getFilters', filters);
     return filters;
 }
 
@@ -73,7 +74,9 @@ function submitForm(initial_load) {
     var tmp = [];
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
-        if (filters[key] !== null && filters[key] !== '') tmp.push(key + "=" + encodeURIComponent(filters[key]));
+        if (filters[key] !== null && filters[key] !== '') {
+            tmp.push(key + "=" + encodeURIComponent(filters[key]));
+        }
     }
 
     if (!initial_load) {

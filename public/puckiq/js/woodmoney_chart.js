@@ -94,7 +94,10 @@ var chart = new Chart(ctx, {
 var _idMap = { '0' : [], '1' : []};
 var _filters = {};
 
-function loadChart(filters) {
+function loadChart(_filters) {
+
+    // need to do this so we dont mess up filters.tier
+    let filters = _.extend({}, _filters);
 
     let chart_options = {
         filters,

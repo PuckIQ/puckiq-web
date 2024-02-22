@@ -3,7 +3,7 @@
 //ALPHABETICAL
 module.exports = {
     //default_woodmoney_season: 20202021, calculated in local_cache from backend
-    default_shifts_season: 20222023,
+    default_shifts_season: 20232024,
     default_woodwowy_season: 20232024,
     MAX_COUNT : 100,
     exceptions: {

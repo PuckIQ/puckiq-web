@@ -1,4 +1,4 @@
-FROM node:10.15.3
+FROM node:10
 
 RUN mkdir -p /usr/src/puckiq-web
 WORKDIR /usr/src/puckiq-web

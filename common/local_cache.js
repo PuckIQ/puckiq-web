@@ -99,7 +99,7 @@ class SeasonCache {
             "sjs": { "_id" : "sjs", "name": "San Jose Sharks", division : "Pacific"},
             "tbl": { "_id" : "tbl", "name": "Tampa Bay Lightning", division : "Atlantic"},
             "tor": { "_id" : "tor", "name": "Toronto Maple Leafs", division : "Atlantic"},
-            "uta": { "_id" : "tor", "name": "Utah Hockey Club", division : "Central"},
+            "uta": { "_id" : "uta", "name": "Utah Hockey Club", division : "Central"},
             "van": { "_id" : "van", "name": "Vancouver Canucks", division : "Pacific"},
             "vgk": { "_id" : "vgk", "name": "Las Vegas Golden Knights", division : "Pacific"},
             "wsh": { "_id" : "wsh", "name": "Washington Capitals", division : "Metropolitan"},

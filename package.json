@@ -29,7 +29,6 @@
   "devDependencies": {
     "bulma": "0.9.1",
     "mocha": "10.1.0",
-    "node-sass": "5.0.0",
     "shelljs": "0.8.5",
     "should": "11.1.2"
   }

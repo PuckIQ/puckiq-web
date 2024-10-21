@@ -71,7 +71,7 @@ class SeasonCache {
         return Promise.resolve({
             "ana": { "_id" : "ana", "name": "Anaheim Ducks", division : "Pacific"},
             //"atl": { "_id" : "atl", "name": "TODO", "active" : false},
-            "ari": { "_id" : "ari", "name": "Arizona Coyotes", division : "Central"},
+            // "ari": { "_id" : "ari", "name": "Arizona Coyotes", division : "Central"},
             "bos": { "_id" : "bos", "name": "Boston Bruins", division : "Atlantic"},
             "buf": { "_id" : "buf", "name": "Buffalo Sabres", division : "Atlantic"},
             "car": { "_id" : "car", "name": "Carolina Hurricanes", division : "Metropolitan"},
@@ -99,6 +99,7 @@ class SeasonCache {
             "sjs": { "_id" : "sjs", "name": "San Jose Sharks", division : "Pacific"},
             "tbl": { "_id" : "tbl", "name": "Tampa Bay Lightning", division : "Atlantic"},
             "tor": { "_id" : "tor", "name": "Toronto Maple Leafs", division : "Atlantic"},
+            "uta": { "_id" : "uta", "name": "Utah Hockey Club", division : "Central"},
             "van": { "_id" : "van", "name": "Vancouver Canucks", division : "Pacific"},
             "vgk": { "_id" : "vgk", "name": "Las Vegas Golden Knights", division : "Pacific"},
             "wsh": { "_id" : "wsh", "name": "Washington Capitals", division : "Metropolitan"},
